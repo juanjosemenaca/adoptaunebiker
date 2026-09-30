@@ -27,6 +27,8 @@
 html {
   background: var(--asphalt);
   color: var(--bone);
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
 }
 
 body {

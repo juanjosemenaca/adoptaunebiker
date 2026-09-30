@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Script from "next/script";
+import { cookies } from "next/headers";
 import { Oswald, Figtree } from "next/font/google";
+import { defaultLocale, htmlLang, isLocale } from "@/i18n/config";
 import "./globals.css";
 
 const display = Oswald({
@@ -32,19 +34,22 @@ export const metadata: Metadata = {
     locale: "es_ES",
     url: "https://adoptaunebiker.com",
     siteName: "Adopta un eBiker",
-    images: [{ url: "/logo.png", width: 1024, height: 512, alt: "Adopta un eBiker" }],
+    images: [{ url: "/logo.png", width: 852, height: 456, alt: "Adopta un eBiker" }],
   },
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const cookie = (await cookies()).get("NEXT_LOCALE")?.value;
+  const locale = cookie && isLocale(cookie) ? cookie : defaultLocale;
+
   return (
     <html
-      lang="es"
+      lang={htmlLang[locale]}
       className={`${display.variable} ${body.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <Script id="open-at-inicio" strategy="beforeInteractive">
-          {`try{var nav=performance.getEntriesByType("navigation")[0];if(location.pathname==="/"&&nav&&(nav.type==="reload"||nav.type==="navigate")){history.scrollRestoration="manual";window.scrollTo(0,0)}}catch(e){}`}
+          {`try{var nav=performance.getEntriesByType("navigation")[0];var p=location.pathname;var home=/^\\/(es|ca|en|fr|de)\\/?$/.test(p)||p==="/";if(home&&nav&&nav.type==="reload"){history.scrollRestoration="manual";window.scrollTo(0,0)}}catch(e){}`}
         </Script>
         {children}
       </body>

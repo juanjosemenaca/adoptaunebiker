@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { riders } from "@/data/riders";
-import type { SessionUser } from "@/lib/types";
+import type { AccountKind, SessionUser } from "@/lib/types";
 
 export const MEMBERS_COOKIE = "adopta.members";
 export const DEMO_PASSWORD = "adopta";
@@ -22,6 +22,31 @@ export const demoAccounts = [
   },
 ] as const;
 
+export const demoAdmin = {
+  email: "admin@adopta.local",
+  name: "Administración",
+} as const;
+
+export function adminSession(): SessionUser {
+  return {
+    id: "admin",
+    slug: "administracion",
+    name: demoAdmin.name,
+    role: "mentor",
+    discipline: "carretera",
+    city: "—",
+    bike: "",
+    bio: "",
+    lookingFor: "",
+    email: demoAdmin.email,
+    kind: "admin",
+  };
+}
+
+export function isAdminEmail(email: string) {
+  return normalizeEmail(email) === demoAdmin.email;
+}
+
 export function hashPassword(password: string) {
   return createHash("sha256")
     .update(`adopta-un-ebiker:${password}`)
@@ -34,6 +59,10 @@ export function normalizeEmail(value: string) {
 
 export function isEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+export function isAccountKind(value: string): value is AccountKind {
+  return value === "admin" || value === "user";
 }
 
 export function riderToSession(riderId: string, email?: string): SessionUser | null {
@@ -50,6 +79,7 @@ export function riderToSession(riderId: string, email?: string): SessionUser | n
     bio: rider.bio,
     lookingFor: rider.lookingFor,
     email,
+    kind: "user",
   };
 }
 

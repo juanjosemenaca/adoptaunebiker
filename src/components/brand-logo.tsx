@@ -8,34 +8,36 @@ type BrandLogoProps = {
   className?: string;
   size?: "header" | "footer";
   priority?: boolean;
+  href?: string;
 };
 
 const sizes = {
-  header: "h-12 w-24 sm:h-14 sm:w-[7.5rem]",
-  footer: "h-16 w-32 sm:h-[4.5rem] sm:w-36",
+  header: "h-14 w-[7rem] sm:h-16 sm:w-[8.5rem]",
+  footer: "h-[4.5rem] w-[8.5rem] sm:h-20 sm:w-[10.5rem]",
 };
 
 export function BrandLogo({
   className,
   size = "header",
   priority = false,
+  href = "/",
 }: BrandLogoProps) {
   const pathname = usePathname();
 
   return (
     <Link
-      href="/"
+      href={href}
       className={`relative inline-block shrink-0 ${sizes[size]} ${className ?? ""}`}
-      aria-label="Adopta un eBiker, ir al inicio"
+      aria-label="Adopta un eBiker"
       onClick={() => {
-        if (pathname === "/") window.scrollTo(0, 0);
+        if (pathname === href) window.scrollTo(0, 0);
       }}
     >
       <Image
         src="/logo.png"
         alt="Adopta un eBiker"
         fill
-        sizes="120px"
+        sizes="170px"
         className="object-contain object-left"
         priority={priority}
       />

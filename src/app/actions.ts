@@ -3,17 +3,25 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { riders } from "@/data/riders";
 import {
   DEMO_PASSWORD,
+  adminSession,
   demoUserByEmail,
   hashPassword,
+  isAccountKind,
+  isAdminEmail,
   isEmail,
-  MEMBERS_COOKIE,
   normalizeEmail,
 } from "@/lib/auth";
+import { getDictionary } from "@/i18n/get-dictionary";
+import { defaultLocale, isLocale } from "@/i18n/config";
 import { isDiscipline } from "@/lib/labels";
-import { paths, safeIntranetPath } from "@/lib/paths";
+import { hrefs, loginHref, safeIntranetPath } from "@/lib/paths";
+import {
+  findSignupByEmail,
+  saveSignupRequest,
+} from "@/lib/signup-requests";
+import { isAdmin } from "@/lib/session";
 import {
   BONDS_COOKIE,
   cookieOptions,
@@ -23,34 +31,19 @@ import {
   getSession,
   SESSION_COOKIE,
 } from "@/lib/session";
-import type { Bond, BondStatus, Discipline, Role, SessionUser } from "@/lib/types";
+import type { Bond, BondStatus, Role } from "@/lib/types";
 
-function slugify(value: string) {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "")
-    .slice(0, 40);
+function localeFromForm(formData: FormData) {
+  const value = String(formData.get("locale") ?? "");
+  return isLocale(value) ? value : defaultLocale;
 }
 
 function revalidateCommunity() {
   revalidatePath("/", "layout");
-  revalidatePath(paths.intranet, "layout");
-}
-
-async function takenSlugs() {
-  const members = await getMembers();
-  const taken = new Set(riders.map((rider) => rider.slug));
-  for (const member of members) taken.add(member.user.slug);
-  const session = await getSession();
-  if (session) taken.add(session.slug);
-  return taken;
 }
 
 async function emailTaken(email: string) {
-  if (demoUserByEmail(email)) return true;
+  if (isAdminEmail(email) || demoUserByEmail(email)) return true;
   const members = await getMembers();
   return members.some((member) => member.email === email);
 }
@@ -58,122 +51,143 @@ async function emailTaken(email: string) {
 export async function joinCommunity(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   const email = normalizeEmail(String(formData.get("email") ?? ""));
-  const password = String(formData.get("password") ?? "");
   const city = String(formData.get("city") ?? "").trim();
   const bike = String(formData.get("bike") ?? "").trim();
   const bio = String(formData.get("bio") ?? "").trim();
   const lookingFor = String(formData.get("lookingFor") ?? "").trim();
   const role = String(formData.get("role") ?? "") as Role;
   const disciplineRaw = String(formData.get("discipline") ?? "");
-  const next = safeIntranetPath(String(formData.get("next") ?? ""));
+  const locale = localeFromForm(formData);
+  const t = getDictionary(locale);
 
   if (name.length < 2) {
-    return { error: "Pon un nombre o alias que se pueda decir en un bar." };
+    return { error: t.errors.name };
   }
   if (!isEmail(email)) {
-    return { error: "Necesitamos un correo para volver a entrar." };
-  }
-  if (password.length < 6) {
-    return { error: "La clave, mínimo seis caracteres." };
+    return { error: t.errors.email };
   }
   if (!city) {
-    return { error: "Sin ciudad no hay quedada." };
+    return { error: t.errors.city };
   }
   if (role !== "mentor" && role !== "ebiker") {
-    return { error: "Elige si sales a adoptar o a que te adopten." };
+    return { error: t.errors.role };
   }
   if (!isDiscipline(disciplineRaw)) {
-    return { error: "Elige modalidad: MTB, carretera o gravel." };
+    return { error: t.errors.discipline };
   }
-  if (await emailTaken(email)) {
-    return { error: "Ese correo ya tiene plaza. Entra con tu clave." };
-  }
-
-  const discipline: Discipline = disciplineRaw;
-  const taken = await takenSlugs();
-  const base = slugify(name) || "rider";
-  let slug = base;
-  let n = 2;
-  while (taken.has(slug)) {
-    slug = `${base}-${n}`;
-    n += 1;
+  if (await emailTaken(email) || (await findSignupByEmail(email))) {
+    return { error: t.errors.pendingExists };
   }
 
-  const user: SessionUser = {
-    id: crypto.randomUUID(),
-    slug,
-    name,
-    role,
-    discipline,
-    city,
-    bike:
-      bike ||
-      (role === "mentor"
-        ? "Bici de veterano, aún sin ficha"
-        : "eBike aún sin ficha"),
-    bio: bio || "Recién aterrizado. Todavía huele a caja.",
-    lookingFor: lookingFor || "Alguien con quien salir el próximo sábado.",
-    email,
-  };
+  try {
+    await saveSignupRequest({
+      id: crypto.randomUUID(),
+      createdAt: new Date().toISOString(),
+      name,
+      email,
+      city,
+      role,
+      discipline: disciplineRaw,
+      bike,
+      bio,
+      lookingFor,
+      locale,
+    });
+  } catch {
+    return { error: t.errors.send };
+  }
 
-  const members = await getMembers();
-  const store = await cookies();
-  store.set(
-    MEMBERS_COOKIE,
-    encodeCookie([...members, { email, passwordHash: hashPassword(password), user }]),
-    cookieOptions,
-  );
-  store.set(SESSION_COOKIE, encodeCookie(user), cookieOptions);
   revalidateCommunity();
-  redirect(next);
+  return { ok: true as const };
 }
 
 export async function loginCommunity(formData: FormData) {
   const email = normalizeEmail(String(formData.get("email") ?? ""));
   const password = String(formData.get("password") ?? "");
-  const next = safeIntranetPath(String(formData.get("next") ?? ""));
+  const kindRaw = String(formData.get("kind") ?? "");
+  const locale = localeFromForm(formData);
+  const t = getDictionary(locale);
+  const links = hrefs(locale);
+  const requested = String(formData.get("next") ?? "");
 
+  if (!isAccountKind(kindRaw)) {
+    return { error: t.errors.kind };
+  }
   if (!isEmail(email) || password.length < 1) {
-    return { error: "Correo y clave, sin teatro." };
+    return { error: t.errors.loginEmpty };
+  }
+
+  const passwordOk = hashPassword(password) === hashPassword(DEMO_PASSWORD);
+
+  if (kindRaw === "admin") {
+    if (isAdminEmail(email) && passwordOk) {
+      const store = await cookies();
+      store.set(SESSION_COOKIE, encodeCookie(adminSession()), cookieOptions);
+      revalidateCommunity();
+      redirect(
+        requested.includes("/admin") ? safeIntranetPath(requested, locale) : links.admin,
+      );
+    }
+    return { error: t.errors.kindMismatch };
+  }
+
+  if (isAdminEmail(email)) {
+    return { error: t.errors.kindMismatch };
   }
 
   const demo = demoUserByEmail(email);
-  if (demo && hashPassword(password) === hashPassword(DEMO_PASSWORD)) {
+  if (demo && passwordOk) {
     const store = await cookies();
-    store.set(SESSION_COOKIE, encodeCookie(demo), cookieOptions);
+    store.set(SESSION_COOKIE, encodeCookie({ ...demo, kind: "user" as const }), cookieOptions);
     revalidateCommunity();
-    redirect(next);
+    redirect(
+      requested.includes("/intranet")
+        ? safeIntranetPath(requested, locale)
+        : links.intranet,
+    );
   }
 
   const members = await getMembers();
   const member = members.find((item) => item.email === email);
   if (!member || member.passwordHash !== hashPassword(password)) {
-    return { error: "Esa plaza no encaja. Revisa correo y clave." };
+    return { error: t.errors.loginBad };
+  }
+  if (member.user.kind === "admin") {
+    return { error: t.errors.kindMismatch };
   }
 
   const store = await cookies();
-  store.set(SESSION_COOKIE, encodeCookie(member.user), cookieOptions);
+  store.set(
+    SESSION_COOKIE,
+    encodeCookie({ ...member.user, kind: "user" as const }),
+    cookieOptions,
+  );
   revalidateCommunity();
-  redirect(next);
+  redirect(
+    requested.includes("/intranet") ? safeIntranetPath(requested, locale) : links.intranet,
+  );
 }
 
-export async function logoutCommunity() {
+export async function logoutCommunity(formData: FormData) {
+  const locale = localeFromForm(formData);
   const store = await cookies();
   store.delete(SESSION_COOKIE);
   revalidateCommunity();
-  redirect(paths.home);
+  redirect(hrefs(locale).home);
 }
 
 export async function requestAdoption(formData: FormData) {
+  const locale = localeFromForm(formData);
+  const t = getDictionary(locale);
   const session = await getSession();
-  if (!session) {
-    redirect(paths.entrar);
+  if (!session || isAdmin(session)) {
+    redirect(loginHref(locale, hrefs(locale).intranet));
   }
 
   const toId = String(formData.get("toId") ?? "");
   const message = String(formData.get("message") ?? "").trim();
   if (!toId || toId === session.id) {
-    return { error: "Esa adopción no tiene sentido." };
+    return { error: t.errors.adoptSelf };
   }
 
   const bonds = await getBonds();
@@ -183,7 +197,7 @@ export async function requestAdoption(formData: FormData) {
       (bond.fromId === toId && bond.toId === session.id),
   );
   if (exists && exists.status !== "declined") {
-    return { error: "Ya hay un vínculo abierto con esta persona." };
+    return { error: t.errors.bondExists };
   }
 
   const bond: Bond = {
@@ -206,8 +220,9 @@ export async function requestAdoption(formData: FormData) {
 }
 
 export async function respondBond(formData: FormData) {
+  const locale = localeFromForm(formData);
   const session = await getSession();
-  if (!session) redirect(paths.entrar);
+  if (!session || isAdmin(session)) redirect(loginHref(locale, hrefs(locale).intranet));
 
   const id = String(formData.get("id") ?? "");
   const status = String(formData.get("status") ?? "") as BondStatus;

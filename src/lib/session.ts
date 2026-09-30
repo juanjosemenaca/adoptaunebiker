@@ -48,7 +48,12 @@ export async function getSession(): Promise<SessionUser | null> {
     bio: parsed.bio ?? "",
     lookingFor: parsed.lookingFor ?? "",
     email: parsed.email,
+    kind: parsed.kind === "admin" ? "admin" : "user",
   };
+}
+
+export function isAdmin(session: SessionUser | null) {
+  return session?.kind === "admin";
 }
 
 export async function getBonds(): Promise<Bond[]> {
@@ -87,6 +92,7 @@ export async function listRiders(): Promise<Rider[]> {
   const seen = new Set(riders.map((rider) => rider.id));
 
   for (const member of members) {
+    if (member.user.kind === "admin") continue;
     if (seen.has(member.user.id) || riders.some((rider) => rider.slug === member.user.slug)) {
       continue;
     }
@@ -96,6 +102,7 @@ export async function listRiders(): Promise<Rider[]> {
 
   if (
     session &&
+    session.kind !== "admin" &&
     !seen.has(session.id) &&
     !riders.some((rider) => rider.slug === session.slug)
   ) {

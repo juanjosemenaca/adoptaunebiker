@@ -1,4 +1,5 @@
 export type Role = "mentor" | "ebiker";
+export type AccountKind = "admin" | "user";
 export type Discipline = "mtb" | "carretera" | "gravel";
 
 export type Rider = {
@@ -30,6 +31,7 @@ export type SessionUser = Pick<
   | "lookingFor"
 > & {
   email?: string;
+  kind?: AccountKind;
 };
 
 export type BondStatus = "pending" | "accepted" | "declined";
