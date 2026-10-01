@@ -8,6 +8,9 @@ export const paths = {
   entrar: "/entrar",
   intranet: "/intranet",
   admin: "/admin",
+  adminMembers: "/admin/miembros",
+  adminMeetups: "/admin/quedadas",
+  adminRequests: "/admin/solicitudes",
   explorar: "/intranet/explorar",
   cuenta: "/intranet/cuenta",
   rider: (slug: string) => `/intranet/rider/${slug}`,
@@ -33,10 +36,32 @@ export function hrefs(locale: string) {
     entrar: `${base}/entrar`,
     intranet: `${base}/intranet`,
     admin: `${base}/admin`,
+    adminMembers: `${base}/admin/miembros`,
+    adminMeetups: `${base}/admin/quedadas`,
+    adminRequests: `${base}/admin/solicitudes`,
     explorar: `${base}/intranet/explorar`,
     cuenta: `${base}/intranet/cuenta`,
     rider: (slug: string) => `${base}/intranet/rider/${slug}`,
   };
+}
+
+export function adminNav(locale: string) {
+  const links = hrefs(locale);
+  return [
+    { href: links.admin, key: "controlPanel" as const },
+    { href: links.adminMembers, key: "members" as const },
+    { href: links.adminMeetups, key: "meetups" as const },
+    { href: links.adminRequests, key: "requests" as const },
+  ];
+}
+
+export function intranetNav(locale: string) {
+  const links = hrefs(locale);
+  return [
+    { href: links.intranet, key: "panel" as const },
+    { href: links.explorar, key: "peloton" as const },
+    { href: links.cuenta, key: "account" as const },
+  ];
 }
 
 export function anchors() {

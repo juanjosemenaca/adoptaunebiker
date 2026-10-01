@@ -51,7 +51,7 @@ export function LanguageSwitch({
     <div ref={root} className="relative">
       <button
         type="button"
-        className="inline-flex h-10 items-center gap-2 border border-line px-2.5 text-bone"
+        className="inline-flex h-10 min-w-[5.75rem] items-center justify-center gap-2 border border-line px-3 text-bone"
         aria-expanded={open}
         aria-controls={menuId}
         aria-haspopup="menu"

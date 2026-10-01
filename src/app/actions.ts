@@ -8,7 +8,6 @@ import {
   adminSession,
   demoUserByEmail,
   hashPassword,
-  isAccountKind,
   isAdminEmail,
   isEmail,
   normalizeEmail,
@@ -104,35 +103,27 @@ export async function joinCommunity(formData: FormData) {
 export async function loginCommunity(formData: FormData) {
   const email = normalizeEmail(String(formData.get("email") ?? ""));
   const password = String(formData.get("password") ?? "");
-  const kindRaw = String(formData.get("kind") ?? "");
   const locale = localeFromForm(formData);
   const t = getDictionary(locale);
   const links = hrefs(locale);
   const requested = String(formData.get("next") ?? "");
 
-  if (!isAccountKind(kindRaw)) {
-    return { error: t.errors.kind };
-  }
   if (!isEmail(email) || password.length < 1) {
     return { error: t.errors.loginEmpty };
   }
 
   const passwordOk = hashPassword(password) === hashPassword(DEMO_PASSWORD);
 
-  if (kindRaw === "admin") {
-    if (isAdminEmail(email) && passwordOk) {
-      const store = await cookies();
-      store.set(SESSION_COOKIE, encodeCookie(adminSession()), cookieOptions);
-      revalidateCommunity();
-      redirect(
-        requested.includes("/admin") ? safeIntranetPath(requested, locale) : links.admin,
-      );
-    }
-    return { error: t.errors.kindMismatch };
-  }
-
   if (isAdminEmail(email)) {
-    return { error: t.errors.kindMismatch };
+    if (!passwordOk) {
+      return { error: t.errors.loginBad };
+    }
+    const store = await cookies();
+    store.set(SESSION_COOKIE, encodeCookie(adminSession()), cookieOptions);
+    revalidateCommunity();
+    redirect(
+      requested.includes("/admin") ? safeIntranetPath(requested, locale) : links.admin,
+    );
   }
 
   const demo = demoUserByEmail(email);
@@ -152,19 +143,18 @@ export async function loginCommunity(formData: FormData) {
   if (!member || member.passwordHash !== hashPassword(password)) {
     return { error: t.errors.loginBad };
   }
-  if (member.user.kind === "admin") {
-    return { error: t.errors.kindMismatch };
-  }
 
   const store = await cookies();
-  store.set(
-    SESSION_COOKIE,
-    encodeCookie({ ...member.user, kind: "user" as const }),
-    cookieOptions,
-  );
+  store.set(SESSION_COOKIE, encodeCookie(member.user), cookieOptions);
   revalidateCommunity();
   redirect(
-    requested.includes("/intranet") ? safeIntranetPath(requested, locale) : links.intranet,
+    member.user.kind === "admin"
+      ? requested.includes("/admin")
+        ? safeIntranetPath(requested, locale)
+        : links.admin
+      : requested.includes("/intranet")
+        ? safeIntranetPath(requested, locale)
+        : links.intranet,
   );
 }
 

@@ -44,21 +44,6 @@ export function SiteFooter({
                 </Link>
               ))
             : null}
-          {variant === "intranet" ? (
-            <>
-              <Link href={links.explorar} className="hover:text-bone">
-                {t.nav.peloton}
-              </Link>
-              <Link href={links.cuenta} className="hover:text-bone">
-                {t.nav.account}
-              </Link>
-            </>
-          ) : null}
-          {variant === "admin" ? (
-            <Link href={links.admin} className="hover:text-bone">
-              {t.nav.requests}
-            </Link>
-          ) : null}
           <Link
             href={variant === "public" ? links.entrar : links.home}
             className="hover:text-bone"

@@ -59,7 +59,10 @@ export function NavBar({
       return id === "inicio" && hash === "" && (pathname === home || pathname === `${home}/`);
     }
     if (href === home) return pathname === home || pathname === `${home}/`;
-    if (href === `${home}/intranet` || href === `${home}/admin` || href === `${home}/entrar`) {
+    if (href === `${home}/admin`) {
+      return pathname === href || pathname === `${href}/`;
+    }
+    if (href === `${home}/intranet` || href === `${home}/entrar`) {
       return pathname === href || pathname.startsWith(`${href}/`);
     }
     return pathname === href || pathname.startsWith(`${href}/`);

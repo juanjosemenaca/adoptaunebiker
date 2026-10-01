@@ -27,27 +27,6 @@ export function LoginForm({
     <form action={action} className="space-y-5">
       <input type="hidden" name="next" value={next} />
       <input type="hidden" name="locale" value={locale} />
-      <fieldset>
-        <legend className="text-[10px] uppercase tracking-[0.18em] text-mist">
-          {t.login.kind}
-        </legend>
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
-          <label className="flex cursor-pointer flex-col border border-line bg-rubber p-4 has-[:checked]:border-sodium">
-            <span className="flex items-center gap-2 text-sm font-semibold text-bone">
-              <input type="radio" name="kind" value="user" required defaultChecked />
-              {t.login.user}
-            </span>
-            <span className="mt-2 text-sm leading-6 text-mist">{t.login.userHint}</span>
-          </label>
-          <label className="flex cursor-pointer flex-col border border-line bg-rubber p-4 has-[:checked]:border-sodium">
-            <span className="flex items-center gap-2 text-sm font-semibold text-bone">
-              <input type="radio" name="kind" value="admin" />
-              {t.login.admin}
-            </span>
-            <span className="mt-2 text-sm leading-6 text-mist">{t.login.adminHint}</span>
-          </label>
-        </div>
-      </fieldset>
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
         {t.forms.email}
         <input
