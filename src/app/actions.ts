@@ -90,7 +90,6 @@ export async function joinCommunity(formData: FormData) {
     return { error: t.errors.send };
   }
 
-  revalidateCommunity();
   return { ok: true as const };
 }
 

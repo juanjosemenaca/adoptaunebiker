@@ -285,7 +285,7 @@ export const de: Dictionary = {
     sending: "Senden…",
     ask: "Adoption anfragen",
     sent: "Anfrage gesendet. Wenn {name} zustimmt, bleibt die Verbindung offen.",
-    requestOk: "Wir haben deine Aufnahme-Anfrage an den Administrator geschickt. Die Antwort kommt per E-Mail.",
+    requestOk: "Wir haben deine Aufnahme-Anfrage erhalten. Der Administrator prüft sie und antwortet per E-Mail.",
   },
   intranet: {
     kicker: "Intranet",

@@ -80,16 +80,21 @@ async function writeLocal(request: SignupRequest) {
 export async function listSignupRequests(): Promise<SignupRequest[]> {
   if (hasSupabaseEnv()) {
     const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("signup_requests")
-      .select(
-        "id, created_at, name, email, city, role, discipline, bike, bio, looking_for, locale",
-      )
-      .eq("status", "pending")
-      .order("created_at", { ascending: false });
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (user) {
+      const { data, error } = await supabase
+        .from("signup_requests")
+        .select(
+          "id, created_at, name, email, city, role, discipline, bike, bio, looking_for, locale",
+        )
+        .eq("status", "pending")
+        .order("created_at", { ascending: false });
 
-    if (!error && data) {
-      return data.map((row) => toRequest(row as SignupRow));
+      if (!error && data) {
+        return data.map((row) => toRequest(row as SignupRow));
+      }
     }
   }
   const items = await readLocal();
@@ -97,7 +102,22 @@ export async function listSignupRequests(): Promise<SignupRequest[]> {
 }
 
 export async function findSignupByEmail(email: string) {
-  const items = await listSignupRequests();
+  if (hasSupabaseEnv()) {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("signup_requests")
+      .select(
+        "id, created_at, name, email, city, role, discipline, bike, bio, looking_for, locale",
+      )
+      .eq("email", email)
+      .eq("status", "pending")
+      .maybeSingle();
+
+    if (!error && data) {
+      return toRequest(data as SignupRow);
+    }
+  }
+  const items = await readLocal();
   return items.find((item) => item.email === email) ?? null;
 }
 
@@ -158,6 +178,6 @@ export function formatSignupMessage(request: SignupRequest) {
     `Modalidad: ${request.discipline}`,
     `Bici: ${request.bike || "—"}`,
     `Cómo sale: ${request.bio || "—"}`,
-    `Qué busca: ${request.lookingFor}`,
+    `Qué busca: ${request.lookingFor || "—"}`,
   ].join("\n");
 }

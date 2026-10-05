@@ -285,7 +285,7 @@ export const es: Dictionary = {
     sending: "Enviando…",
     ask: "Pedir adopción",
     sent: "Petición enviada. Si {name} acepta, el vínculo queda abierto.",
-    requestOk: "Hemos enviado tu solicitud de alta al administrador. Te responderá por correo.",
+    requestOk: "Hemos recibido tu solicitud de alta. El administrador la revisará y te responderá por correo.",
   },
   intranet: {
     kicker: "Intranet",

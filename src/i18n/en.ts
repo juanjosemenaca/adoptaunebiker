@@ -285,7 +285,7 @@ export const en: Dictionary = {
     sending: "Sending…",
     ask: "Ask to be adopted",
     sent: "Request sent. If {name} accepts, the bond stays open.",
-    requestOk: "We have sent your join request to the administrator. They will reply by email.",
+    requestOk: "We have received your join request. An administrator will review it and reply by email.",
   },
   intranet: {
     kicker: "Intranet",

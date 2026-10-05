@@ -285,7 +285,7 @@ export const ca: Dictionary = {
     sending: "Enviant…",
     ask: "Demanar adopció",
     sent: "Petició enviada. Si {name} accepta, el vincle queda obert.",
-    requestOk: "Hem enviat la teva sol·licitud d’alta a l’administrador. Et respondrà per correu.",
+    requestOk: "Hem rebut la teva sol·licitud d’alta. L’administrador la revisarà i et respondrà per correu.",
   },
   intranet: {
     kicker: "Intranet",
