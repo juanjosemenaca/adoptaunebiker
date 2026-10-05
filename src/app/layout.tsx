@@ -7,14 +7,14 @@ import { defaultLocale, htmlLang, isLocale } from "@/i18n/config";
 import "./globals.css";
 
 const display = Oswald({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   variable: "--font-display",
   weight: "700",
   display: "swap",
 });
 
 const body = Figtree({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   variable: "--font-body",
   display: "swap",
 });
@@ -32,6 +32,7 @@ export const metadata: Metadata = {
   },
   description:
     "Comunidad ciclista para encontrar compañeros de salida. Principiantes y veteranos, e-bike o bici convencional, en carretera, MTB y gravel.",
+  applicationName: "Adopta un eBiker",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://adoptaunebiker.com",
   ),
@@ -41,6 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_ES",
+    alternateLocale: ["ca_ES", "en_GB", "fr_FR", "de_DE"],
     url: "https://adoptaunebiker.com",
     siteName: "Adopta un eBiker",
     images: [{ url: "/logo.png", width: 852, height: 456, alt: "Adopta un eBiker" }],

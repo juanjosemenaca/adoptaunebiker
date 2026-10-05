@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { defaultLocale, isLocale, ogLocale, type Locale } from "@/i18n/config";
+import { defaultLocale, isLocale, locales, ogLocale, type Locale } from "@/i18n/config";
 import { languageAlternates, localePath } from "@/lib/site";
 
 const noIndex: Metadata["robots"] = {
@@ -39,6 +39,7 @@ export function publicMetadata({
     openGraph: {
       type: "website",
       locale: ogLocale[lang],
+      alternateLocale: locales.filter((item) => item !== lang).map((item) => ogLocale[item]),
       url,
       siteName: "Adopta un eBiker",
       title,

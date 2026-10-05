@@ -1,8 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { defaultLocale, isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hrefs } from "@/lib/paths";
+import { privateMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = privateMetadata("No está");
 
 export default async function NotFound() {
   const cookie = (await cookies()).get("NEXT_LOCALE")?.value;

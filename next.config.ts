@@ -3,6 +3,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.adoptaunebiker.com" }],
+        destination: "https://adoptaunebiker.com/:path*",
+        permanent: true,
+      },
       { source: "/unirse", destination: "/es?seccion=crear-plaza", permanent: true },
       { source: "/cuenta", destination: "/es/intranet/cuenta", permanent: true },
       { source: "/explorar", destination: "/es/intranet/explorar", permanent: true },
