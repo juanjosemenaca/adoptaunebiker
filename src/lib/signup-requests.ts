@@ -3,7 +3,12 @@ import path from "node:path";
 import { hasSupabaseEnv, supabasePublishableKey, supabaseUrl } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 import { isDiscipline } from "@/lib/labels";
-import type { Discipline, Role } from "@/lib/types";
+import {
+  isSignupInboxStatus,
+  type Discipline,
+  type Role,
+  type SignupInboxStatus,
+} from "@/lib/types";
 
 export type SignupRequest = {
   id: string;
@@ -17,6 +22,7 @@ export type SignupRequest = {
   bio: string;
   lookingFor: string;
   locale: string;
+  inboxStatus: SignupInboxStatus;
 };
 
 type SignupRow = {
@@ -31,10 +37,18 @@ type SignupRow = {
   bio: string | null;
   looking_for: string | null;
   locale: string;
+  inbox_status?: string | null;
 };
 
 const dataDir = path.join(process.cwd(), ".data");
 const dataFile = path.join(dataDir, "solicitudes.json");
+const selectBase =
+  "id, created_at, name, email, city, role, discipline, bike, bio, looking_for, locale";
+const selectWithInbox = `${selectBase}, inbox_status`;
+
+function parseInboxStatus(value: unknown): SignupInboxStatus {
+  return isSignupInboxStatus(String(value)) ? (value as SignupInboxStatus) : "unread";
+}
 
 function toRequest(row: SignupRow): SignupRequest {
   return {
@@ -49,6 +63,7 @@ function toRequest(row: SignupRow): SignupRequest {
     bio: row.bio ?? "",
     lookingFor: row.looking_for ?? "",
     locale: row.locale,
+    inboxStatus: parseInboxStatus(row.inbox_status),
   };
 }
 
@@ -60,49 +75,136 @@ function isMissingTable(error: { code?: string; message?: string }) {
   );
 }
 
+function isMissingInboxColumn(error: { code?: string; message?: string }) {
+  return error.code === "PGRST204" || Boolean(error.message?.includes("inbox_status"));
+}
+
 async function readLocal(): Promise<SignupRequest[]> {
   try {
     const raw = await readFile(dataFile, "utf8");
-    const parsed = JSON.parse(raw) as SignupRequest[];
-    return Array.isArray(parsed) ? parsed : [];
+    const parsed = JSON.parse(raw) as Array<Partial<SignupRequest>>;
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map((item) => ({
+      id: String(item.id ?? crypto.randomUUID()),
+      createdAt: String(item.createdAt ?? new Date().toISOString()),
+      name: String(item.name ?? ""),
+      email: String(item.email ?? ""),
+      city: String(item.city ?? ""),
+      role: item.role === "ebiker" ? "ebiker" : "mentor",
+      discipline: isDiscipline(String(item.discipline ?? ""))
+        ? (item.discipline as Discipline)
+        : "carretera",
+      bike: String(item.bike ?? ""),
+      bio: String(item.bio ?? ""),
+      lookingFor: String(item.lookingFor ?? ""),
+      locale: String(item.locale ?? "es"),
+      inboxStatus: parseInboxStatus(item.inboxStatus),
+    }));
   } catch {
     return [];
   }
 }
 
+async function writeLocalList(items: SignupRequest[]) {
+  await mkdir(dataDir, { recursive: true });
+  await writeFile(dataFile, JSON.stringify(items, null, 2), "utf8");
+}
+
 async function writeLocal(request: SignupRequest) {
   const items = await readLocal();
-  if (items.some((item) => item.email === request.email)) {
+  if (items.some((item) => item.email === request.email && item.inboxStatus !== "rejected")) {
     const duplicate = new Error("duplicate");
     duplicate.name = "SignupExists";
     throw duplicate;
   }
-  await mkdir(dataDir, { recursive: true });
-  await writeFile(dataFile, JSON.stringify([request, ...items], null, 2), "utf8");
+  await writeLocalList([request, ...items]);
+}
+
+async function supabaseUserClient() {
+  if (!hasSupabaseEnv()) return null;
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+  return supabase;
+}
+
+async function fetchSignupRows(
+  supabase: NonNullable<Awaited<ReturnType<typeof supabaseUserClient>>>,
+) {
+  const withInbox = await supabase
+    .from("signup_requests")
+    .select(selectWithInbox)
+    .order("created_at", { ascending: false });
+  if (!withInbox.error && withInbox.data) return withInbox.data as SignupRow[];
+  if (withInbox.error && isMissingInboxColumn(withInbox.error)) {
+    const without = await supabase
+      .from("signup_requests")
+      .select(selectBase)
+      .order("created_at", { ascending: false });
+    if (!without.error && without.data) return without.data as SignupRow[];
+  }
+  return null;
 }
 
 export async function listSignupRequests(): Promise<SignupRequest[]> {
-  if (hasSupabaseEnv()) {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (user) {
-      const { data, error } = await supabase
-        .from("signup_requests")
-        .select(
-          "id, created_at, name, email, city, role, discipline, bike, bio, looking_for, locale",
-        )
-        .eq("status", "pending")
-        .order("created_at", { ascending: false });
-
-      if (!error && data) {
-        return data.map((row) => toRequest(row as SignupRow));
-      }
-    }
+  const supabase = await supabaseUserClient();
+  if (supabase) {
+    const rows = await fetchSignupRows(supabase);
+    if (rows) return rows.map((row) => toRequest(row));
   }
   const items = await readLocal();
   return [...items].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+export async function getSignupRequest(id: string): Promise<SignupRequest | null> {
+  const items = await listSignupRequests();
+  return items.find((item) => item.id === id) ?? null;
+}
+
+export async function updateSignupInboxStatus(id: string, status: SignupInboxStatus) {
+  const supabase = await supabaseUserClient();
+  if (supabase) {
+    const { error } = await supabase
+      .from("signup_requests")
+      .update({ inbox_status: status })
+      .eq("id", id);
+    if (error) throw error;
+    return;
+  }
+  const items = await readLocal();
+  const next = items.map((item) => (item.id === id ? { ...item, inboxStatus: status } : item));
+  await writeLocalList(next);
+}
+
+export async function removeSignupRequest(id: string) {
+  const supabase = await supabaseUserClient();
+  if (supabase) {
+    const { error } = await supabase.from("signup_requests").delete().eq("id", id);
+    if (error) throw error;
+    return;
+  }
+  const items = await readLocal();
+  await writeLocalList(items.filter((item) => item.id !== id));
+}
+
+export async function markSignupRequestRead(id: string) {
+  const item = await getSignupRequest(id);
+  if (!item) return item;
+  const nextStatus =
+    item.inboxStatus === "unread"
+      ? "read"
+      : item.inboxStatus === "read"
+        ? "in_analysis"
+        : null;
+  if (!nextStatus) return item;
+  try {
+    await updateSignupInboxStatus(id, nextStatus);
+    return { ...item, inboxStatus: nextStatus };
+  } catch {
+    return item;
+  }
 }
 
 export async function findSignupByEmail(email: string) {
@@ -117,8 +219,8 @@ export async function saveSignupRequest(request: {
   role: Role;
   discipline: Discipline;
   bike: string;
-  bio: string;
   lookingFor: string;
+  bio: string;
   locale: string;
 }) {
   if (hasSupabaseEnv()) {
@@ -165,6 +267,7 @@ export async function saveSignupRequest(request: {
   await writeLocal({
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
+    inboxStatus: "unread",
     ...request,
   });
 }

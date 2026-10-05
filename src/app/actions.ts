@@ -15,7 +15,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { defaultLocale, isLocale } from "@/i18n/config";
 import { isDiscipline } from "@/lib/labels";
 import { hrefs, loginHref, safeIntranetPath } from "@/lib/paths";
-import { findSignupByEmail, saveSignupRequest } from "@/lib/signup-requests";
+import { findSignupByEmail, removeSignupRequest, saveSignupRequest, updateSignupInboxStatus } from "@/lib/signup-requests";
 import {
   BONDS_COOKIE,
   SESSION_COOKIE,
@@ -226,4 +226,46 @@ export async function respondBond(formData: FormData) {
   const store = await cookies();
   store.set(BONDS_COOKIE, encodeCookie(next), cookieOptions);
   revalidateCommunity();
+}
+
+export async function rejectSignupRequestAction(formData: FormData) {
+  const locale = localeFromForm(formData);
+  const t = getDictionary(locale);
+  const session = await getSession();
+  if (!session || !isAdmin(session)) {
+    redirect(loginHref(locale, hrefs(locale).admin));
+  }
+
+  const id = String(formData.get("id") ?? "");
+  if (!id) return { error: t.admin.rejectError };
+
+  try {
+    await updateSignupInboxStatus(id, "rejected");
+  } catch (error) {
+    console.error("[rejectSignupRequestAction]", error);
+    return { error: t.admin.rejectError };
+  }
+  revalidateCommunity();
+  redirect(hrefs(locale).adminRequest(id));
+}
+
+export async function deleteSignupRequestAction(formData: FormData) {
+  const locale = localeFromForm(formData);
+  const t = getDictionary(locale);
+  const session = await getSession();
+  if (!session || !isAdmin(session)) {
+    redirect(loginHref(locale, hrefs(locale).admin));
+  }
+
+  const id = String(formData.get("id") ?? "");
+  if (!id) return { error: t.admin.deleteError };
+
+  try {
+    await removeSignupRequest(id);
+  } catch (error) {
+    console.error("[deleteSignupRequestAction]", error);
+    return { error: t.admin.deleteError };
+  }
+  revalidateCommunity();
+  redirect(hrefs(locale).adminRequests);
 }

@@ -1,6 +1,24 @@
 export type Role = "mentor" | "ebiker";
 export type AccountKind = "admin" | "user";
 export type Discipline = "mtb" | "carretera" | "gravel";
+export type SignupInboxStatus =
+  | "unread"
+  | "read"
+  | "in_analysis"
+  | "rejected"
+  | "accepted";
+
+export const SIGNUP_INBOX_STATUSES: SignupInboxStatus[] = [
+  "unread",
+  "read",
+  "in_analysis",
+  "rejected",
+  "accepted",
+];
+
+export function isSignupInboxStatus(value: string): value is SignupInboxStatus {
+  return SIGNUP_INBOX_STATUSES.includes(value as SignupInboxStatus);
+}
 
 export type Rider = {
   id: string;

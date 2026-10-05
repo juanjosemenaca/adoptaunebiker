@@ -13,12 +13,13 @@ export default async function AdminPanelPage({
   const t = getDictionary(locale);
   const links = hrefs(locale);
   const [requests, riders] = await Promise.all([listSignupRequests(), listRiders()]);
+  const unread = requests.filter((item) => item.inboxStatus === "unread").length;
 
   const cards = [
     {
       href: links.adminRequests,
       label: t.nav.requests,
-      count: requests.length,
+      count: unread,
       lead: t.admin.lead,
     },
     {
