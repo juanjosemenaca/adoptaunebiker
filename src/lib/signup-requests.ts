@@ -189,10 +189,10 @@ export async function removeSignupRequest(id: string) {
   await writeLocalList(items.filter((item) => item.id !== id));
 }
 
-export async function markSignupRequestRead(id: string) {
+export async function markSignupRequestRead(id: string): Promise<SignupRequest | null> {
   const item = await getSignupRequest(id);
   if (!item) return item;
-  const nextStatus =
+  const nextStatus: SignupInboxStatus | null =
     item.inboxStatus === "unread"
       ? "read"
       : item.inboxStatus === "read"
