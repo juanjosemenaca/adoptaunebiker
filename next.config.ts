@@ -1,31 +1,6 @@
 import type { NextConfig } from "next";
 
-const supabaseUrlForBuild =
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL ?? "";
-const supabaseKeyForBuild =
-  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
-  process.env.SUPABASE_PUBLISHABLE_KEY ??
-  process.env.SUPABASE_ANON_KEY ??
-  "";
-
-console.info(
-  "[adopta] next.config env",
-  JSON.stringify({
-    hasUrl: Boolean(supabaseUrlForBuild.trim()),
-    hasKey: Boolean(supabaseKeyForBuild.trim()),
-  }),
-);
-
 const nextConfig: NextConfig = {
-  ...(supabaseUrlForBuild.trim() && supabaseKeyForBuild.trim()
-    ? {
-        env: {
-          NEXT_PUBLIC_SUPABASE_URL: supabaseUrlForBuild,
-          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: supabaseKeyForBuild,
-        },
-      }
-    : {}),
   async redirects() {
     return [
       {
