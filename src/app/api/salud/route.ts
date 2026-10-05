@@ -16,10 +16,6 @@ export async function GET() {
     host = "invalid";
   }
 
-  const envNames = Object.keys(process.env)
-    .filter((name) => /supabase|site_url/i.test(name))
-    .sort();
-
   return Response.json(
     {
       vercel: Boolean(process.env.VERCEL),
@@ -36,7 +32,15 @@ export async function GET() {
             ? "other"
             : "missing",
       blockedErp: url.includes("grasrjavkbeboynacvzp"),
-      envNames,
+      present: {
+        NEXT_PUBLIC_SUPABASE_URL: Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL),
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: Boolean(
+          process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+        ),
+        NEXT_PUBLIC_SITE_URL: Boolean(process.env.NEXT_PUBLIC_SITE_URL),
+        SUPABASE_URL: Boolean(process.env.SUPABASE_URL),
+        SUPABASE_PUBLISHABLE_KEY: Boolean(process.env.SUPABASE_PUBLISHABLE_KEY),
+      },
     },
     { headers: { "Cache-Control": "no-store" } },
   );
