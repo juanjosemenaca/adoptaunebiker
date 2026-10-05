@@ -246,6 +246,7 @@ export const en: Dictionary = {
     rejectConfirm: "Reject this request? No email is sent.",
     requestLocale: "Language",
     emptyFilter: "No requests with that status.",
+    statusError: "The status could not be changed.",
     rejectError: "The request could not be rejected.",
     deleteError: "The request could not be deleted.",
   },

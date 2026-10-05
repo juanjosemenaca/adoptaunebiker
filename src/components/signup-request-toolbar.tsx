@@ -1,8 +1,13 @@
 "use client";
 
 import { useActionState } from "react";
-import { deleteSignupRequestAction, rejectSignupRequestAction } from "@/app/actions";
-import type { SignupInboxStatus } from "@/lib/types";
+import {
+  deleteSignupRequestAction,
+  rejectSignupRequestAction,
+  setSignupWorkflowStatus,
+} from "@/app/actions";
+import { inboxStatusLabel } from "@/lib/signup-inbox";
+import { SIGNUP_WORKFLOW_STATUSES, type SignupInboxStatus } from "@/lib/types";
 import type { Dictionary } from "@/i18n/types";
 
 type State = { error?: string };
@@ -18,6 +23,13 @@ export function SignupRequestToolbar({
   status: SignupInboxStatus;
   t: Dictionary;
 }) {
+  const [statusState, statusAction, statusPending] = useActionState(
+    async (_prev: State, formData: FormData): Promise<State> => {
+      const result = await setSignupWorkflowStatus(formData);
+      return result ?? {};
+    },
+    {},
+  );
   const [rejectState, rejectAction, rejectPending] = useActionState(
     async (_prev: State, formData: FormData): Promise<State> => {
       const result = await rejectSignupRequestAction(formData);
@@ -34,10 +46,35 @@ export function SignupRequestToolbar({
   );
 
   const closed = status === "rejected" || status === "accepted";
-  const busy = rejectPending || deletePending;
+  const busy = statusPending || rejectPending || deletePending;
 
   return (
-    <div className="mt-10 space-y-4">
+    <div className="mt-10 space-y-6">
+      <form action={statusAction} className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <input type="hidden" name="id" value={id} />
+        <input type="hidden" name="locale" value={locale} />
+        {SIGNUP_WORKFLOW_STATUSES.map((value) => {
+          const active = status === value;
+          return (
+            <button
+              key={value}
+              type="submit"
+              name="status"
+              value={value}
+              disabled={closed || busy || active}
+              className={`min-h-11 px-4 text-xs font-semibold uppercase tracking-[0.16em] disabled:cursor-not-allowed ${
+                active
+                  ? "bg-sodium text-bone"
+                  : "border border-line text-bone disabled:opacity-50"
+              }`}
+            >
+              {inboxStatusLabel(t, value)}
+            </button>
+          );
+        })}
+      </form>
+      {statusState.error ? <p className="text-sm text-sodium">{statusState.error}</p> : null}
+
       <section className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         <button
           type="button"

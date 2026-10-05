@@ -16,8 +16,16 @@ export const SIGNUP_INBOX_STATUSES: SignupInboxStatus[] = [
   "accepted",
 ];
 
+export const SIGNUP_WORKFLOW_STATUSES = ["unread", "read", "in_analysis"] as const;
+
+export type SignupWorkflowStatus = (typeof SIGNUP_WORKFLOW_STATUSES)[number];
+
 export function isSignupInboxStatus(value: string): value is SignupInboxStatus {
   return SIGNUP_INBOX_STATUSES.includes(value as SignupInboxStatus);
+}
+
+export function isSignupWorkflowStatus(value: string): value is SignupWorkflowStatus {
+  return SIGNUP_WORKFLOW_STATUSES.includes(value as SignupWorkflowStatus);
 }
 
 export type Rider = {

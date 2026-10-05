@@ -155,6 +155,7 @@ export type Dictionary = {
     rejectConfirm: string;
     requestLocale: string;
     emptyFilter: string;
+    statusError: string;
     rejectError: string;
     deleteError: string;
   };

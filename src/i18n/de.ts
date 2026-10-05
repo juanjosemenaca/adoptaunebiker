@@ -246,6 +246,7 @@ export const de: Dictionary = {
     rejectConfirm: "Diese Anfrage ablehnen? Es wird keine E-Mail gesendet.",
     requestLocale: "Sprache",
     emptyFilter: "Keine Anfragen mit diesem Status.",
+    statusError: "Der Status konnte nicht geändert werden.",
     rejectError: "Die Anfrage konnte nicht abgelehnt werden.",
     deleteError: "Die Anfrage konnte nicht gelöscht werden.",
   },

@@ -228,11 +228,7 @@ export async function markSignupRequestRead(id: string): Promise<SignupRequest |
     : ((await readLocal()).find((row) => row.id === id) ?? null);
   if (!item) return item;
   const nextStatus: SignupInboxStatus | null =
-    item.inboxStatus === "unread"
-      ? "read"
-      : item.inboxStatus === "read"
-        ? "in_analysis"
-        : null;
+    item.inboxStatus === "unread" ? "read" : null;
   if (!nextStatus) return item;
   try {
     if (supabase) {

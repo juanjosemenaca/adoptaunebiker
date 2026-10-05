@@ -246,6 +246,7 @@ export const fr: Dictionary = {
     rejectConfirm: "Refuser cette demande ? Aucun e-mail n’est envoyé.",
     requestLocale: "Langue",
     emptyFilter: "Aucune demande avec cet état.",
+    statusError: "Impossible de changer l’état.",
     rejectError: "Impossible de refuser la demande.",
     deleteError: "Impossible de supprimer la demande.",
   },

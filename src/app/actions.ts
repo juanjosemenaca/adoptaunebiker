@@ -30,6 +30,7 @@ import {
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 import type { Bond, BondStatus, Role } from "@/lib/types";
+import { isSignupWorkflowStatus } from "@/lib/types";
 
 function localeFromForm(formData: FormData) {
   const value = String(formData.get("locale") ?? "");
@@ -232,6 +233,28 @@ export async function respondBond(formData: FormData) {
   const store = await cookies();
   store.set(BONDS_COOKIE, encodeCookie(next), cookieOptions);
   revalidateCommunity();
+}
+
+export async function setSignupWorkflowStatus(formData: FormData) {
+  const locale = localeFromForm(formData);
+  const t = getDictionary(locale);
+  const session = await getSession();
+  if (!session || !isAdmin(session)) {
+    redirect(loginHref(locale, hrefs(locale).admin));
+  }
+
+  const id = String(formData.get("id") ?? "");
+  const status = String(formData.get("status") ?? "");
+  if (!id || !isSignupWorkflowStatus(status)) return { error: t.admin.statusError };
+
+  try {
+    await updateSignupInboxStatus(id, status);
+  } catch (error) {
+    console.error("[setSignupWorkflowStatus]", error);
+    return { error: t.admin.statusError };
+  }
+  revalidateSignupInbox(locale);
+  redirect(hrefs(locale).adminRequest(id));
 }
 
 export async function rejectSignupRequestAction(formData: FormData) {

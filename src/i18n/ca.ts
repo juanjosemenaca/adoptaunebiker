@@ -246,6 +246,7 @@ export const ca: Dictionary = {
     rejectConfirm: "Vols rebutjar aquesta sol·licitud? No s’envia cap correu.",
     requestLocale: "Idioma",
     emptyFilter: "No hi ha sol·licituds amb aquest estat.",
+    statusError: "No s’ha pogut canviar l’estat.",
     rejectError: "No s’ha pogut rebutjar la sol·licitud.",
     deleteError: "No s’ha pogut eliminar la sol·licitud.",
   },
