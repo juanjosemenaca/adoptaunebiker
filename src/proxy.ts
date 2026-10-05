@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { defaultLocale, isLocale } from "@/i18n/config";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
-import { copyAuthCookies, updateSession } from "@/lib/supabase/proxy";
+import { copyAuthCookies, shouldRefreshAuth, updateSession } from "@/lib/supabase/proxy";
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -18,9 +18,10 @@ export async function proxy(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-adopta-locale", locale);
 
-  const supabaseResponse = hasSupabaseEnv()
-    ? await updateSession(request, requestHeaders)
-    : NextResponse.next({ request: { headers: requestHeaders } });
+  const supabaseResponse =
+    hasSupabaseEnv() && shouldRefreshAuth(request)
+      ? await updateSession(request, requestHeaders)
+      : NextResponse.next({ request: { headers: requestHeaders } });
 
   if (isLocale(first)) {
     supabaseResponse.cookies.set("NEXT_LOCALE", first, {

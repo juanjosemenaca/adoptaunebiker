@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { hasSupabaseEnv, supabasePublishableKey, supabaseUrl } from "@/lib/supabase/env";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthContext } from "@/lib/supabase/auth-context";
 import { isDiscipline } from "@/lib/labels";
 import {
   isSignupInboxStatus,
@@ -9,6 +9,7 @@ import {
   type Role,
   type SignupInboxStatus,
 } from "@/lib/types";
+import { cache } from "react";
 
 export type SignupRequest = {
   id: string;
@@ -121,18 +122,14 @@ async function writeLocal(request: SignupRequest) {
 }
 
 async function supabaseUserClient() {
-  if (!hasSupabaseEnv()) return null;
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return null;
+  const { supabase, user } = await getAuthContext();
+  if (!supabase || !user) return null;
   return supabase;
 }
 
-async function fetchSignupRows(
-  supabase: NonNullable<Awaited<ReturnType<typeof supabaseUserClient>>>,
-) {
+type UserClient = NonNullable<Awaited<ReturnType<typeof supabaseUserClient>>>;
+
+async function fetchSignupRows(supabase: UserClient) {
   const withInbox = await supabase
     .from("signup_requests")
     .select(selectWithInbox)
@@ -148,7 +145,25 @@ async function fetchSignupRows(
   return null;
 }
 
-export async function listSignupRequests(): Promise<SignupRequest[]> {
+async function fetchSignupRow(supabase: UserClient, id: string) {
+  const withInbox = await supabase
+    .from("signup_requests")
+    .select(selectWithInbox)
+    .eq("id", id)
+    .maybeSingle();
+  if (!withInbox.error && withInbox.data) return toRequest(withInbox.data as SignupRow);
+  if (withInbox.error && isMissingInboxColumn(withInbox.error)) {
+    const without = await supabase
+      .from("signup_requests")
+      .select(selectBase)
+      .eq("id", id)
+      .maybeSingle();
+    if (!without.error && without.data) return toRequest(without.data as SignupRow);
+  }
+  return null;
+}
+
+export const listSignupRequests = cache(async (): Promise<SignupRequest[]> => {
   const supabase = await supabaseUserClient();
   if (supabase) {
     const rows = await fetchSignupRows(supabase);
@@ -156,10 +171,27 @@ export async function listSignupRequests(): Promise<SignupRequest[]> {
   }
   const items = await readLocal();
   return [...items].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+});
+
+export async function countUnreadSignupRequests() {
+  const supabase = await supabaseUserClient();
+  if (supabase) {
+    const { count, error } = await supabase
+      .from("signup_requests")
+      .select("id", { count: "exact", head: true })
+      .eq("inbox_status", "unread");
+    if (!error) return count ?? 0;
+  }
+  const items = await listSignupRequests();
+  return items.filter((item) => item.inboxStatus === "unread").length;
 }
 
 export async function getSignupRequest(id: string): Promise<SignupRequest | null> {
-  const items = await listSignupRequests();
+  const supabase = await supabaseUserClient();
+  if (supabase) {
+    return fetchSignupRow(supabase, id);
+  }
+  const items = await readLocal();
   return items.find((item) => item.id === id) ?? null;
 }
 
@@ -190,7 +222,10 @@ export async function removeSignupRequest(id: string) {
 }
 
 export async function markSignupRequestRead(id: string): Promise<SignupRequest | null> {
-  const item = await getSignupRequest(id);
+  const supabase = await supabaseUserClient();
+  const item = supabase
+    ? await fetchSignupRow(supabase, id)
+    : ((await readLocal()).find((row) => row.id === id) ?? null);
   if (!item) return item;
   const nextStatus: SignupInboxStatus | null =
     item.inboxStatus === "unread"
@@ -200,7 +235,15 @@ export async function markSignupRequestRead(id: string): Promise<SignupRequest |
         : null;
   if (!nextStatus) return item;
   try {
-    await updateSignupInboxStatus(id, nextStatus);
+    if (supabase) {
+      const { error } = await supabase
+        .from("signup_requests")
+        .update({ inbox_status: nextStatus })
+        .eq("id", id);
+      if (error) throw error;
+    } else {
+      await updateSignupInboxStatus(id, nextStatus);
+    }
     return { ...item, inboxStatus: nextStatus };
   } catch {
     return item;

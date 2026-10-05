@@ -18,14 +18,14 @@ export function SignupRequestToolbar({
   status: SignupInboxStatus;
   t: Dictionary;
 }) {
-  const [rejectState, rejectAction] = useActionState(
+  const [rejectState, rejectAction, rejectPending] = useActionState(
     async (_prev: State, formData: FormData): Promise<State> => {
       const result = await rejectSignupRequestAction(formData);
       return result ?? {};
     },
     {},
   );
-  const [deleteState, deleteAction] = useActionState(
+  const [deleteState, deleteAction, deletePending] = useActionState(
     async (_prev: State, formData: FormData): Promise<State> => {
       const result = await deleteSignupRequestAction(formData);
       return result ?? {};
@@ -34,6 +34,7 @@ export function SignupRequestToolbar({
   );
 
   const closed = status === "rejected" || status === "accepted";
+  const busy = rejectPending || deletePending;
 
   return (
     <div className="mt-10 space-y-4">
@@ -49,7 +50,7 @@ export function SignupRequestToolbar({
         <form
           action={rejectAction}
           onSubmit={(event) => {
-            if (closed) {
+            if (closed || busy) {
               event.preventDefault();
               return;
             }
@@ -60,15 +61,19 @@ export function SignupRequestToolbar({
           <input type="hidden" name="locale" value={locale} />
           <button
             type="submit"
-            disabled={closed}
+            disabled={closed || busy}
             className="min-h-11 border border-line px-4 text-xs font-semibold uppercase tracking-[0.16em] text-bone disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {t.admin.reject}
+            {rejectPending ? "…" : t.admin.reject}
           </button>
         </form>
         <form
           action={deleteAction}
           onSubmit={(event) => {
+            if (busy) {
+              event.preventDefault();
+              return;
+            }
             if (!window.confirm(t.admin.deleteConfirm)) event.preventDefault();
           }}
         >
@@ -76,9 +81,10 @@ export function SignupRequestToolbar({
           <input type="hidden" name="locale" value={locale} />
           <button
             type="submit"
-            className="min-h-11 border border-sodium px-4 text-xs font-semibold uppercase tracking-[0.16em] text-sodium"
+            disabled={busy}
+            className="min-h-11 border border-sodium px-4 text-xs font-semibold uppercase tracking-[0.16em] text-sodium disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {t.admin.delete}
+            {deletePending ? "…" : t.admin.delete}
           </button>
         </form>
       </section>

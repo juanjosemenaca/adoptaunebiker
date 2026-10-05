@@ -40,6 +40,12 @@ function revalidateCommunity() {
   revalidatePath("/", "layout");
 }
 
+function revalidateSignupInbox(locale: string) {
+  const lang = isLocale(locale) ? locale : defaultLocale;
+  revalidatePath(`/${lang}/admin`);
+  revalidatePath(`/${lang}/admin/solicitudes`);
+}
+
 export async function joinCommunity(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   const email = normalizeEmail(String(formData.get("email") ?? ""));
@@ -245,7 +251,7 @@ export async function rejectSignupRequestAction(formData: FormData) {
     console.error("[rejectSignupRequestAction]", error);
     return { error: t.admin.rejectError };
   }
-  revalidateCommunity();
+  revalidateSignupInbox(locale);
   redirect(hrefs(locale).adminRequest(id));
 }
 
@@ -266,6 +272,6 @@ export async function deleteSignupRequestAction(formData: FormData) {
     console.error("[deleteSignupRequestAction]", error);
     return { error: t.admin.deleteError };
   }
-  revalidateCommunity();
+  revalidateSignupInbox(locale);
   redirect(hrefs(locale).adminRequests);
 }

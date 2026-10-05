@@ -1,10 +1,12 @@
 import { riders } from "@/data/riders";
 import { isAdminEmail } from "@/lib/auth";
 import { isDiscipline } from "@/lib/labels";
+import { getAuthContext } from "@/lib/supabase/auth-context";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 import type { Bond, Rider, SessionUser } from "@/lib/types";
 import { cookies } from "next/headers";
+import { cache } from "react";
 
 export const SESSION_COOKIE = "adopta.session";
 export const BONDS_COOKIE = "adopta.bonds";
@@ -80,18 +82,15 @@ function profileToRider(row: ProfileRow): Rider {
   };
 }
 
-export async function getSession(): Promise<SessionUser | null> {
+export const getSession = cache(async (): Promise<SessionUser | null> => {
   if (!hasSupabaseEnv()) return getLegacyCookieSession();
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (user) {
-    const profile = await getProfileSession(user.id, user.email ?? undefined);
-    if (profile) return profile;
+  const { supabase, user } = await getAuthContext();
+  if (user && supabase) {
+    const { data } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
+    if (data) return profileToSession(data as ProfileRow, user.email ?? undefined);
   }
   return getLegacyCookieSession();
-}
+});
 
 async function getLegacyCookieSession(): Promise<SessionUser | null> {
   const store = await cookies();
@@ -153,12 +152,23 @@ export function sessionToRider(session: SessionUser): Rider {
   };
 }
 
-export async function listCommunityProfiles(): Promise<Rider[]> {
-  if (!hasSupabaseEnv()) return [];
-  const supabase = await createClient();
+export const listCommunityProfiles = cache(async (): Promise<Rider[]> => {
+  const { supabase, user } = await getAuthContext();
+  if (!supabase || !user) return [];
   const { data, error } = await supabase.from("profiles").select("*").eq("kind", "user");
   if (error || !data) return [];
   return data.map((row) => profileToRider(row as ProfileRow));
+});
+
+export async function countCommunityProfiles() {
+  const { supabase, user } = await getAuthContext();
+  if (!supabase || !user) return 0;
+  const { count, error } = await supabase
+    .from("profiles")
+    .select("id", { count: "exact", head: true })
+    .eq("kind", "user");
+  if (error) return 0;
+  return count ?? 0;
 }
 
 export async function emailHasProfile(email: string) {
@@ -173,7 +183,7 @@ export async function emailHasProfile(email: string) {
   return Boolean(data);
 }
 
-export async function listRiders(): Promise<Rider[]> {
+export const listRiders = cache(async (): Promise<Rider[]> => {
   const [session, community] = await Promise.all([getSession(), listCommunityProfiles()]);
   const extras: Rider[] = [];
   const seen = new Set(riders.map((rider) => rider.slug));
@@ -189,7 +199,7 @@ export async function listRiders(): Promise<Rider[]> {
   }
 
   return [...extras, ...riders];
-}
+});
 
 export async function findRider(slug: string): Promise<Rider | null> {
   const all = await listRiders();

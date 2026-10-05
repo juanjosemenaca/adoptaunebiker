@@ -1,8 +1,9 @@
 import Link from "next/link";
+import { riders } from "@/data/riders";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hrefs } from "@/lib/paths";
-import { listRiders } from "@/lib/session";
-import { listSignupRequests } from "@/lib/signup-requests";
+import { countCommunityProfiles } from "@/lib/session";
+import { countUnreadSignupRequests } from "@/lib/signup-requests";
 
 export default async function AdminPanelPage({
   params,
@@ -12,8 +13,10 @@ export default async function AdminPanelPage({
   const { locale } = await params;
   const t = getDictionary(locale);
   const links = hrefs(locale);
-  const [requests, riders] = await Promise.all([listSignupRequests(), listRiders()]);
-  const unread = requests.filter((item) => item.inboxStatus === "unread").length;
+  const [unread, communityCount] = await Promise.all([
+    countUnreadSignupRequests(),
+    countCommunityProfiles(),
+  ]);
 
   const cards = [
     {
@@ -25,7 +28,7 @@ export default async function AdminPanelPage({
     {
       href: links.adminMembers,
       label: t.nav.members,
-      count: riders.length,
+      count: riders.length + communityCount,
       lead: t.admin.membersLead,
     },
     {
