@@ -87,6 +87,7 @@ export async function joinCommunity(formData: FormData) {
     if (error instanceof Error && error.name === "SignupExists") {
       return { error: t.errors.pendingExists };
     }
+    console.error("[joinCommunity]", error);
     return { error: t.errors.send };
   }
 
