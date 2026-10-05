@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { createAnonClient } from "@/lib/supabase/anon";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 import { isDiscipline } from "@/lib/labels";
@@ -53,7 +54,11 @@ function toRequest(row: SignupRow): SignupRequest {
 }
 
 function isMissingTable(error: { code?: string; message?: string }) {
-  return error.code === "PGRST205" || Boolean(error.message?.includes("signup_requests"));
+  return (
+    error.code === "PGRST205" ||
+    Boolean(error.message?.includes("Could not find the table")) ||
+    Boolean(error.message?.includes("schema cache"))
+  );
 }
 
 async function readLocal(): Promise<SignupRequest[]> {
@@ -103,7 +108,7 @@ export async function listSignupRequests(): Promise<SignupRequest[]> {
 
 export async function findSignupByEmail(email: string) {
   if (hasSupabaseEnv()) {
-    const supabase = await createClient();
+    const supabase = createAnonClient();
     const { data, error } = await supabase
       .from("signup_requests")
       .select(
@@ -133,7 +138,7 @@ export async function saveSignupRequest(request: {
   locale: string;
 }) {
   if (hasSupabaseEnv()) {
-    const supabase = await createClient();
+    const supabase = createAnonClient();
     const { error } = await supabase.from("signup_requests").insert({
       name: request.name,
       email: request.email,
@@ -154,7 +159,7 @@ export async function saveSignupRequest(request: {
       throw duplicate;
     }
 
-    if (!isMissingTable(error)) {
+    if (!isMissingTable(error) || process.env.VERCEL) {
       throw error;
     }
   }
