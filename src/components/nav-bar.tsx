@@ -74,7 +74,7 @@ export function NavBar({
         <Link
           key={link.href}
           href={link.href}
-          className={`block px-2 py-2 text-sm tracking-[0.08em] ${
+          className={`flex min-h-11 items-center px-2 py-2 text-sm tracking-[0.08em] ${
             active(link.href) ? "text-sodium" : "text-mist"
           }`}
           onClick={(event) => {
@@ -90,7 +90,7 @@ export function NavBar({
       ))}
       <Link
         href={cta.href}
-        className="mt-2 block bg-sodium px-3 py-2 text-center text-xs font-semibold uppercase tracking-[0.2em] text-bone"
+        className="mt-2 flex min-h-11 items-center justify-center bg-sodium px-3 py-2 text-center text-xs font-semibold uppercase tracking-[0.2em] text-bone"
         onClick={(event) => {
           const id = hashId(cta.href);
           if (!id || !document.getElementById(id)) return;
@@ -129,7 +129,7 @@ export function NavBar({
       )}
       <button
         type="button"
-        className={`grid h-10 w-10 place-items-center border border-line text-bone ${menuOnly ? "" : "xl:hidden"}`}
+        className={`grid h-11 w-11 place-items-center border border-line text-bone ${menuOnly ? "" : "xl:hidden"}`}
         aria-expanded={open}
         aria-label={menuLabel}
         onClick={() => setOpen((value) => !value)}

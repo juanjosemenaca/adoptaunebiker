@@ -39,6 +39,12 @@ export type Dictionary = {
     lead: string;
     ctaIn: string;
     ctaOut: string;
+    offerKicker: string;
+    offerTitle: string;
+    offerLead: string;
+    offerItems: Block[];
+    forWhomTitle: string;
+    forWhom: Block[];
     about: string;
     bridge: string;
     veteranKicker: string;

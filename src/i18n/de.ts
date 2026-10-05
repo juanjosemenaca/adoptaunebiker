@@ -2,9 +2,9 @@ import type { Dictionary } from "@/i18n/types";
 
 export const de: Dictionary = {
   meta: {
-    title: "Adopta un eBiker",
+    title: "Adopta un eBiker · Gruppen für Einsteiger und Veteranen",
     description:
-      "Eine Radsport-Community für Einsteiger und Veteranen, mit E-Bike oder Muskelrad. Straße, MTB und Gravel.",
+      "Radsport-Community, um Leute zum Fahren zu finden. Einsteiger und Veteranen, E-Bike oder Muskelrad, auf Straße, MTB und Gravel. Du fragst um einen Platz; ein Administrator bestätigt ihn.",
   },
   nav: {
     home: "Start",
@@ -56,7 +56,44 @@ export const de: Dictionary = {
     line2: "Teile deine Leidenschaft.",
     lead: "Radfahrer aller Niveaus, Alter und Räder, vereint durch die Lust zu fahren. Wir verbinden Einsteiger mit Menschen, die schon Kilometer in den Beinen haben, mit E-Bike oder Muskelrad, auf Straße, MTB oder Gravel.",
     ctaIn: "Zum Intranet",
-    ctaOut: "Finde deine Gruppe",
+    ctaOut: "Platz anfragen",
+    offerKicker: "Was wir anbieten",
+    offerTitle: "Leute zum Fahren, keine Track-App.",
+    offerLead:
+      "Adopta un eBiker verbindet Radfahrer, die eine Gruppe wollen: Einsteiger und Menschen mit Kilometern in den Beinen. Straße, MTB oder Gravel. E-Bike oder Muskelrad.",
+    offerItems: [
+      {
+        title: "Finde deine Gruppe",
+        body: "Leute in deiner Gegend, in deiner Disziplin, in einem passenden Tempo. Es geht ums Fahren, nicht um Kudos.",
+      },
+      {
+        title: "Adoption unter Radfahrern",
+        body: "Ein Veteran fährt mit. Ein Einsteiger steigt ein. Kein Ranking, kein Palmarès, und niemand bleibt still abgehängt.",
+      },
+      {
+        title: "Jedes Rad",
+        body: "E-Bike oder Muskelrad, egal. Jede Ausfahrt richtet sich nach Strecke, Tempo und Reichweite der Gruppe.",
+      },
+      {
+        title: "Geprüfte Aufnahme",
+        body: "Du schickst eine Anfrage. Ein Administrator bestätigt sie per Mail. Danach gehst du ins Intranet und lernst das Peloton kennen.",
+      },
+    ],
+    forWhomTitle: "Für wen",
+    forWhom: [
+      {
+        title: "Wenn du anfängst",
+        body: "Du bist neu, scheust dich vor Gruppen oder willst längere Touren, ohne Angst, abgehängt zu werden.",
+      },
+      {
+        title: "Wenn du schon Kilometer hast",
+        body: "Du willst die Gruppe öffnen, den Weg zeigen und mit neuen Leuten fahren. Adoptieren heißt begleiten, nicht anführen.",
+      },
+      {
+        title: "Egal welches Rad",
+        body: "Straße, MTB oder Gravel. E-Bike oder analog. Du brauchst nicht dieselbe Maschine. Du brauchst dieselbe Lust rauszufahren.",
+      },
+    ],
     about: "Wer wir sind",
     bridge:
       "Das Rad verbindet uns. Den Weg machen wir zusammen. Es geht nicht darum, zwei Arten des Radsports gegeneinander zu stellen, sondern zu zeigen, dass sie zusammenpassen. Der beste Partner ist nicht der mit demselben Rad, sondern der, der raus will.",

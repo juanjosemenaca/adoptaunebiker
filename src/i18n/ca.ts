@@ -2,9 +2,9 @@ import type { Dictionary } from "@/i18n/types";
 
 export const ca: Dictionary = {
   meta: {
-    title: "Adopta un eBiker",
+    title: "Adopta un eBiker · Grupetes per a principiants i veterans",
     description:
-      "Una comunitat ciclista per a principiants i veterans, amb bici elèctrica o convencional. Carretera, MTB i gravel.",
+      "Comunitat ciclista per trobar companys de sortida. Principiants i veterans, e-bike o bici convencional, en carretera, MTB i gravel. Demanes plaça i un administrador et confirma l’alta.",
   },
   nav: {
     home: "Inici",
@@ -56,7 +56,44 @@ export const ca: Dictionary = {
     line2: "Comparteix la teva passió.",
     lead: "Ciclistes de tots els nivells, edats i bicicletes, units per les ganes de sortir a pedalar. Connectem qui comença amb qui ja porta quilòmetres, amb bici elèctrica o convencional, en carretera, MTB o gravel.",
     ctaIn: "Anar a la intranet",
-    ctaOut: "Troba la teva grupeta",
+    ctaOut: "Demanar plaça",
+    offerKicker: "Què oferim",
+    offerTitle: "Companys de sortida, no una app de tracks.",
+    offerLead:
+      "Adopta un eBiker connecta ciclistes que volen grupeta: qui comença i qui ja porta quilòmetres. En carretera, MTB o gravel. Amb e-bike o bici convencional.",
+    offerItems: [
+      {
+        title: "Troba la teva grupeta",
+        body: "Gent de la teva zona, la teva modalitat i un ritme compatible. L’objectiu és sortir, no sumar kudos.",
+      },
+      {
+        title: "Adopció entre ciclistes",
+        body: "Un veterà acompanya. Un principiant s’hi suma. Sense rànquing, sense palmarès i sense que ningú es quedi enrere sense saber-ho.",
+      },
+      {
+        title: "Totes les bicis",
+        body: "Elèctrica o muscular, igual. Cada sortida s’organitza segons recorregut, ritme i autonomia del grup.",
+      },
+      {
+        title: "Alta revisada",
+        body: "Envia una sol·licitud. Un administrador la confirma per correu. Després entres a la intranet a conèixer el pelotó.",
+      },
+    ],
+    forWhomTitle: "Per a qui és",
+    forWhom: [
+      {
+        title: "Si comences",
+        body: "Acabes d’arribar, et fa respecte unir-te a un grup o vols rutes més llargues sense por de quedar-te enrere.",
+      },
+      {
+        title: "Si ja portes quilòmetres",
+        body: "Et ve de gust obrir la grupeta, ensenyar camí i sortir amb gent nova. Adoptar és acompanyar, no dirigir.",
+      },
+      {
+        title: "Igual quina bici",
+        body: "Carretera, MTB o gravel. E-bike o convencional. No cal la mateixa màquina: calen les mateixes ganes.",
+      },
+    ],
     about: "Qui som",
     bridge:
       "La bicicleta ens uneix. El camí el fem junts. No es tracta d’enfrontar dues maneres d’entendre el ciclisme, sinó de demostrar que poden convivre. El millor company de ruta no és qui porta la teva mateixa bici, sinó qui comparteix les ganes de sortir.",

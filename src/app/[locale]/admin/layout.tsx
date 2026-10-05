@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { AppShell } from "@/components/app-shell";
@@ -5,6 +6,9 @@ import { defaultLocale, isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hrefs, loginHref } from "@/lib/paths";
 import { getSession, isAdmin } from "@/lib/session";
+import { privateMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = privateMetadata("Administración");
 
 export default async function AdminLayout({
   children,

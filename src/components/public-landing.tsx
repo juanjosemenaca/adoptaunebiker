@@ -3,24 +3,32 @@ import Link from "next/link";
 import { Faq } from "@/components/faq";
 import { HashLink } from "@/components/hash-link";
 import { JoinForm } from "@/components/join-form";
+import { PublicJsonLd } from "@/components/public-json-ld";
 import { logoutCommunity } from "@/app/actions";
+import { isLocale } from "@/i18n/config";
 import { anchors, hrefs } from "@/lib/paths";
+import { localePath } from "@/lib/site";
 import type { Dictionary } from "@/i18n/types";
 import type { SessionUser } from "@/lib/types";
 
 function Apartado({
   id,
+  kicker,
   title,
   lead,
   children,
 }: {
   id: string;
+  kicker?: string;
   title: ReactNode;
   lead?: string;
   children: ReactNode;
 }) {
   return (
     <section id={id} className="mt-24 scroll-mt-28 border-t-2 border-bone/25 pt-8 sm:mt-28 sm:pt-10">
+      {kicker ? (
+        <p className="mb-3 text-[10px] uppercase tracking-[0.22em] text-sodium">{kicker}</p>
+      ) : null}
       <h2 className="display max-w-4xl text-5xl text-bone sm:text-7xl">{title}</h2>
       {lead ? <p className="mt-6 max-w-2xl text-lg leading-8 text-mist">{lead}</p> : null}
       {children}
@@ -55,7 +63,7 @@ function PlazaCallout({
       </ul>
       <HashLink
         href={href}
-        className="mt-8 inline-flex self-start bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
+        className="mt-8 inline-flex min-h-11 self-start items-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
       >
         {cta}
       </HashLink>
@@ -77,8 +85,13 @@ export function PublicLanding({
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-4 pb-16 sm:px-6 sm:pt-5">
+      <PublicJsonLd
+        locale={locale}
+        url={localePath(isLocale(locale) ? locale : "es")}
+        t={t}
+      />
       <section id="inicio" className="scroll-mt-28">
-        <h1 className="display max-w-4xl text-[16vw] text-bone sm:text-[7rem]">
+        <h1 className="display max-w-4xl text-[clamp(2.6rem,12vw,7rem)] text-bone">
           Adopta
           <br />
           un <span className="normal-case text-sodium">e</span>-biker
@@ -94,8 +107,58 @@ export function PublicLanding({
           {t.home.line2}
         </p>
         <p className="mt-6 max-w-2xl text-lg leading-8 text-mist">{t.home.lead}</p>
-        <p className="mt-10 max-w-3xl text-base leading-8 text-bone/90">{t.home.bridge}</p>
+        <p className="mt-8 max-w-3xl text-base leading-8 text-bone/90">{t.home.bridge}</p>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          {session ? (
+            <Link
+              href={links.intranet}
+              className="inline-flex min-h-11 items-center justify-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
+            >
+              {t.home.ctaIn}
+            </Link>
+          ) : (
+            <HashLink
+              href={jump.join}
+              className="inline-flex min-h-11 items-center justify-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
+            >
+              {t.home.ctaOut}
+            </HashLink>
+          )}
+          <HashLink
+            href={jump.how}
+            className="inline-flex min-h-11 items-center justify-center border border-line px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
+          >
+            {t.home.how}
+          </HashLink>
+        </div>
       </section>
+
+      <Apartado
+        id="ofrecemos"
+        kicker={t.home.offerKicker}
+        title={t.home.offerTitle}
+        lead={t.home.offerLead}
+      >
+        <ul className="mt-8 grid gap-4 sm:grid-cols-2">
+          {t.home.offerItems.map((item) => (
+            <li key={item.title} className="border border-line bg-rubber p-5 sm:p-6">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.14em]">{item.title}</h3>
+              <p className="mt-3 text-sm leading-7 text-mist">{item.body}</p>
+            </li>
+          ))}
+        </ul>
+        <h3 className="display mt-12 text-3xl sm:text-4xl">{t.home.forWhomTitle}</h3>
+        <ul className="mt-6 grid gap-4 sm:grid-cols-3">
+          {t.home.forWhom.map((item) => (
+            <li key={item.title} className="border border-line bg-asphalt p-5">
+              <h4 className="text-sm font-semibold uppercase tracking-[0.14em] text-sodium">
+                {item.title}
+              </h4>
+              <p className="mt-3 text-sm leading-7 text-mist">{item.body}</p>
+            </li>
+          ))}
+        </ul>
+      </Apartado>
 
       <Apartado
         id="comunidad"
@@ -169,12 +232,12 @@ export function PublicLanding({
                 </p>
               ))}
             </div>
-            <Link
+            <HashLink
               href={jump.how}
-              className="mt-8 inline-flex bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
+              className="mt-8 inline-flex min-h-11 items-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
             >
               {t.about.join}
-            </Link>
+            </HashLink>
           </div>
         </Subapartado>
       </Apartado>

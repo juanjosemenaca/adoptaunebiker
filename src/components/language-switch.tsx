@@ -51,7 +51,7 @@ export function LanguageSwitch({
     <div ref={root} className="relative">
       <button
         type="button"
-        className="inline-flex h-10 min-w-[5.75rem] items-center justify-center gap-2 border border-line px-3 text-bone"
+        className="inline-flex h-11 min-w-[5.75rem] items-center justify-center gap-2 border border-line px-3 text-bone"
         aria-expanded={open}
         aria-controls={menuId}
         aria-haspopup="menu"
@@ -80,7 +80,7 @@ export function LanguageSwitch({
                 hrefLang={item}
                 role="menuitem"
                 aria-current={item === locale ? "true" : undefined}
-                className={`flex items-center gap-3 px-3 py-2.5 text-sm ${
+                className={`flex min-h-11 items-center gap-3 px-3 py-2.5 text-sm ${
                   item === locale
                     ? "bg-asphalt text-sodium"
                     : "text-bone hover:bg-asphalt"

@@ -38,7 +38,7 @@ export function SiteFooter({
                 <Link
                   key={section.key}
                   href={`${links.home}${hrefByKey[section.key]}`}
-                  className="hover:text-bone"
+                  className="inline-flex min-h-11 items-center hover:text-bone"
                 >
                   {t.nav[section.key]}
                 </Link>
@@ -46,7 +46,7 @@ export function SiteFooter({
             : null}
           <Link
             href={variant === "public" ? links.entrar : links.home}
-            className="hover:text-bone"
+            className="inline-flex min-h-11 items-center hover:text-bone"
           >
             {variant === "public" ? t.nav.enter : t.nav.publicSite}
           </Link>

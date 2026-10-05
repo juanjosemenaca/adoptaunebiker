@@ -1,15 +1,7 @@
-import { createHash } from "node:crypto";
 import { riders } from "@/data/riders";
 import type { AccountKind, SessionUser } from "@/lib/types";
 
-export const MEMBERS_COOKIE = "adopta.members";
 export const DEMO_PASSWORD = "adopta";
-
-export type MemberRecord = {
-  email: string;
-  passwordHash: string;
-  user: SessionUser;
-};
 
 export const demoAccounts = [
   {
@@ -45,12 +37,6 @@ export function adminSession(): SessionUser {
 
 export function isAdminEmail(email: string) {
   return normalizeEmail(email) === demoAdmin.email;
-}
-
-export function hashPassword(password: string) {
-  return createHash("sha256")
-    .update(`adopta-un-ebiker:${password}`)
-    .digest("hex");
 }
 
 export function normalizeEmail(value: string) {

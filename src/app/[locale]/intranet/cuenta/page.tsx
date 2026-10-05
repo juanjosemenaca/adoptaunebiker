@@ -11,7 +11,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return { title: getDictionary(locale).intranet.account };
+  return { title: getDictionary(locale).intranet.account, robots: { index: false, follow: false } };
 }
 
 export default async function CuentaPage({

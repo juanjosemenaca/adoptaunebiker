@@ -23,15 +23,14 @@ El Supabase que hay enlazado en Cursor es de otro producto. No se ha escrito nad
 
 ## Dominio (DonDominio)
 
-El dominio [adoptaunebiker.com](https://adoptaunebiker.com) está en DonDominio. Next.js no se sirve desde el parking de DonDominio: hay que alojar la app (Vercel) y apuntar el DNS.
+El dominio [adoptaunebiker.com](https://adoptaunebiker.com) está en DonDominio y **ya apunta a Vercel** (`76.76.21.21` y `www` → `cname.vercel-dns.com`).
 
-En DonDominio → Dominios → `adoptaunebiker.com` → **Zona DNS**:
+## Indexación (Google Search Console)
 
-| Tipo | Host | Destino / valor |
-| --- | --- | --- |
-| A | `@` (o vacío) | `76.76.21.21` (o la IP que muestre Vercel) |
-| CNAME | `www` | `cname.vercel-dns.com` (o el CNAME que muestre Vercel) |
+La web publica `https://adoptaunebiker.com/robots.txt` y `https://adoptaunebiker.com/sitemap.xml`. El sitemap lista la portada en `es`, `ca`, `en`, `fr` y `de`. Login, intranet y administración van con `noindex`.
 
-Borra el ANAME de parking y el CNAME de `www` que apunta a `parkingsrv0.dondominio.com` para que no choquen.
+1. En [Google Search Console](https://search.google.com/search-console) añade la propiedad **Prefijo de URL** `https://adoptaunebiker.com`.
+2. Elige verificación por **etiqueta HTML**. Copia el valor `content` (un token largo).
+3. En Vercel → Settings → Environment Variables define `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` con ese token y vuelve a desplegar.
+4. En Search Console pulsa **Verificar** y, después, **Sitemaps** → añade `sitemap.xml`.
 
-SSL lo emite Vercel cuando el DNS ya apunta.

@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import Script from "next/script";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { Oswald, Figtree } from "next/font/google";
 import { defaultLocale, htmlLang, isLocale } from "@/i18n/config";
 import "./globals.css";
@@ -10,12 +10,20 @@ const display = Oswald({
   subsets: ["latin"],
   variable: "--font-display",
   weight: "700",
+  display: "swap",
 });
 
 const body = Figtree({
   subsets: ["latin"],
   variable: "--font-body",
+  display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#f3eee4",
+};
 
 export const metadata: Metadata = {
   title: {
@@ -23,11 +31,13 @@ export const metadata: Metadata = {
     template: "%s · Adopta un eBiker",
   },
   description:
-    "Una comunidad ciclista para principiantes y veteranos, con bici eléctrica o convencional. Carretera, MTB y gravel.",
+    "Comunidad ciclista para encontrar compañeros de salida. Principiantes y veteranos, e-bike o bici convencional, en carretera, MTB y gravel.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://adoptaunebiker.com",
   ),
-  alternates: { canonical: "/" },
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
   openGraph: {
     type: "website",
     locale: "es_ES",
@@ -35,11 +45,25 @@ export const metadata: Metadata = {
     siteName: "Adopta un eBiker",
     images: [{ url: "/logo.png", width: 852, height: 456, alt: "Adopta un eBiker" }],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Adopta un eBiker",
+    description:
+      "Comunidad ciclista para principiantes y veteranos, con e-bike o bici convencional.",
+    images: ["/logo.png"],
+  },
+  robots: { index: true, follow: true },
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
+  const headerLocale = (await headers()).get("x-adopta-locale");
   const cookie = (await cookies()).get("NEXT_LOCALE")?.value;
-  const locale = cookie && isLocale(cookie) ? cookie : defaultLocale;
+  const locale =
+    headerLocale && isLocale(headerLocale)
+      ? headerLocale
+      : cookie && isLocale(cookie)
+        ? cookie
+        : defaultLocale;
 
   return (
     <html

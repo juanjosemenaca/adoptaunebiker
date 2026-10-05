@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
-import { locales, isLocale, htmlLang } from "@/i18n/config";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { locales, isLocale, htmlLang, ogLocale } from "@/i18n/config";
+import { resolveLocale } from "@/lib/seo";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -14,10 +14,9 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = getDictionary(locale);
+  const lang = resolveLocale(locale);
   return {
-    title: { absolute: t.meta.title },
-    description: t.meta.description,
+    openGraph: { locale: ogLocale[lang] },
   };
 }
 

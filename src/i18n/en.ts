@@ -2,9 +2,9 @@ import type { Dictionary } from "@/i18n/types";
 
 export const en: Dictionary = {
   meta: {
-    title: "Adopta un eBiker",
+    title: "Adopta un eBiker · Ride groups for beginners and veterans",
     description:
-      "A cycling community for beginners and veterans, on e-bikes or conventional bikes. Road, MTB and gravel.",
+      "A cycling community to find people to ride with. Beginners and veterans, e-bike or analog, on road, MTB and gravel. You ask for a place; an administrator confirms it.",
   },
   nav: {
     home: "Home",
@@ -56,7 +56,44 @@ export const en: Dictionary = {
     line2: "Share your passion.",
     lead: "Cyclists of every level, age and bike, brought together by the urge to ride. We connect newcomers with people who already have the kilometres, on e-bikes or conventional bikes, on road, MTB or gravel.",
     ctaIn: "Go to the intranet",
-    ctaOut: "Find your group",
+    ctaOut: "Ask to join",
+    offerKicker: "What we offer",
+    offerTitle: "People to ride with, not another track app.",
+    offerLead:
+      "Adopta un eBiker connects cyclists who want a group: newcomers and people with kilometres already in the legs. Road, MTB or gravel. E-bike or analog.",
+    offerItems: [
+      {
+        title: "Find your group",
+        body: "People near you, in your discipline, at a compatible pace. The point is to ride, not to stack kudos.",
+      },
+      {
+        title: "Adoption between cyclists",
+        body: "A veteran rides with you. A beginner joins in. No ranking, no palmarès, and nobody gets dropped in silence.",
+      },
+      {
+        title: "Every bike",
+        body: "E-bike or analog, it does not matter. Each ride is planned around the route, the pace and the group’s range.",
+      },
+      {
+        title: "A reviewed signup",
+        body: "You send a request. An administrator confirms it by email. Then you enter the intranet and meet the peloton.",
+      },
+    ],
+    forWhomTitle: "Who it is for",
+    forWhom: [
+      {
+        title: "If you are starting",
+        body: "You are new, you hesitate to join a group, or you want longer rides without the fear of being left behind.",
+      },
+      {
+        title: "If you already have the kilometres",
+        body: "You want to open the group, show the way and ride with new people. Adopting means riding with someone, not bossing them.",
+      },
+      {
+        title: "Whatever the bike",
+        body: "Road, MTB or gravel. E-bike or analog. You do not need the same machine. You need the same urge to go out.",
+      },
+    ],
     about: "Who we are",
     bridge:
       "The bike brings us together. We make the road together. This is not two kinds of cycling at war; it is proof they can share the same ride. The best partner is not the one on your bike. It is the one who wants to go out.",

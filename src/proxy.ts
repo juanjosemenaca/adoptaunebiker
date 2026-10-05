@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { defaultLocale, isLocale } from "@/i18n/config";
+import { hasSupabaseEnv } from "@/lib/supabase/env";
+import { copyAuthCookies, updateSession } from "@/lib/supabase/proxy";
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   if (
     pathname.startsWith("/_next") ||
@@ -12,23 +14,30 @@ export function proxy(request: NextRequest) {
   }
 
   const first = pathname.split("/")[1] ?? "";
+  const locale = isLocale(first) ? first : defaultLocale;
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-adopta-locale", locale);
+
+  const supabaseResponse = hasSupabaseEnv()
+    ? await updateSession(request, requestHeaders)
+    : NextResponse.next({ request: { headers: requestHeaders } });
+
   if (isLocale(first)) {
-    const response = NextResponse.next();
-    response.cookies.set("NEXT_LOCALE", first, {
+    supabaseResponse.cookies.set("NEXT_LOCALE", first, {
       path: "/",
       maxAge: 60 * 60 * 24 * 365,
     });
-    return response;
+    return supabaseResponse;
   }
 
   const url = request.nextUrl.clone();
   url.pathname = `/${defaultLocale}${pathname === "/" ? "" : pathname}`;
-  const response = NextResponse.redirect(url);
-  response.cookies.set("NEXT_LOCALE", defaultLocale, {
+  const redirect = NextResponse.redirect(url);
+  redirect.cookies.set("NEXT_LOCALE", defaultLocale, {
     path: "/",
     maxAge: 60 * 60 * 24 * 365,
   });
-  return response;
+  return copyAuthCookies(supabaseResponse, redirect);
 }
 
 export const config = {

@@ -1,8 +1,20 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/login-form";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hrefs, safeIntranetPath } from "@/lib/paths";
 import { getSession, isAdmin } from "@/lib/session";
+import { privateMetadata } from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = getDictionary(locale);
+  return privateMetadata(`${t.login.title1} ${t.login.title2}`, t.login.lead);
+}
 
 export default async function EntrarPage({
   params,

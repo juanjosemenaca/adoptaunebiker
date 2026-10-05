@@ -1,8 +1,10 @@
-import { cookies } from "next/headers";
 import { riders } from "@/data/riders";
-import { MEMBERS_COOKIE, type MemberRecord } from "@/lib/auth";
+import { isAdminEmail } from "@/lib/auth";
 import { isDiscipline } from "@/lib/labels";
+import { hasSupabaseEnv } from "@/lib/supabase/env";
+import { createClient } from "@/lib/supabase/server";
 import type { Bond, Rider, SessionUser } from "@/lib/types";
+import { cookies } from "next/headers";
 
 export const SESSION_COOKIE = "adopta.session";
 export const BONDS_COOKIE = "adopta.bonds";
@@ -27,7 +29,71 @@ export function encodeCookie(value: unknown) {
   return encodeURIComponent(JSON.stringify(value));
 }
 
+type ProfileRow = {
+  id: string;
+  slug: string;
+  display_name: string;
+  role: string;
+  discipline: string;
+  city: string;
+  bike: string | null;
+  bio: string | null;
+  looking_for: string | null;
+  tags: string[] | null;
+  km_month: number | null;
+  years: number | null;
+  kind: string;
+  email: string | null;
+};
+
+function profileToSession(row: ProfileRow, email?: string): SessionUser {
+  return {
+    id: row.id,
+    slug: row.slug,
+    name: row.display_name,
+    role: row.role === "ebiker" ? "ebiker" : "mentor",
+    discipline: isDiscipline(row.discipline) ? row.discipline : "carretera",
+    city: row.city,
+    bike: row.bike ?? "",
+    bio: row.bio ?? "",
+    lookingFor: row.looking_for ?? "",
+    email: email ?? row.email ?? undefined,
+    kind: row.kind === "admin" || isAdminEmail(email ?? row.email ?? "") ? "admin" : "user",
+  };
+}
+
+function profileToRider(row: ProfileRow): Rider {
+  return {
+    id: row.id,
+    slug: row.slug,
+    name: row.display_name,
+    role: row.role === "ebiker" ? "ebiker" : "mentor",
+    discipline: isDiscipline(row.discipline) ? row.discipline : "carretera",
+    city: row.city,
+    bike: row.bike ?? "",
+    kmMonth: row.km_month ?? 0,
+    years: row.years ?? 0,
+    bio: row.bio ?? "",
+    lookingFor: row.looking_for ?? "",
+    tags: row.tags?.length ? row.tags : [row.discipline],
+    plate: row.kind === "admin" ? "AD" : row.slug.slice(0, 6).toUpperCase(),
+  };
+}
+
 export async function getSession(): Promise<SessionUser | null> {
+  if (!hasSupabaseEnv()) return getLegacyCookieSession();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (user) {
+    const profile = await getProfileSession(user.id, user.email ?? undefined);
+    if (profile) return profile;
+  }
+  return getLegacyCookieSession();
+}
+
+async function getLegacyCookieSession(): Promise<SessionUser | null> {
   const store = await cookies();
   const parsed = parseJson<Partial<SessionUser> | null>(
     store.get(SESSION_COOKIE)?.value,
@@ -52,6 +118,13 @@ export async function getSession(): Promise<SessionUser | null> {
   };
 }
 
+export async function getProfileSession(userId: string, email?: string) {
+  const supabase = await createClient();
+  const { data } = await supabase.from("profiles").select("*").eq("id", userId).maybeSingle();
+  if (!data) return null;
+  return profileToSession(data as ProfileRow, email);
+}
+
 export function isAdmin(session: SessionUser | null) {
   return session?.kind === "admin";
 }
@@ -60,12 +133,6 @@ export async function getBonds(): Promise<Bond[]> {
   const store = await cookies();
   const bonds = parseJson<Bond[]>(store.get(BONDS_COOKIE)?.value, []);
   return Array.isArray(bonds) ? bonds : [];
-}
-
-export async function getMembers(): Promise<MemberRecord[]> {
-  const store = await cookies();
-  const members = parseJson<MemberRecord[]>(store.get(MEMBERS_COOKIE)?.value, []);
-  return Array.isArray(members) ? members : [];
 }
 
 export function sessionToRider(session: SessionUser): Rider {
@@ -86,26 +153,38 @@ export function sessionToRider(session: SessionUser): Rider {
   };
 }
 
-export async function listRiders(): Promise<Rider[]> {
-  const [session, members] = await Promise.all([getSession(), getMembers()]);
-  const extras: Rider[] = [];
-  const seen = new Set(riders.map((rider) => rider.id));
+export async function listCommunityProfiles(): Promise<Rider[]> {
+  if (!hasSupabaseEnv()) return [];
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("profiles").select("*").eq("kind", "user");
+  if (error || !data) return [];
+  return data.map((row) => profileToRider(row as ProfileRow));
+}
 
-  for (const member of members) {
-    if (member.user.kind === "admin") continue;
-    if (seen.has(member.user.id) || riders.some((rider) => rider.slug === member.user.slug)) {
-      continue;
-    }
-    seen.add(member.user.id);
-    extras.push(sessionToRider(member.user));
+export async function emailHasProfile(email: string) {
+  if (!hasSupabaseEnv()) return false;
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("email", email)
+    .maybeSingle();
+  if (error) return false;
+  return Boolean(data);
+}
+
+export async function listRiders(): Promise<Rider[]> {
+  const [session, community] = await Promise.all([getSession(), listCommunityProfiles()]);
+  const extras: Rider[] = [];
+  const seen = new Set(riders.map((rider) => rider.slug));
+
+  for (const rider of community) {
+    if (seen.has(rider.slug)) continue;
+    seen.add(rider.slug);
+    extras.push(rider);
   }
 
-  if (
-    session &&
-    session.kind !== "admin" &&
-    !seen.has(session.id) &&
-    !riders.some((rider) => rider.slug === session.slug)
-  ) {
+  if (session && session.kind !== "admin" && !seen.has(session.slug)) {
     extras.unshift(sessionToRider(session));
   }
 

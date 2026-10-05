@@ -17,7 +17,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = getDictionary(locale);
-  return { title: t.intranet.pelotonTitle, description: t.intranet.pelotonLead };
+  return { title: t.intranet.pelotonTitle, description: t.intranet.pelotonLead, robots: { index: false, follow: false } };
 }
 
 export default async function ExplorarPage({

@@ -2,9 +2,9 @@ import type { Dictionary } from "@/i18n/types";
 
 export const es: Dictionary = {
   meta: {
-    title: "Adopta un eBiker",
+    title: "Adopta un eBiker · Grupetas para principiantes y veteranos",
     description:
-      "Una comunidad ciclista para principiantes y veteranos, con bici eléctrica o convencional. Carretera, MTB y gravel.",
+      "Comunidad ciclista para encontrar compañeros de salida. Principiantes y veteranos, e-bike o bici convencional, en carretera, MTB y gravel. Pides plaza y un administrador te confirma el alta.",
   },
   nav: {
     home: "Inicio",
@@ -56,7 +56,44 @@ export const es: Dictionary = {
     line2: "Comparte tu pasión.",
     lead: "Ciclistas de todos los niveles, edades y bicicletas, unidos por las ganas de salir a pedalear. Conectamos a quien empieza con quien ya lleva kilómetros, con bici eléctrica o convencional, en carretera, MTB o gravel.",
     ctaIn: "Ir a la intranet",
-    ctaOut: "Encuentra tu grupeta",
+    ctaOut: "Pedir plaza",
+    offerKicker: "Qué ofrecemos",
+    offerTitle: "Compañeros de salida, no una app de tracks.",
+    offerLead:
+      "Adopta un eBiker conecta a ciclistas que quieren grupeta: quien empieza y quien ya tiene kilómetros. En carretera, MTB o gravel. Con e-bike o bici convencional.",
+    offerItems: [
+      {
+        title: "Encuentra tu grupeta",
+        body: "Gente de tu zona, tu modalidad y un ritmo compatible. El objetivo es salir, no sumar kudos.",
+      },
+      {
+        title: "Adopción entre ciclistas",
+        body: "Un veterano acompaña. Un principiante se suma. Sin ranking, sin palmarés y sin que nadie se quede atrás sin saberlo.",
+      },
+      {
+        title: "Todas las bicis",
+        body: "Eléctrica o muscular, da igual. Cada salida se organiza según recorrido, ritmo y autonomía del grupo.",
+      },
+      {
+        title: "Alta revisada",
+        body: "Envías una solicitud. Un administrador la confirma por correo. Luego entras a la intranet a conocer al pelotón.",
+      },
+    ],
+    forWhomTitle: "Para quién es",
+    forWhom: [
+      {
+        title: "Si empiezas",
+        body: "Acabas de llegar, te da reparo unirte a un grupo o quieres rutas más largas sin miedo a quedarte atrás.",
+      },
+      {
+        title: "Si ya llevas kilómetros",
+        body: "Te apetece abrir la grupeta, enseñar camino y salir con gente nueva. Adoptar es acompañar, no dirigir.",
+      },
+      {
+        title: "Da igual la bici",
+        body: "Carretera, MTB o gravel. E-bike o convencional. No hace falta la misma máquina: hacen falta las mismas ganas.",
+      },
+    ],
     about: "Quiénes somos",
     bridge:
       "La bicicleta nos une. El camino lo hacemos juntos. No se trata de enfrentar dos maneras de entender el ciclismo, sino de demostrar que pueden convivir. El mejor compañero de ruta no es quien lleva tu misma bici, sino quien comparte tus ganas de salir.",

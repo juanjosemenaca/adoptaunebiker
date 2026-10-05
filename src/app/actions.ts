@@ -7,7 +7,6 @@ import {
   DEMO_PASSWORD,
   adminSession,
   demoUserByEmail,
-  hashPassword,
   isAdminEmail,
   isEmail,
   normalizeEmail,
@@ -16,20 +15,20 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { defaultLocale, isLocale } from "@/i18n/config";
 import { isDiscipline } from "@/lib/labels";
 import { hrefs, loginHref, safeIntranetPath } from "@/lib/paths";
-import {
-  findSignupByEmail,
-  saveSignupRequest,
-} from "@/lib/signup-requests";
-import { isAdmin } from "@/lib/session";
+import { findSignupByEmail, saveSignupRequest } from "@/lib/signup-requests";
 import {
   BONDS_COOKIE,
+  SESSION_COOKIE,
   cookieOptions,
+  emailHasProfile,
   encodeCookie,
   getBonds,
-  getMembers,
+  getProfileSession,
   getSession,
-  SESSION_COOKIE,
+  isAdmin,
 } from "@/lib/session";
+import { hasSupabaseEnv } from "@/lib/supabase/env";
+import { createClient } from "@/lib/supabase/server";
 import type { Bond, BondStatus, Role } from "@/lib/types";
 
 function localeFromForm(formData: FormData) {
@@ -39,12 +38,6 @@ function localeFromForm(formData: FormData) {
 
 function revalidateCommunity() {
   revalidatePath("/", "layout");
-}
-
-async function emailTaken(email: string) {
-  if (isAdminEmail(email) || demoUserByEmail(email)) return true;
-  const members = await getMembers();
-  return members.some((member) => member.email === email);
 }
 
 export async function joinCommunity(formData: FormData) {
@@ -74,14 +67,12 @@ export async function joinCommunity(formData: FormData) {
   if (!isDiscipline(disciplineRaw)) {
     return { error: t.errors.discipline };
   }
-  if (await emailTaken(email) || (await findSignupByEmail(email))) {
+  if ((await emailHasProfile(email)) || (await findSignupByEmail(email))) {
     return { error: t.errors.pendingExists };
   }
 
   try {
     await saveSignupRequest({
-      id: crypto.randomUUID(),
-      createdAt: new Date().toISOString(),
       name,
       email,
       city,
@@ -92,7 +83,10 @@ export async function joinCommunity(formData: FormData) {
       lookingFor,
       locale,
     });
-  } catch {
+  } catch (error) {
+    if (error instanceof Error && error.name === "SignupExists") {
+      return { error: t.errors.pendingExists };
+    }
     return { error: t.errors.send };
   }
 
@@ -112,56 +106,61 @@ export async function loginCommunity(formData: FormData) {
     return { error: t.errors.loginEmpty };
   }
 
-  const passwordOk = hashPassword(password) === hashPassword(DEMO_PASSWORD);
-
-  if (isAdminEmail(email)) {
-    if (!passwordOk) {
-      return { error: t.errors.loginBad };
+  if (hasSupabaseEnv()) {
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (!error && data.user) {
+      const session = await getProfileSession(data.user.id, data.user.email ?? email);
+      if (session) {
+        revalidateCommunity();
+        if (isAdmin(session)) {
+          redirect(
+            requested.includes("/admin") ? safeIntranetPath(requested, locale) : links.admin,
+          );
+        }
+        redirect(
+          requested.includes("/intranet") ? safeIntranetPath(requested, locale) : links.intranet,
+        );
+      }
+      await supabase.auth.signOut();
     }
-    const store = await cookies();
-    store.set(SESSION_COOKIE, encodeCookie(adminSession()), cookieOptions);
-    revalidateCommunity();
-    redirect(
-      requested.includes("/admin") ? safeIntranetPath(requested, locale) : links.admin,
-    );
   }
 
-  const demo = demoUserByEmail(email);
-  if (demo && passwordOk) {
-    const store = await cookies();
-    store.set(SESSION_COOKIE, encodeCookie({ ...demo, kind: "user" as const }), cookieOptions);
-    revalidateCommunity();
-    redirect(
-      requested.includes("/intranet")
-        ? safeIntranetPath(requested, locale)
-        : links.intranet,
-    );
+  if (password !== DEMO_PASSWORD) {
+    return { error: t.errors.loginBad };
   }
 
-  const members = await getMembers();
-  const member = members.find((item) => item.email === email);
-  if (!member || member.passwordHash !== hashPassword(password)) {
+  const demo = isAdminEmail(email) ? adminSession() : demoUserByEmail(email);
+  if (!demo) {
     return { error: t.errors.loginBad };
   }
 
   const store = await cookies();
-  store.set(SESSION_COOKIE, encodeCookie(member.user), cookieOptions);
+  store.set(
+    SESSION_COOKIE,
+    encodeCookie({ ...demo, kind: demo.kind ?? "user" }),
+    cookieOptions,
+  );
   revalidateCommunity();
+  if (isAdmin(demo)) {
+    redirect(
+      requested.includes("/admin") ? safeIntranetPath(requested, locale) : links.admin,
+    );
+  }
   redirect(
-    member.user.kind === "admin"
-      ? requested.includes("/admin")
-        ? safeIntranetPath(requested, locale)
-        : links.admin
-      : requested.includes("/intranet")
-        ? safeIntranetPath(requested, locale)
-        : links.intranet,
+    requested.includes("/intranet") ? safeIntranetPath(requested, locale) : links.intranet,
   );
 }
 
 export async function logoutCommunity(formData: FormData) {
   const locale = localeFromForm(formData);
+  if (hasSupabaseEnv()) {
+    const supabase = await createClient();
+    await supabase.auth.signOut();
+  }
   const store = await cookies();
   store.delete(SESSION_COOKIE);
+  store.delete("adopta.members");
   revalidateCommunity();
   redirect(hrefs(locale).home);
 }

@@ -19,10 +19,11 @@ export async function generateMetadata({
   const { slug, locale } = await params;
   const rider = await findRider(slug);
   const t = getDictionary(locale);
-  if (!rider) return { title: t.intranet.card };
+  if (!rider) return { title: t.intranet.card, robots: { index: false, follow: false } };
   return {
     title: rider.name,
     description: `${rider.city} · ${rider.bike} · ${rider.discipline}`,
+    robots: { index: false, follow: false },
   };
 }
 

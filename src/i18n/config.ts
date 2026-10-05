@@ -28,6 +28,14 @@ export const htmlLang: Record<Locale, string> = {
   de: "de",
 };
 
+export const ogLocale: Record<Locale, string> = {
+  es: "es_ES",
+  ca: "ca_ES",
+  en: "en_GB",
+  fr: "fr_FR",
+  de: "de_DE",
+};
+
 export function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value);
 }

@@ -2,9 +2,9 @@ import type { Dictionary } from "@/i18n/types";
 
 export const fr: Dictionary = {
   meta: {
-    title: "Adopta un eBiker",
+    title: "Adopta un eBiker · Groupes pour débutants et vétérans",
     description:
-      "Une communauté cycliste pour débutants et vétérans, en vélo électrique ou musculaire. Route, VTT et gravel.",
+      "Communauté cycliste pour trouver des compagnons de sortie. Débutants et vétérans, vélo électrique ou musculaire, sur route, VTT et gravel. Tu demandes une place ; un administrateur la confirme.",
   },
   nav: {
     home: "Accueil",
@@ -56,7 +56,44 @@ export const fr: Dictionary = {
     line2: "Partage ta passion.",
     lead: "Des cyclistes de tous niveaux, âges et vélos, réunis par l’envie de pédaler. On relie ceux qui commencent à ceux qui ont déjà les kilomètres, en électrique ou musculaire, sur route, VTT ou gravel.",
     ctaIn: "Aller à l’intranet",
-    ctaOut: "Trouve ton groupe",
+    ctaOut: "Demander une place",
+    offerKicker: "Ce que nous proposons",
+    offerTitle: "Des compagnons de sortie, pas une appli de traces.",
+    offerLead:
+      "Adopta un eBiker relie les cyclistes qui veulent un groupe : ceux qui commencent et ceux qui ont déjà les kilomètres. Route, VTT ou gravel. Électrique ou musculaire.",
+    offerItems: [
+      {
+        title: "Trouve ton groupe",
+        body: "Des gens près de chez toi, dans ta pratique, à un rythme compatible. Le but, c’est de sortir, pas d’empiler les kudos.",
+      },
+      {
+        title: "Adoption entre cyclistes",
+        body: "Un vétéran accompagne. Un débutant rejoint. Sans classement, sans palmarès, et personne n’est distancé en silence.",
+      },
+      {
+        title: "Tous les vélos",
+        body: "Électrique ou musculaire, peu importe. Chaque sortie se calibre selon le parcours, le rythme et l’autonomie du groupe.",
+      },
+      {
+        title: "Inscription relue",
+        body: "Tu envoies une demande. Un administrateur la confirme par e-mail. Ensuite tu entres dans l’intranet et tu rencontres le peloton.",
+      },
+    ],
+    forWhomTitle: "Pour qui",
+    forWhom: [
+      {
+        title: "Si tu commences",
+        body: "Tu débutes, tu hésites à rejoindre un groupe, ou tu veux des sorties plus longues sans peur de te faire distancer.",
+      },
+      {
+        title: "Si tu as déjà les kilomètres",
+        body: "Tu as envie d’ouvrir le groupe, de montrer le chemin et de rouler avec du monde nouveau. Adopter, c’est accompagner, pas diriger.",
+      },
+      {
+        title: "Peu importe le vélo",
+        body: "Route, VTT ou gravel. Électrique ou musculaire. Pas besoin de la même machine : il faut la même envie de sortir.",
+      },
+    ],
     about: "Qui nous sommes",
     bridge:
       "Le vélo nous unit. La route, on la fait ensemble. Il ne s’agit pas d’opposer deux façons de voir le cyclisme, mais de montrer qu’elles peuvent cohabiter. Le meilleur compagnon n’est pas celui qui a le même vélo, c’est celui qui a envie de sortir.",

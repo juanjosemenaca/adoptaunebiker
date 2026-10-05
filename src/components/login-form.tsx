@@ -34,7 +34,7 @@ export function LoginForm({
           type="email"
           required
           autoComplete="email"
-          className="mt-2 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
+          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
@@ -44,14 +44,14 @@ export function LoginForm({
           type="password"
           required
           autoComplete="current-password"
-          className="mt-2 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
+          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
       {state.error ? <p className="text-sm text-sodium">{state.error}</p> : null}
       <button
         type="submit"
         disabled={pending}
-        className="w-full bg-sodium px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone disabled:opacity-60"
+        className="min-h-11 w-full bg-sodium px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone disabled:opacity-60"
       >
         {pending ? t.forms.entering : t.forms.enterIntranet}
       </button>

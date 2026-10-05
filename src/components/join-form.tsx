@@ -38,7 +38,7 @@ export function JoinForm({
           name="name"
           required
           minLength={2}
-          className="mt-2 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
+          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
@@ -48,7 +48,7 @@ export function JoinForm({
           type="email"
           required
           autoComplete="email"
-          className="mt-2 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
+          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
@@ -56,18 +56,18 @@ export function JoinForm({
         <input
           name="city"
           required
-          className="mt-2 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
+          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
       <fieldset className="space-y-2">
         <legend className="text-[10px] uppercase tracking-[0.18em] text-mist">
           {t.forms.role}
         </legend>
-        <label className="flex items-center gap-2 text-sm text-bone">
+        <label className="flex min-h-11 items-center gap-2 text-sm text-bone">
           <input type="radio" name="role" value="mentor" required />
           {t.forms.mentor}
         </label>
-        <label className="flex items-center gap-2 text-sm text-bone">
+        <label className="flex min-h-11 items-center gap-2 text-sm text-bone">
           <input type="radio" name="role" value="ebiker" />
           {t.forms.beginner}
         </label>
@@ -76,15 +76,15 @@ export function JoinForm({
         <legend className="text-[10px] uppercase tracking-[0.18em] text-mist">
           {t.forms.discipline}
         </legend>
-        <label className="flex items-center gap-2 text-sm text-bone">
+        <label className="flex min-h-11 items-center gap-2 text-sm text-bone">
           <input type="radio" name="discipline" value="mtb" required />
           {t.disciplines.mtb}
         </label>
-        <label className="flex items-center gap-2 text-sm text-bone">
+        <label className="flex min-h-11 items-center gap-2 text-sm text-bone">
           <input type="radio" name="discipline" value="carretera" />
           {t.disciplines.carretera}
         </label>
-        <label className="flex items-center gap-2 text-sm text-bone">
+        <label className="flex min-h-11 items-center gap-2 text-sm text-bone">
           <input type="radio" name="discipline" value="gravel" />
           {t.disciplines.gravel}
         </label>
@@ -94,7 +94,7 @@ export function JoinForm({
         <input
           name="bike"
           placeholder={t.forms.bikeHint}
-          className="mt-2 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
+          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
@@ -103,7 +103,7 @@ export function JoinForm({
           name="bio"
           rows={3}
           placeholder={t.forms.rideHint}
-          className="mt-2 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
+          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
@@ -111,14 +111,14 @@ export function JoinForm({
         <input
           name="lookingFor"
           placeholder={t.forms.lookingHint}
-          className="mt-2 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
+          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
       {state.error ? <p className="text-sm text-sodium">{state.error}</p> : null}
       <button
         type="submit"
         disabled={pending}
-        className="w-full bg-sodium px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone disabled:opacity-60"
+        className="min-h-11 w-full bg-sodium px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone disabled:opacity-60"
       >
         {pending ? t.forms.creating : t.forms.create}
       </button>
