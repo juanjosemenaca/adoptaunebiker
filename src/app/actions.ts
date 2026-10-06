@@ -13,8 +13,16 @@ import {
 } from "@/lib/auth";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { defaultLocale, isLocale } from "@/i18n/config";
-import { isDiscipline } from "@/lib/labels";
+import { isDiscipline, parsePracticeList } from "@/lib/labels";
+import {
+  OTHER_PLACE,
+  countryById,
+  formatSignupPlace,
+  storedCityName,
+  storedCountryName,
+} from "@/lib/places";
 import { hrefs, loginHref, safeIntranetPath } from "@/lib/paths";
+import { encodeSignupMeta } from "@/lib/signup-meta";
 import { findSignupByEmail, removeSignupRequest, saveSignupRequest, updateSignupInboxStatus } from "@/lib/signup-requests";
 import {
   BONDS_COOKIE,
@@ -50,12 +58,25 @@ function revalidateSignupInbox(locale: string) {
 export async function joinCommunity(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   const email = normalizeEmail(String(formData.get("email") ?? ""));
-  const city = String(formData.get("city") ?? "").trim();
+  const countryId = String(formData.get("country") ?? "").trim();
+  const countryOther = String(formData.get("countryOther") ?? "").trim();
+  const cityChoice = String(formData.get("city") ?? "").trim();
+  const cityOther = String(formData.get("cityOther") ?? "").trim();
+  const country = storedCountryName(countryId, countryOther);
+  const city = storedCityName(countryId, cityChoice, cityOther);
   const bike = String(formData.get("bike") ?? "").trim();
   const bio = String(formData.get("bio") ?? "").trim();
-  const lookingFor = String(formData.get("lookingFor") ?? "").trim();
-  const role = String(formData.get("role") ?? "") as Role;
-  const disciplineRaw = String(formData.get("discipline") ?? "");
+  const lookingForText = String(formData.get("lookingFor") ?? "").trim();
+  const veteranIn = parsePracticeList(
+    formData.getAll("veteran").map((item) => String(item)),
+  );
+  const beginnerIn = parsePracticeList(
+    formData.getAll("beginner").map((item) => String(item)),
+  ).filter((item) => !veteranIn.includes(item));
+  const interestedIn = formData
+    .getAll("interested")
+    .map((item) => String(item))
+    .filter(isDiscipline);
   const locale = localeFromForm(formData);
   const t = getDictionary(locale);
 
@@ -65,29 +86,40 @@ export async function joinCommunity(formData: FormData) {
   if (!isEmail(email)) {
     return { error: t.errors.email };
   }
+  const knownCountry = Boolean(countryById(countryId));
+  if ((!knownCountry && countryId !== OTHER_PLACE) || !country) {
+    return { error: t.errors.country };
+  }
   if (!city) {
     return { error: t.errors.city };
   }
-  if (role !== "mentor" && role !== "ebiker") {
+  if (veteranIn.length === 0 && beginnerIn.length === 0) {
     return { error: t.errors.role };
   }
-  if (!isDiscipline(disciplineRaw)) {
-    return { error: t.errors.discipline };
+  if (interestedIn.length === 0) {
+    return { error: t.errors.interested };
   }
   if ((await emailHasProfile(email)) || (await findSignupByEmail(email))) {
     return { error: t.errors.pendingExists };
   }
 
+  const role: Role = veteranIn.length ? "mentor" : "ebiker";
+  const practice = veteranIn[0] ?? beginnerIn[0];
+
   try {
     await saveSignupRequest({
       name,
       email,
-      city,
+      city: formatSignupPlace(city, country),
       role,
-      discipline: disciplineRaw,
+      discipline: interestedIn[0],
+      practice,
+      veteranIn,
+      beginnerIn,
+      interestedIn,
       bike,
       bio,
-      lookingFor,
+      lookingFor: encodeSignupMeta(veteranIn, beginnerIn, interestedIn, lookingForText),
       locale,
     });
   } catch (error) {

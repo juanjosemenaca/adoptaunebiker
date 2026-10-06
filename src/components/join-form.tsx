@@ -3,15 +3,21 @@
 import { startTransition, useActionState, useEffect, useState, type FormEvent } from "react";
 import { joinCommunity } from "@/app/actions";
 import type { Dictionary } from "@/i18n/types";
+import { COUNTRIES, OTHER_PLACE, countryById, countryLabel } from "@/lib/places";
+import { disciplines, practices } from "@/lib/labels";
 
 type State = { error?: string; ok?: boolean };
 
 type Draft = {
   name: string;
   email: string;
+  country: string;
+  countryOther: string;
   city: string;
-  role: string;
-  discipline: string;
+  cityOther: string;
+  veteran: string[];
+  beginner: string[];
+  interested: string[];
   bike: string;
   bio: string;
   lookingFor: string;
@@ -23,9 +29,13 @@ function emptyDraft(): Draft {
   return {
     name: "",
     email: "",
+    country: "",
+    countryOther: "",
     city: "",
-    role: "",
-    discipline: "",
+    cityOther: "",
+    veteran: [],
+    beginner: [],
+    interested: [],
     bike: "",
     bio: "",
     lookingFor: "",
@@ -36,7 +46,14 @@ function readDraft(): Draft {
   try {
     const raw = sessionStorage.getItem(DRAFT_KEY);
     if (!raw) return emptyDraft();
-    return { ...emptyDraft(), ...(JSON.parse(raw) as Partial<Draft>) };
+    const parsed = JSON.parse(raw) as Partial<Draft>;
+    return {
+      ...emptyDraft(),
+      ...parsed,
+      veteran: Array.isArray(parsed.veteran) ? parsed.veteran : [],
+      beginner: Array.isArray(parsed.beginner) ? parsed.beginner : [],
+      interested: Array.isArray(parsed.interested) ? parsed.interested : [],
+    };
   } catch {
     return emptyDraft();
   }
@@ -46,12 +63,28 @@ function draftFromForm(data: FormData): Draft {
   return {
     name: String(data.get("name") ?? ""),
     email: String(data.get("email") ?? ""),
+    country: String(data.get("country") ?? ""),
+    countryOther: String(data.get("countryOther") ?? ""),
     city: String(data.get("city") ?? ""),
-    role: String(data.get("role") ?? ""),
-    discipline: String(data.get("discipline") ?? ""),
+    cityOther: String(data.get("cityOther") ?? ""),
+    veteran: data.getAll("veteran").map((item) => String(item)),
+    beginner: data.getAll("beginner").map((item) => String(item)),
+    interested: data.getAll("interested").map((item) => String(item)),
     bike: String(data.get("bike") ?? ""),
     bio: String(data.get("bio") ?? ""),
     lookingFor: String(data.get("lookingFor") ?? ""),
+  };
+}
+
+function toggleLevel(current: Draft, field: "veteran" | "beginner", value: string): Draft {
+  const other = field === "veteran" ? "beginner" : "veteran";
+  const selected = current[field].includes(value);
+  return {
+    ...current,
+    [field]: selected
+      ? current[field].filter((item) => item !== value)
+      : [...current[field], value],
+    [other]: selected ? current[other] : current[other].filter((item) => item !== value),
   };
 }
 
@@ -106,6 +139,15 @@ export function JoinForm({
     });
   }
 
+  const country = countryById(draft.country);
+  const countryIsOther = draft.country === OTHER_PLACE;
+  const cityIsOther = countryIsOther || draft.city === OTHER_PLACE;
+  const cities = country?.cities ?? [];
+  const fieldClass =
+    "mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone";
+  const sectionLegendClass =
+    "pb-1 text-base font-semibold uppercase tracking-[0.12em] text-sodium";
+
   if (state.ok) {
     return (
       <p
@@ -145,82 +187,172 @@ export function JoinForm({
         />
       </label>
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-        {t.forms.city}
-        <input
-          name="city"
+        {t.forms.country}
+        <select
+          name="country"
           required
-          autoComplete="address-level2"
-          value={draft.city}
-          onChange={(event) => setDraft((current) => ({ ...current, city: event.target.value }))}
-          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
-        />
+          autoComplete="country-name"
+          value={draft.country}
+          onChange={(event) =>
+            setDraft((current) => ({
+              ...current,
+              country: event.target.value,
+              countryOther: event.target.value === OTHER_PLACE ? current.countryOther : "",
+              city: "",
+              cityOther: "",
+            }))
+          }
+          className={fieldClass}
+        >
+          <option value="">{t.forms.chooseCountry}</option>
+          {COUNTRIES.map((item) => (
+            <option key={item.id} value={item.id}>
+              {countryLabel(item.id, locale)}
+            </option>
+          ))}
+          <option value={OTHER_PLACE}>{t.forms.other}</option>
+        </select>
       </label>
-      <fieldset className="space-y-2">
-        <legend className="text-[10px] uppercase tracking-[0.18em] text-mist">
-          {t.forms.role}
-        </legend>
-        <label className="flex min-h-11 items-center gap-2 text-sm text-bone">
+      {countryIsOther ? (
+        <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
+          {t.forms.countryOther}
           <input
-            type="radio"
-            name="role"
-            value="mentor"
+            name="countryOther"
             required
-            className="accent-sodium"
-            checked={draft.role === "mentor"}
-            onChange={() => setDraft((current) => ({ ...current, role: "mentor" }))}
+            minLength={2}
+            value={draft.countryOther}
+            onChange={(event) =>
+              setDraft((current) => ({ ...current, countryOther: event.target.value }))
+            }
+            className={fieldClass}
           />
+        </label>
+      ) : null}
+      {countryIsOther ? (
+        <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
+          {t.forms.city}
+          <input
+            name="cityOther"
+            required
+            minLength={2}
+            autoComplete="address-level2"
+            value={draft.cityOther}
+            onChange={(event) =>
+              setDraft((current) => ({ ...current, cityOther: event.target.value }))
+            }
+            className={fieldClass}
+          />
+        </label>
+      ) : (
+        <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
+          {t.forms.city}
+          <select
+            name="city"
+            required
+            disabled={!draft.country}
+            autoComplete="address-level2"
+            value={draft.city}
+            onChange={(event) =>
+              setDraft((current) => ({
+                ...current,
+                city: event.target.value,
+                cityOther: event.target.value === OTHER_PLACE ? current.cityOther : "",
+              }))
+            }
+            className={fieldClass}
+          >
+            <option value="">{t.forms.chooseCity}</option>
+            {cities.map((city) => (
+              <option key={city} value={city}>
+                {city}
+              </option>
+            ))}
+            {draft.country ? <option value={OTHER_PLACE}>{t.forms.other}</option> : null}
+          </select>
+        </label>
+      )}
+      {cityIsOther && !countryIsOther ? (
+        <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
+          {t.forms.cityOther}
+          <input
+            name="cityOther"
+            required
+            minLength={2}
+            autoComplete="address-level2"
+            value={draft.cityOther}
+            onChange={(event) =>
+              setDraft((current) => ({ ...current, cityOther: event.target.value }))
+            }
+            className={fieldClass}
+          />
+        </label>
+      ) : null}
+      <fieldset className="pt-3">
+        <legend className={sectionLegendClass}>
           {t.forms.mentor}
-        </label>
-        <label className="flex min-h-11 items-center gap-2 text-sm text-bone">
-          <input
-            type="radio"
-            name="role"
-            value="ebiker"
-            className="accent-sodium"
-            checked={draft.role === "ebiker"}
-            onChange={() => setDraft((current) => ({ ...current, role: "ebiker" }))}
-          />
-          {t.forms.beginner}
-        </label>
-      </fieldset>
-      <fieldset className="space-y-2">
-        <legend className="text-[10px] uppercase tracking-[0.18em] text-mist">
-          {t.forms.discipline}
         </legend>
-        <label className="flex min-h-11 items-center gap-2 text-sm text-bone">
-          <input
-            type="radio"
-            name="discipline"
-            value="mtb"
-            required
-            className="accent-sodium"
-            checked={draft.discipline === "mtb"}
-            onChange={() => setDraft((current) => ({ ...current, discipline: "mtb" }))}
-          />
-          {t.disciplines.mtb}
-        </label>
-        <label className="flex min-h-11 items-center gap-2 text-sm text-bone">
-          <input
-            type="radio"
-            name="discipline"
-            value="carretera"
-            className="accent-sodium"
-            checked={draft.discipline === "carretera"}
-            onChange={() => setDraft((current) => ({ ...current, discipline: "carretera" }))}
-          />
-          {t.disciplines.carretera}
-        </label>
-        <label className="flex min-h-11 items-center gap-2 text-sm text-bone">
-          <input
-            type="radio"
-            name="discipline"
-            value="gravel"
-            className="accent-sodium"
-            checked={draft.discipline === "gravel"}
-            onChange={() => setDraft((current) => ({ ...current, discipline: "gravel" }))}
-          />
-          {t.disciplines.gravel}
-        </label>
+        <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1">
+          {practices.map((value) => (
+            <label key={`veteran-${value}`} className="inline-flex min-h-11 items-center gap-2 text-sm text-bone">
+              <input
+                type="checkbox"
+                name="veteran"
+                value={value}
+                className="accent-sodium"
+                checked={draft.veteran.includes(value)}
+                onChange={() => setDraft((current) => toggleLevel(current, "veteran", value))}
+              />
+              {value === "ebike" ? t.forms.ebike : t.disciplines[value]}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+      <fieldset className="pt-3">
+        <legend className={sectionLegendClass}>
+          {t.forms.beginner}
+        </legend>
+        <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1">
+          {practices.map((value) => (
+            <label key={`beginner-${value}`} className="inline-flex min-h-11 items-center gap-2 text-sm text-bone">
+              <input
+                type="checkbox"
+                name="beginner"
+                value={value}
+                className="accent-sodium"
+                checked={draft.beginner.includes(value)}
+                onChange={() => setDraft((current) => toggleLevel(current, "beginner", value))}
+              />
+              {value === "ebike" ? t.forms.ebike : t.disciplines[value]}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+      <fieldset className="pt-3">
+        <legend className={sectionLegendClass}>
+          {t.forms.interestedIn}
+        </legend>
+        <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1">
+          {disciplines.map((value) => (
+            <label key={value} className="inline-flex min-h-11 items-center gap-2 text-sm text-bone">
+              <input
+                type="checkbox"
+                name="interested"
+                value={value}
+                className="accent-sodium"
+                checked={draft.interested.includes(value)}
+                onChange={() =>
+                  setDraft((current) => ({
+                    ...current,
+                    interested: current.interested.includes(value)
+                      ? current.interested.filter((item) => item !== value)
+                      : [...current.interested, value],
+                  }))
+                }
+              />
+              {t.disciplines[value]}
+            </label>
+          ))}
+        </div>
       </fieldset>
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
         {t.forms.bike}

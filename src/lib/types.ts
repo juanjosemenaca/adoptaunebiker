@@ -1,6 +1,7 @@
 export type Role = "mentor" | "ebiker";
 export type AccountKind = "admin" | "user";
 export type Discipline = "mtb" | "carretera" | "gravel";
+export type Practice = Discipline | "ebike";
 export type SignupInboxStatus =
   | "unread"
   | "read"

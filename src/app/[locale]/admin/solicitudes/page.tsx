@@ -4,6 +4,7 @@ import { SignupRequestToolbar } from "@/components/signup-request-toolbar";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hrefs } from "@/lib/paths";
 import { inboxStatusLabel } from "@/lib/signup-inbox";
+import { interestedLabel, practiceListLabel } from "@/lib/signup-meta";
 import {
   listSignupRequests,
   markSignupRequestRead,
@@ -30,11 +31,9 @@ export default async function AdminRequestsPage({
     const fields = [
       { label: t.forms.email, value: item.email },
       { label: t.forms.city, value: item.city },
-      {
-        label: t.forms.role,
-        value: item.role === "mentor" ? t.roles.mentor : t.roles.beginner,
-      },
-      { label: t.forms.discipline, value: t.disciplines[item.discipline] },
+      { label: t.forms.veteranIn, value: practiceListLabel(t, item.veteranIn) || "—" },
+      { label: t.forms.beginnerIn, value: practiceListLabel(t, item.beginnerIn) || "—" },
+      { label: t.forms.interestedIn, value: interestedLabel(t, item.interestedIn) || "—" },
       { label: t.forms.bike, value: item.bike || "—" },
       { label: t.forms.ride, value: item.bio || "—" },
       { label: t.forms.looking, value: item.lookingFor || "—" },
@@ -137,9 +136,16 @@ export default async function AdminRequestsPage({
                 {item.name}
               </h2>
               <p className="mt-2 text-sm text-mist">
-                {item.email} · {item.city} ·{" "}
-                {item.role === "mentor" ? t.roles.mentor : t.roles.beginner} ·{" "}
-                {t.disciplines[item.discipline]}
+                {item.email} · {item.city}
+                {item.veteranIn.length
+                  ? ` · ${t.forms.veteranIn} ${practiceListLabel(t, item.veteranIn)}`
+                  : ""}
+                {item.beginnerIn.length
+                  ? ` · ${t.forms.beginnerIn} ${practiceListLabel(t, item.beginnerIn)}`
+                  : ""}
+                {item.interestedIn.length
+                  ? ` · ${t.forms.interestedIn} ${interestedLabel(t, item.interestedIn)}`
+                  : ""}
               </p>
               <Link
                 href={links.adminRequest(item.id)}

@@ -2,10 +2,12 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { hasSupabaseEnv, supabasePublishableKey, supabaseUrl } from "@/lib/supabase/env";
 import { getAuthContext } from "@/lib/supabase/auth-context";
-import { isDiscipline } from "@/lib/labels";
+import { disciplineLabel, isDiscipline, isPractice } from "@/lib/labels";
+import { decodeSignupMeta, hydrateSignupLevels } from "@/lib/signup-meta";
 import {
   isSignupInboxStatus,
   type Discipline,
+  type Practice,
   type Role,
   type SignupInboxStatus,
 } from "@/lib/types";
@@ -19,6 +21,10 @@ export type SignupRequest = {
   city: string;
   role: Role;
   discipline: Discipline;
+  practice: Practice;
+  veteranIn: Practice[];
+  beginnerIn: Practice[];
+  interestedIn: Discipline[];
   bike: string;
   bio: string;
   lookingFor: string;
@@ -52,17 +58,25 @@ function parseInboxStatus(value: unknown): SignupInboxStatus {
 }
 
 function toRequest(row: SignupRow): SignupRequest {
+  const discipline = isDiscipline(row.discipline) ? row.discipline : "carretera";
+  const meta = decodeSignupMeta(row.looking_for ?? "");
+  const role = row.role === "ebiker" ? "ebiker" : "mentor";
+  const levels = hydrateSignupLevels({ role, meta });
   return {
     id: row.id,
     createdAt: row.created_at,
     name: row.name,
     email: row.email,
     city: row.city,
-    role: row.role === "ebiker" ? "ebiker" : "mentor",
-    discipline: isDiscipline(row.discipline) ? row.discipline : "carretera",
+    role,
+    discipline,
+    practice: levels.practice ?? discipline,
+    veteranIn: levels.veteranIn,
+    beginnerIn: levels.beginnerIn,
+    interestedIn: meta.interestedIn.length ? meta.interestedIn : [discipline],
     bike: row.bike ?? "",
     bio: row.bio ?? "",
-    lookingFor: row.looking_for ?? "",
+    lookingFor: meta.lookingFor,
     locale: row.locale,
     inboxStatus: parseInboxStatus(row.inbox_status),
   };
@@ -85,22 +99,44 @@ async function readLocal(): Promise<SignupRequest[]> {
     const raw = await readFile(dataFile, "utf8");
     const parsed = JSON.parse(raw) as Array<Partial<SignupRequest>>;
     if (!Array.isArray(parsed)) return [];
-    return parsed.map((item) => ({
-      id: String(item.id ?? crypto.randomUUID()),
-      createdAt: String(item.createdAt ?? new Date().toISOString()),
-      name: String(item.name ?? ""),
-      email: String(item.email ?? ""),
-      city: String(item.city ?? ""),
-      role: item.role === "ebiker" ? "ebiker" : "mentor",
-      discipline: isDiscipline(String(item.discipline ?? ""))
+    return parsed.map((item) => {
+      const discipline: Discipline = isDiscipline(String(item.discipline ?? ""))
         ? (item.discipline as Discipline)
-        : "carretera",
-      bike: String(item.bike ?? ""),
-      bio: String(item.bio ?? ""),
-      lookingFor: String(item.lookingFor ?? ""),
-      locale: String(item.locale ?? "es"),
-      inboxStatus: parseInboxStatus(item.inboxStatus),
-    }));
+        : "carretera";
+      const meta = decodeSignupMeta(String(item.lookingFor ?? ""));
+      const role = item.role === "ebiker" ? "ebiker" : "mentor";
+      const storedPractice = item.practice && isPractice(String(item.practice)) ? item.practice : null;
+      const levels = hydrateSignupLevels({
+        role,
+        practice: storedPractice,
+        veteranIn: item.veteranIn,
+        beginnerIn: item.beginnerIn,
+        meta,
+      });
+      return {
+        id: String(item.id ?? crypto.randomUUID()),
+        createdAt: String(item.createdAt ?? new Date().toISOString()),
+        name: String(item.name ?? ""),
+        email: String(item.email ?? ""),
+        city: String(item.city ?? ""),
+        role,
+        discipline,
+        practice: levels.practice ?? discipline,
+        veteranIn: levels.veteranIn,
+        beginnerIn: levels.beginnerIn,
+        interestedIn:
+          item.interestedIn?.length
+            ? item.interestedIn.filter((entry): entry is Discipline => isDiscipline(String(entry)))
+            : meta.interestedIn.length
+              ? meta.interestedIn
+              : [discipline],
+        bike: String(item.bike ?? ""),
+        bio: String(item.bio ?? ""),
+        lookingFor: meta.lookingFor || String(item.lookingFor ?? ""),
+        locale: String(item.locale ?? "es"),
+        inboxStatus: parseInboxStatus(item.inboxStatus),
+      };
+    });
   } catch {
     return [];
   }
@@ -257,6 +293,10 @@ export async function saveSignupRequest(request: {
   city: string;
   role: Role;
   discipline: Discipline;
+  practice: Practice;
+  veteranIn: Practice[];
+  beginnerIn: Practice[];
+  interestedIn: Discipline[];
   bike: string;
   lookingFor: string;
   bio: string;
@@ -312,17 +352,25 @@ export async function saveSignupRequest(request: {
 }
 
 export function formatSignupMessage(request: SignupRequest) {
-  const role = request.role === "mentor" ? "Veterano" : "Principiante";
+  const veteran = request.veteranIn.map((item) =>
+    item === "ebike" ? "e-bike" : disciplineLabel[item],
+  );
+  const beginner = request.beginnerIn.map((item) =>
+    item === "ebike" ? "e-bike" : disciplineLabel[item],
+  );
+  const interested = request.interestedIn.map((item) => disciplineLabel[item]).join(", ");
+  const lookingFor = decodeSignupMeta(request.lookingFor).lookingFor || request.lookingFor;
   return [
     "Solicitud de alta — Adopta un eBiker",
     "",
     `Nombre: ${request.name}`,
     `Correo: ${request.email}`,
     `Ciudad: ${request.city}`,
-    `Tipo: ${role}`,
-    `Modalidad: ${request.discipline}`,
+    `Veterano en: ${veteran.join(", ") || "—"}`,
+    `Principiante en: ${beginner.join(", ") || "—"}`,
+    `Interesado en: ${interested || "—"}`,
     `Bici: ${request.bike || "—"}`,
     `Cómo sale: ${request.bio || "—"}`,
-    `Qué busca: ${request.lookingFor || "—"}`,
+    `Qué busca: ${lookingFor || "—"}`,
   ].join("\n");
 }
