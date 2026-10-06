@@ -10,6 +10,7 @@ type State = { error?: string; ok?: boolean };
 
 type Draft = {
   name: string;
+  lastName: string;
   email: string;
   country: string;
   countryOther: string;
@@ -28,6 +29,7 @@ const DRAFT_KEY = "adopta.join-form";
 function emptyDraft(): Draft {
   return {
     name: "",
+    lastName: "",
     email: "",
     country: "",
     countryOther: "",
@@ -62,6 +64,7 @@ function readDraft(): Draft {
 function draftFromForm(data: FormData): Draft {
   return {
     name: String(data.get("name") ?? ""),
+    lastName: String(data.get("lastName") ?? ""),
     email: String(data.get("email") ?? ""),
     country: String(data.get("country") ?? ""),
     countryOther: String(data.get("countryOther") ?? ""),
@@ -168,9 +171,21 @@ export function JoinForm({
           name="name"
           required
           minLength={2}
-          autoComplete="nickname"
+          autoComplete="given-name"
           value={draft.name}
           onChange={(event) => setDraft((current) => ({ ...current, name: event.target.value }))}
+          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
+        />
+      </label>
+      <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
+        {t.forms.lastName}
+        <input
+          name="lastName"
+          autoComplete="family-name"
+          value={draft.lastName}
+          onChange={(event) =>
+            setDraft((current) => ({ ...current, lastName: event.target.value }))
+          }
           className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>

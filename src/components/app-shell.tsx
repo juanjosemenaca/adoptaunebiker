@@ -13,15 +13,17 @@ export function AppShell({
   variant,
   locale,
   t,
+  locked = false,
 }: {
   children: ReactNode;
   session: SessionUser | null;
   variant: "public" | "intranet" | "admin";
   locale: Locale;
   t: Dictionary;
+  locked?: boolean;
 }) {
   const links = hrefs(locale);
-  const withSideNav = variant === "admin" || variant === "intranet";
+  const withSideNav = (variant === "admin" || variant === "intranet") && !locked;
 
   return (
     <div className={`relative flex flex-col ${withSideNav ? "h-dvh overflow-hidden" : "min-h-full"}`}>

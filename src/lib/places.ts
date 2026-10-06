@@ -250,3 +250,17 @@ export function formatSignupPlace(city: string, country: string) {
   if (city && country) return `${city} · ${country}`;
   return city || country;
 }
+
+export function parseSignupPlace(value: string) {
+  const parts = value
+    .split(" · ")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  if (parts.length >= 2) {
+    return {
+      city: parts.slice(0, -1).join(" · "),
+      country: parts[parts.length - 1] ?? "",
+    };
+  }
+  return { city: value.trim(), country: "" };
+}

@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import {
+  approveSignupRequestAction,
   deleteSignupRequestAction,
   rejectSignupRequestAction,
   setSignupWorkflowStatus,
@@ -30,6 +31,13 @@ export function SignupRequestToolbar({
     },
     {},
   );
+  const [approveState, approveAction, approvePending] = useActionState(
+    async (_prev: State, formData: FormData): Promise<State> => {
+      const result = await approveSignupRequestAction(formData);
+      return result ?? {};
+    },
+    {},
+  );
   const [rejectState, rejectAction, rejectPending] = useActionState(
     async (_prev: State, formData: FormData): Promise<State> => {
       const result = await rejectSignupRequestAction(formData);
@@ -45,8 +53,9 @@ export function SignupRequestToolbar({
     {},
   );
 
-  const closed = status === "rejected" || status === "accepted";
-  const busy = statusPending || rejectPending || deletePending;
+  const accepted = status === "accepted";
+  const closed = status === "rejected" || accepted;
+  const busy = statusPending || approvePending || rejectPending || deletePending;
 
   return (
     <div className="mt-10 space-y-6">
@@ -76,14 +85,26 @@ export function SignupRequestToolbar({
       {statusState.error ? <p className="text-sm text-sodium">{statusState.error}</p> : null}
 
       <section className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-        <button
-          type="button"
-          disabled
-          title={t.admin.approveSoon}
-          className="min-h-11 cursor-not-allowed bg-line px-4 text-xs font-semibold uppercase tracking-[0.16em] text-mist"
+        <form
+          action={approveAction}
+          onSubmit={(event) => {
+            if (accepted || busy) {
+              event.preventDefault();
+              return;
+            }
+            if (!window.confirm(t.admin.approveConfirm)) event.preventDefault();
+          }}
         >
-          {t.admin.approve}
-        </button>
+          <input type="hidden" name="id" value={id} />
+          <input type="hidden" name="locale" value={locale} />
+          <button
+            type="submit"
+            disabled={accepted || busy}
+            className="min-h-11 bg-sodium px-4 text-xs font-semibold uppercase tracking-[0.16em] text-bone disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {approvePending ? "…" : t.admin.approve}
+          </button>
+        </form>
         <form
           action={rejectAction}
           onSubmit={(event) => {
@@ -125,6 +146,7 @@ export function SignupRequestToolbar({
           </button>
         </form>
       </section>
+      {approveState.error ? <p className="text-sm text-sodium">{approveState.error}</p> : null}
       {rejectState.error ? <p className="text-sm text-sodium">{rejectState.error}</p> : null}
       {deleteState.error ? <p className="text-sm text-sodium">{deleteState.error}</p> : null}
       <p className="max-w-xl text-sm leading-6 text-mist">{t.admin.approveSoon}</p>

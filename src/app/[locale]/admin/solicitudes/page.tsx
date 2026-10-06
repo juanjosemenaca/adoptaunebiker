@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SignupRequestToolbar } from "@/components/signup-request-toolbar";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { fill, getDictionary } from "@/i18n/get-dictionary";
 import { hrefs } from "@/lib/paths";
 import { inboxStatusLabel } from "@/lib/signup-inbox";
 import { interestedLabel, practiceListLabel } from "@/lib/signup-meta";
@@ -16,7 +16,7 @@ export default async function AdminRequestsPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ estado?: string; ver?: string }>;
+  searchParams: Promise<{ estado?: string; ver?: string; alta?: string; correo?: string }>;
 }) {
   const { locale } = await params;
   const query = await searchParams;
@@ -29,6 +29,7 @@ export default async function AdminRequestsPage({
     if (!item) notFound();
 
     const fields = [
+      { label: t.forms.lastName, value: item.lastName || "—" },
       { label: t.forms.email, value: item.email },
       { label: t.forms.city, value: item.city },
       { label: t.forms.veteranIn, value: practiceListLabel(t, item.veteranIn) || "—" },
@@ -39,6 +40,14 @@ export default async function AdminRequestsPage({
       { label: t.forms.looking, value: item.lookingFor || "—" },
       { label: t.admin.requestLocale, value: item.locale },
     ];
+    const fullName = [item.name, item.lastName].filter(Boolean).join(" ");
+    const approved = query.alta === "ok";
+    const mailNote =
+      query.correo === "ok"
+        ? fill(t.admin.mailSent, { email: item.email })
+        : query.correo === "fail"
+          ? fill(t.admin.mailFailed, { email: item.email })
+          : "";
 
     return (
       <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -50,8 +59,14 @@ export default async function AdminRequestsPage({
             timeStyle: "short",
           })}
         </p>
-        <h1 className="display mt-3 text-6xl sm:text-7xl">{item.name}</h1>
+        <h1 className="display mt-3 text-6xl sm:text-7xl">{fullName}</h1>
         <p className="mt-4 text-mist">{t.admin.detailTitle}</p>
+        {approved ? (
+          <p role="status" className="mt-6 max-w-xl border border-volt bg-rubber p-4 text-sm leading-7 text-bone">
+            {t.admin.approveOk}
+            {mailNote ? ` ${mailNote}` : ""}
+          </p>
+        ) : null}
 
         <dl className="mt-10 space-y-5 border border-line bg-rubber p-5 sm:p-6">
           {fields.map((field) => (
@@ -133,7 +148,7 @@ export default async function AdminRequestsPage({
               <h2
                 className={`display mt-3 text-3xl ${item.inboxStatus === "unread" ? "text-bone" : "text-mist"}`}
               >
-                {item.name}
+                {[item.name, item.lastName].filter(Boolean).join(" ")}
               </h2>
               <p className="mt-2 text-sm text-mist">
                 {item.email} · {item.city}

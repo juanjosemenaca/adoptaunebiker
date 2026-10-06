@@ -17,6 +17,7 @@ export type SignupRequest = {
   id: string;
   createdAt: string;
   name: string;
+  lastName: string;
   email: string;
   city: string;
   role: Role;
@@ -66,6 +67,7 @@ function toRequest(row: SignupRow): SignupRequest {
     id: row.id,
     createdAt: row.created_at,
     name: row.name,
+    lastName: meta.lastName,
     email: row.email,
     city: row.city,
     role,
@@ -117,6 +119,7 @@ async function readLocal(): Promise<SignupRequest[]> {
         id: String(item.id ?? crypto.randomUUID()),
         createdAt: String(item.createdAt ?? new Date().toISOString()),
         name: String(item.name ?? ""),
+        lastName: String(item.lastName ?? meta.lastName ?? ""),
         email: String(item.email ?? ""),
         city: String(item.city ?? ""),
         role,
@@ -287,8 +290,27 @@ export async function findSignupByEmail(email: string) {
   return items.find((item) => item.email === email) ?? null;
 }
 
+export async function rejectSignupRequest(id: string) {
+  const supabase = await supabaseUserClient();
+  if (supabase) {
+    const both = await supabase
+      .from("signup_requests")
+      .update({ inbox_status: "rejected", status: "rejected" })
+      .eq("id", id);
+    if (!both.error) return;
+    const { error } = await supabase
+      .from("signup_requests")
+      .update({ inbox_status: "rejected" })
+      .eq("id", id);
+    if (error) throw error;
+    return;
+  }
+  await updateSignupInboxStatus(id, "rejected");
+}
+
 export async function saveSignupRequest(request: {
   name: string;
+  lastName: string;
   email: string;
   city: string;
   role: Role;
@@ -364,6 +386,7 @@ export function formatSignupMessage(request: SignupRequest) {
     "Solicitud de alta — Adopta un eBiker",
     "",
     `Nombre: ${request.name}`,
+    `Apellidos: ${request.lastName || "—"}`,
     `Correo: ${request.email}`,
     `Ciudad: ${request.city}`,
     `Veterano en: ${veteran.join(", ") || "—"}`,

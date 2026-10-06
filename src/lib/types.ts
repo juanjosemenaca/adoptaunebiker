@@ -29,6 +29,8 @@ export function isSignupWorkflowStatus(value: string): value is SignupWorkflowSt
   return SIGNUP_WORKFLOW_STATUSES.includes(value as SignupWorkflowStatus);
 }
 
+export type MemberStatus = "active" | "inactive";
+
 export type Rider = {
   id: string;
   slug: string;
@@ -59,6 +61,10 @@ export type SessionUser = Pick<
 > & {
   email?: string;
   kind?: AccountKind;
+  lastName?: string;
+  country?: string;
+  mustChangePassword?: boolean;
+  memberStatus?: MemberStatus;
 };
 
 export type BondStatus = "pending" | "accepted" | "declined";

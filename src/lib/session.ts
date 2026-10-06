@@ -44,6 +44,13 @@ type ProfileRow = {
   tags: string[] | null;
   km_month: number | null;
   years: number | null;
+  last_name?: string | null;
+  country?: string | null;
+  veteran_in?: string[] | null;
+  beginner_in?: string[] | null;
+  interested_in?: string[] | null;
+  must_change_password?: boolean | null;
+  member_status?: string | null;
   kind: string;
   email: string | null;
 };
@@ -53,14 +60,18 @@ function profileToSession(row: ProfileRow, email?: string): SessionUser {
     id: row.id,
     slug: row.slug,
     name: row.display_name,
+    lastName: row.last_name ?? "",
     role: row.role === "ebiker" ? "ebiker" : "mentor",
     discipline: isDiscipline(row.discipline) ? row.discipline : "carretera",
     city: row.city,
+    country: row.country ?? "",
     bike: row.bike ?? "",
     bio: row.bio ?? "",
     lookingFor: row.looking_for ?? "",
     email: email ?? row.email ?? undefined,
     kind: row.kind === "admin" || isAdminEmail(email ?? row.email ?? "") ? "admin" : "user",
+    mustChangePassword: Boolean(row.must_change_password),
+    memberStatus: row.member_status === "inactive" ? "inactive" : "active",
   };
 }
 
@@ -87,7 +98,11 @@ export const getSession = cache(async (): Promise<SessionUser | null> => {
   const { supabase, user } = await getAuthContext();
   if (user && supabase) {
     const { data } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
-    if (data) return profileToSession(data as ProfileRow, user.email ?? undefined);
+    if (data) {
+      const session = profileToSession(data as ProfileRow, user.email ?? undefined);
+      if (session.kind !== "admin" && session.memberStatus === "inactive") return null;
+      return session;
+    }
   }
   return getLegacyCookieSession();
 });
@@ -102,19 +117,24 @@ async function getLegacyCookieSession(): Promise<SessionUser | null> {
     return null;
   }
   const disciplineRaw = String(parsed.discipline ?? "");
-  return {
+  const session: SessionUser = {
     id: parsed.id,
     slug: parsed.slug,
     name: parsed.name,
     role: parsed.role === "ebiker" ? "ebiker" : "mentor",
     discipline: isDiscipline(disciplineRaw) ? disciplineRaw : "carretera",
     city: parsed.city,
+    country: parsed.country,
     bike: parsed.bike ?? "",
     bio: parsed.bio ?? "",
     lookingFor: parsed.lookingFor ?? "",
     email: parsed.email,
     kind: parsed.kind === "admin" ? "admin" : "user",
+    mustChangePassword: Boolean(parsed.mustChangePassword),
+    memberStatus: parsed.memberStatus === "inactive" ? "inactive" : "active",
   };
+  if (session.kind !== "admin" && session.memberStatus === "inactive") return null;
+  return session;
 }
 
 export async function getProfileSession(userId: string, email?: string) {
@@ -157,18 +177,27 @@ export const listCommunityProfiles = cache(async (): Promise<Rider[]> => {
   if (!supabase || !user) return [];
   const { data, error } = await supabase.from("profiles").select("*").eq("kind", "user");
   if (error || !data) return [];
-  return data.map((row) => profileToRider(row as ProfileRow));
+  return data
+    .filter((row) => (row as ProfileRow).member_status !== "inactive")
+    .map((row) => profileToRider(row as ProfileRow));
 });
 
 export async function countCommunityProfiles() {
   const { supabase, user } = await getAuthContext();
   if (!supabase || !user) return 0;
-  const { count, error } = await supabase
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id, member_status")
+    .eq("kind", "user");
+  if (!error && data) {
+    return data.filter((row) => (row as ProfileRow).member_status !== "inactive").length;
+  }
+  const fallback = await supabase
     .from("profiles")
     .select("id", { count: "exact", head: true })
     .eq("kind", "user");
-  if (error) return 0;
-  return count ?? 0;
+  if (fallback.error) return 0;
+  return fallback.count ?? 0;
 }
 
 export async function emailHasProfile(email: string) {

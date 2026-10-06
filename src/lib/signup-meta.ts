@@ -2,6 +2,7 @@ import { isDiscipline, isPractice, parsePracticeList } from "@/lib/labels";
 import type { Dictionary } from "@/i18n/types";
 import type { Discipline, Practice, Role } from "@/lib/types";
 
+const META_V3 = /^\[\[v3\|([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]\]/;
 const META_V2 = /^\[\[v2\|([^|]*)\|([^|]*)\|([^\]]*)\]\]/;
 const META_V1 = /^\[\[v1\|([^|]+)\|([^\]]*)\]\]/;
 
@@ -9,21 +10,50 @@ export type SignupMeta = {
   veteranIn: Practice[];
   beginnerIn: Practice[];
   interestedIn: Discipline[];
+  lastName: string;
   practice: Practice | null;
   lookingFor: string;
 };
+
+function decodeMetaPart(value: string) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
 
 export function encodeSignupMeta(
   veteranIn: Practice[],
   beginnerIn: Practice[],
   interestedIn: Discipline[],
   lookingFor: string,
+  lastName = "",
 ) {
-  const meta = `[[v2|${veteranIn.join(",")}|${beginnerIn.join(",")}|${interestedIn.join(",")}]]`;
+  const meta = `[[v3|${veteranIn.join(",")}|${beginnerIn.join(",")}|${interestedIn.join(",")}|${encodeURIComponent(lastName)}]]`;
   return lookingFor ? `${meta}${lookingFor}` : meta;
 }
 
 export function decodeSignupMeta(lookingFor: string): SignupMeta {
+  const v3 = lookingFor.match(META_V3);
+  if (v3) {
+    const veteranIn = parsePracticeList(v3[1].split(","));
+    const beginnerIn = parsePracticeList(v3[2].split(",")).filter(
+      (item) => !veteranIn.includes(item),
+    );
+    return {
+      veteranIn,
+      beginnerIn,
+      interestedIn: v3[3]
+        .split(",")
+        .map((item) => item.trim())
+        .filter(isDiscipline),
+      lastName: decodeMetaPart(v3[4]).trim(),
+      practice: veteranIn[0] ?? beginnerIn[0] ?? null,
+      lookingFor: lookingFor.slice(v3[0].length),
+    };
+  }
+
   const v2 = lookingFor.match(META_V2);
   if (v2) {
     const veteranIn = parsePracticeList(v2[1].split(","));
@@ -37,6 +67,7 @@ export function decodeSignupMeta(lookingFor: string): SignupMeta {
         .split(",")
         .map((item) => item.trim())
         .filter(isDiscipline),
+      lastName: "",
       practice: veteranIn[0] ?? beginnerIn[0] ?? null,
       lookingFor: lookingFor.slice(v2[0].length),
     };
@@ -52,6 +83,7 @@ export function decodeSignupMeta(lookingFor: string): SignupMeta {
         .split(",")
         .map((item) => item.trim())
         .filter(isDiscipline),
+      lastName: "",
       practice,
       lookingFor: lookingFor.slice(v1[0].length),
     };
@@ -61,6 +93,7 @@ export function decodeSignupMeta(lookingFor: string): SignupMeta {
     veteranIn: [],
     beginnerIn: [],
     interestedIn: [],
+    lastName: "",
     practice: null,
     lookingFor,
   };
