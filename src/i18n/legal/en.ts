@@ -13,6 +13,7 @@ export const legalEn: LegalCopy = {
     cookies: "Cookies",
     terms: "Terms of use",
     settings: "Cookie settings",
+    backHome: "Back to home",
   },
   consent: {
     title: "Cookies and privacy",

@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { LegalDocument } from "@/components/legal-document";
 import { PublicJsonLd } from "@/components/public-json-ld";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { isLocale } from "@/i18n/config";
+import { hrefs } from "@/lib/paths";
 import { publicMetadata } from "@/lib/seo";
 import { localePath } from "@/lib/site";
 
 export type LegalKind = "notice" | "privacy" | "cookies" | "terms";
+
+const backHomeClass =
+  "inline-flex min-h-11 items-center justify-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone hover:brightness-110";
 
 export const legalPathByKind: Record<LegalKind, string> = {
   notice: "/aviso-legal",
@@ -54,9 +59,19 @@ export async function LegalScreen({ locale, kind }: { locale: string; kind: Lega
           { name: doc.title, url },
         ]}
       />
-      <p className="text-[10px] uppercase tracking-[0.22em] text-sodium">{t.legal.nav.menu}</p>
-      <div className="mt-3">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-[10px] uppercase tracking-[0.22em] text-sodium">{t.legal.nav.menu}</p>
+        <Link href={hrefs(lang).home} className={`${backHomeClass} self-start`}>
+          {t.legal.nav.backHome}
+        </Link>
+      </div>
+      <div className="mt-6">
         <LegalDocument copy={t.legal} doc={doc} />
+      </div>
+      <div className="mx-auto mt-12 max-w-3xl">
+        <Link href={hrefs(lang).home} className={backHomeClass}>
+          {t.legal.nav.backHome}
+        </Link>
       </div>
     </div>
   );

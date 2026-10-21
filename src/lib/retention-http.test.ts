@@ -75,9 +75,12 @@ describe("retention HTTP guards", () => {
   it("keeps GET as dry-run unless the weekly apply flag is set", async () => {
     delete process.env.RETENTION_PURGE_APPLY;
     const dry = await readRetentionIntent(new Request("https://adoptaunebiker.com/api/retention/purge"));
+    process.env.RETENTION_PURGE_APPLY = "true";
+    const ignored = await readRetentionIntent(new Request("https://adoptaunebiker.com/api/retention/purge"));
     process.env.RETENTION_PURGE_APPLY = "1";
     const apply = await readRetentionIntent(new Request("https://adoptaunebiker.com/api/retention/purge"));
     assert.equal(dry.apply, false);
+    assert.equal(ignored.apply, false);
     assert.equal(apply.apply, true);
   });
 

@@ -30,7 +30,12 @@ export function BrandLogo({
       className={`relative inline-block shrink-0 ${sizes[size]} ${className ?? ""}`}
       aria-label="Adopta un eBiker"
       onClick={() => {
-        if (pathname === href) window.scrollTo(0, 0);
+        const samePage = pathname === href || pathname === `${href}/`;
+        if (!samePage) return;
+        window.scrollTo(0, 0);
+        if (window.location.hash) {
+          history.replaceState(null, "", href);
+        }
       }}
     >
       <Image

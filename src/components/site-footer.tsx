@@ -3,7 +3,7 @@ import type { Dictionary } from "@/i18n/types";
 import type { Locale } from "@/i18n/config";
 import { BrandLogo } from "@/components/brand-logo";
 import { CookieSettingsButton } from "@/components/privacy-provider";
-import { anchors, hrefs } from "@/lib/paths";
+import { hrefs } from "@/lib/paths";
 
 const linkClass = "inline-flex min-h-11 items-center hover:text-bone";
 
@@ -17,13 +17,12 @@ export function SiteFooter({
   t: Dictionary;
 }) {
   const links = hrefs(locale);
-  const jump = anchors();
 
   return (
     <footer className="mt-20 border-t border-line">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 sm:flex-row sm:items-end sm:justify-between sm:px-6">
         <div>
-          <BrandLogo size="footer" href={variant === "public" ? jump.home : links.home} />
+          <BrandLogo size="footer" href={links.home} />
           <p className="display mt-5 text-4xl text-bone">{t.footer.alone}</p>
           <p className="mt-2 max-w-sm text-sm text-mist">{t.footer.blurb}</p>
         </div>

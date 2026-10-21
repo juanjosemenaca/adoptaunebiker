@@ -13,6 +13,7 @@ export const legalCa: LegalCopy = {
     cookies: "Galetes",
     terms: "Condicions d’ús",
     settings: "Configurar galetes",
+    backHome: "Tornar a l’inici",
   },
   consent: {
     title: "Galetes i privadesa",

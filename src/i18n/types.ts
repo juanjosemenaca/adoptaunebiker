@@ -47,6 +47,7 @@ export type LegalCopy = {
     cookies: string;
     terms: string;
     settings: string;
+    backHome: string;
   };
 };
 

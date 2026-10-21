@@ -36,6 +36,41 @@ Al anonimizar una solicitud aceptada se sustituyen nombre, correo, ciudad, bici,
 - Respuesta: recuentos y `entityId` (UUID), sin correos ni nombres.
 - Un apply escribe en logs solo recuentos.
 
+## Dry-run (sin borrar)
+
+No activar `RETENTION_PURGE_APPLY`. El valor `true` no habilita el apply; solo `1` lo haría.
+
+El cron de Vercel llama `GET /api/retention/purge` y envía `Authorization: Bearer $CRON_SECRET` si el plan lo inyecta. El endpoint también acepta `RETENTION_CRON_SECRET`. Si ambos faltan, la petición queda en 401 y no hay simulación.
+
+Cuando existan `SUPABASE_SERVICE_ROLE_KEY` y uno de esos secretos:
+
+```bash
+curl -sS -X GET "$ORIGIN/api/retention/purge" \
+  -H "Authorization: Bearer $RETENTION_CRON_SECRET"
+```
+
+La respuesta debe tener `dryRun: true` y `applied: false`. Guarda `candidates` (UUID y motivo). No debe haber `entityType=member` de cuentas activas o `kind=admin`, ni filas con hold.
+
+PITR/backup: confirmarlo en el panel de Supabase del proyecto `yuhfjmlekblutmymtavm`. Este repositorio no lo puede afirmar.
+
+## Último administrador (009)
+
+La 009 no se vuelve a aplicar desde aquí. En el SQL editor de Adopta, solo lectura:
+
+```sql
+select tgname
+from pg_trigger
+where tgrelid = 'public.profiles'::regclass
+  and tgname in ('profiles_protect_last_admin_upd', 'profiles_protect_last_admin_del');
+
+select count(*) filter (where kind = 'admin') as admins
+from public.profiles;
+```
+
+Deben existir esos dos triggers. No borrar ni degradar al último admin real para probarlo.
+
+La 009 cuenta otros administradores sin bloqueo. Dos degradaciones concurrentes de dos admins distintos podrían, en teoría, dejar el sistema a cero. No se ha reproducido aquí. Un 010 con `pg_advisory_xact_lock` sobre el mismo espacio que el purge (o un `SELECT … FOR UPDATE` de las filas admin) lo cerraría; no se aplica en este paso.
+
 ## Recuperación
 
-No hay papelera. Restaurar solo con backup o PITR de Supabase, si el instante anterior al DELETE sigue cubierto. Antes de un apply hay que guardar el listado de candidatos del dry-run y marcar holds.
+No hay papelera. Restaurar solo con backup o PITR de Supabase, si el instante anterior al DELETE sigue cubierto. Antes de un apply hay que guardar el listado de candidatos del dry-run y marcar holds. El PITR no está confirmado desde este entorno.

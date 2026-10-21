@@ -13,6 +13,7 @@ export const legalFr: LegalCopy = {
     cookies: "Cookies",
     terms: "Conditions d’utilisation",
     settings: "Configurer les cookies",
+    backHome: "Retour à l’accueil",
   },
   consent: {
     title: "Cookies et confidentialité",

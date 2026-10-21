@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useActionState, useEffect, useState, type FormEvent } from "react";
+import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { joinCommunity } from "@/app/actions";
 import { analyticsEvents, trackEvent } from "@/lib/analytics";
@@ -112,6 +112,7 @@ export function JoinForm({
 }) {
   const [draft, setDraft] = useState(emptyDraft);
   const [started, setStarted] = useState(false);
+  const completedRef = useRef(false);
   const [state, action, pending] = useActionState(
     async (_prev: State, formData: FormData): Promise<State> => {
       const result = await joinCommunity(formData);
@@ -123,7 +124,10 @@ export function JoinForm({
   useEffect(() => {
     if (state.ok) {
       sessionStorage.removeItem(DRAFT_KEY);
-      trackEvent(analyticsEvents.registrationComplete);
+      if (!completedRef.current) {
+        completedRef.current = true;
+        trackEvent(analyticsEvents.registrationComplete);
+      }
       return;
     }
     setDraft(readDraft());

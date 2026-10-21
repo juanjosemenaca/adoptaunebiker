@@ -33,8 +33,7 @@ export function SiteHeader({
     href: `${links.home}${hrefByKey[section.key]}`,
     label: t.nav[section.key],
   }));
-  const logoHref =
-    variant === "public" ? jump.home : variant === "admin" ? links.admin : links.intranet;
+  const logoHref = links.home;
 
   return (
     <header

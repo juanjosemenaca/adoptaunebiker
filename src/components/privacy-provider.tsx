@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { LegalCopy } from "@/i18n/types";
 import { hrefs } from "@/lib/paths";
+import { disableBrowserAnalytics, enableBrowserAnalytics } from "@/lib/analytics";
 import {
   applyPrivacyChoice,
   type PrivacyPrefs,
@@ -90,6 +91,8 @@ export function PrivacyProvider({
     (analytics: boolean) => {
       const { prefs: next, assignments } = applyPrivacyChoice(analytics, isSecurePage());
       writeAssignments(assignments);
+      if (analytics) enableBrowserAnalytics();
+      else disableBrowserAnalytics();
       setPrefs(next);
       setAnalyticsChoice(analytics);
       setDialogOpen(false);
