@@ -91,3 +91,10 @@ textarea:focus-visible {
     )
     1;
 }
+
+.ride-map .leaflet-container {
+  height: 100%;
+  width: 100%;
+  background: var(--panel);
+  font-family: inherit;
+}

@@ -3,9 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { riders } from "@/data/riders";
 import { AdoptForm } from "@/components/adopt-form";
+import { RiderRides } from "@/components/rider-rides";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hrefs, loginHref } from "@/lib/paths";
 import { findRider, getBonds, getSession } from "@/lib/session";
+import { listMemberRides } from "@/lib/strava";
 
 export function generateStaticParams() {
   return riders.map((rider) => ({ slug: rider.slug }));
@@ -39,7 +41,10 @@ export default async function RiderPage({
   const links = hrefs(locale);
 
   const session = await getSession();
-  const bonds = await getBonds();
+  const [bonds, rides] = await Promise.all([
+    getBonds(),
+    listMemberRides(rider.id),
+  ]);
   const existing = session
     ? bonds.find(
         (bond) =>
@@ -95,6 +100,12 @@ export default async function RiderPage({
             </span>
           ))}
         </div>
+        {rides.length > 0 ? (
+          <section className="mt-12">
+            <h2 className="display text-4xl">{t.intranet.stravaTitle}</h2>
+            <RiderRides rides={rides} t={t} />
+          </section>
+        ) : null}
       </article>
 
       <aside className="h-fit border border-line bg-rubber p-6">

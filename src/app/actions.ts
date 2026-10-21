@@ -44,6 +44,7 @@ import {
   getSession,
   isAdmin,
 } from "@/lib/session";
+import { disconnectStrava, stravaConnectHref, syncStravaActivities } from "@/lib/strava";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 import type { Bond, BondStatus, MemberStatus, Role } from "@/lib/types";
@@ -182,6 +183,9 @@ export async function loginCommunity(formData: FormData) {
             requested.includes("/admin") ? safeIntranetPath(requested, locale) : links.admin,
           );
         }
+        if (requested.includes("/api/strava/connect")) {
+          redirect(stravaConnectHref(locale));
+        }
         redirect(
           requested.includes("/intranet") ? safeIntranetPath(requested, locale) : links.intranet,
         );
@@ -206,6 +210,9 @@ export async function loginCommunity(formData: FormData) {
     redirect(
       requested.includes("/admin") ? safeIntranetPath(requested, locale) : links.admin,
     );
+  }
+  if (requested.includes("/api/strava/connect")) {
+    redirect(stravaConnectHref(locale));
   }
   redirect(
     requested.includes("/intranet") ? safeIntranetPath(requested, locale) : links.intranet,
@@ -576,4 +583,49 @@ export async function deleteMemberNoteAction(formData: FormData) {
 
   revalidateMembers(locale, id);
   redirect(hrefs(locale).adminMember(id));
+}
+
+function revalidateStrava(locale: string, slug?: string) {
+  const lang = isLocale(locale) ? locale : defaultLocale;
+  revalidatePath(`/${lang}/intranet/cuenta`);
+  revalidatePath(`/${lang}/intranet`, "layout");
+  if (slug) revalidatePath(`/${lang}/intranet/rider/${slug}`);
+}
+
+export async function syncStravaAction(formData: FormData) {
+  const locale = localeFromForm(formData);
+  const t = getDictionary(locale);
+  const session = await getSession();
+  if (!session) {
+    redirect(loginHref(locale, hrefs(locale).cuenta));
+  }
+
+  try {
+    await syncStravaActivities();
+  } catch (error) {
+    logServerError("[syncStravaAction]", error);
+    return { error: t.errors.stravaSync };
+  }
+
+  revalidateStrava(locale, session.slug);
+  redirect(`${hrefs(locale).cuenta}?strava=ok`);
+}
+
+export async function disconnectStravaAction(formData: FormData) {
+  const locale = localeFromForm(formData);
+  const t = getDictionary(locale);
+  const session = await getSession();
+  if (!session) {
+    redirect(loginHref(locale, hrefs(locale).cuenta));
+  }
+
+  try {
+    await disconnectStrava();
+  } catch (error) {
+    logServerError("[disconnectStravaAction]", error);
+    return { error: t.errors.strava };
+  }
+
+  revalidateStrava(locale, session.slug);
+  redirect(`${hrefs(locale).cuenta}?strava=off`);
 }

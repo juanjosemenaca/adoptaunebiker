@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { logoutCommunity, respondBond } from "@/app/actions";
+import { RiderRides } from "@/components/rider-rides";
+import { StravaConnect } from "@/components/strava-connect";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hrefs } from "@/lib/paths";
 import { getBonds, getSession, listRiders } from "@/lib/session";
+import {
+  getMyStravaStatus,
+  hasStravaConfig,
+  listMemberRides,
+  stravaConnectHref,
+} from "@/lib/strava";
 
 export async function generateMetadata({
   params,
@@ -16,10 +24,13 @@ export async function generateMetadata({
 
 export default async function CuentaPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ strava?: string }>;
 }) {
   const { locale } = await params;
+  const query = await searchParams;
   const session = await getSession();
   if (!session) return null;
   const t = getDictionary(locale);
@@ -30,11 +41,29 @@ export default async function CuentaPage({
     declined: t.intranet.declined,
   };
 
-  const riders = await listRiders();
-  const bonds = await getBonds();
+  const [riders, bonds, strava, rides] = await Promise.all([
+    listRiders(),
+    getBonds(),
+    getMyStravaStatus(),
+    listMemberRides(session.id, { includePrivate: true }),
+  ]);
   const byId = new Map(riders.map((rider) => [rider.id, rider]));
   const incoming = bonds.filter((bond) => bond.toId === session.id);
   const outgoing = bonds.filter((bond) => bond.fromId === session.id);
+  const stravaNote =
+    query.strava === "ok"
+      ? t.intranet.stravaOk
+      : query.strava === "off"
+        ? t.intranet.stravaOff
+        : query.strava === "denied"
+          ? t.intranet.stravaDenied
+          : query.strava === "taken"
+            ? t.intranet.stravaTaken
+            : query.strava === "noconfig"
+              ? t.intranet.stravaConfig
+              : query.strava === "error"
+                ? t.intranet.stravaError
+                : "";
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -64,6 +93,21 @@ export default async function CuentaPage({
           </button>
         </form>
       </div>
+
+      {stravaNote ? (
+        <p role="status" className="mt-8 max-w-xl border border-volt bg-rubber p-4 text-sm leading-7 text-bone">
+          {stravaNote}
+        </p>
+      ) : null}
+
+      <StravaConnect
+        locale={locale}
+        t={t}
+        configured={hasStravaConfig()}
+        connectHref={stravaConnectHref(locale)}
+        status={strava}
+      />
+      <RiderRides rides={rides} t={t} />
 
       <section className="mt-12">
         <h2 className="display text-4xl">{t.intranet.incoming}</h2>

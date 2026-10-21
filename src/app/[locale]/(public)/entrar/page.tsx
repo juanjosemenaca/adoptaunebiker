@@ -4,6 +4,7 @@ import { LoginForm } from "@/components/login-form";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hrefs, safeIntranetPath } from "@/lib/paths";
 import { getSession, isAdmin } from "@/lib/session";
+import { stravaConnectHref } from "@/lib/strava";
 import { privateMetadata } from "@/lib/seo";
 
 export async function generateMetadata({
@@ -31,6 +32,9 @@ export default async function EntrarPage({
   const next = safeIntranetPath(query.next, locale);
 
   if (session) {
+    if (query.next?.includes("/api/strava/connect") && !isAdmin(session)) {
+      redirect(stravaConnectHref(locale));
+    }
     redirect(isAdmin(session) ? links.admin : links.intranet);
   }
 
