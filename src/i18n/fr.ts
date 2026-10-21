@@ -2,9 +2,9 @@ import type { Dictionary } from "@/i18n/types";
 
 export const fr: Dictionary = {
   meta: {
-    title: "Adopta un eBiker · Groupes pour débutants et vétérans",
+    title: "Trouve des compagnons pour sortir à vélo | Adopta un eBiker",
     description:
-      "Communauté cycliste pour trouver des compagnons de sortie. Débutants et vétérans, vélo électrique ou musculaire, sur route, VTT et gravel. Tu demandes une place ; un administrateur la confirme.",
+      "Trouve des cyclistes près de chez toi et partage des sorties, quel que soit ton niveau ou ton vélo : électrique, VTT, route ou gravel. Le lancement commence à Barcelone et dans l’aire métropolitaine.",
   },
   nav: {
     home: "Accueil",
@@ -30,6 +30,8 @@ export const fr: Dictionary = {
     requests: "Demandes",
     logoff: "Log off",
     collapseMenu: "Replier le menu",
+    barcelona: "Barcelone",
+    contact: "Contact",
   },
   kickers: {
     idea: "L’idée",
@@ -42,6 +44,7 @@ export const fr: Dictionary = {
     alone: "Tu ne roules pas seul.",
     blurb:
       "La même passion. Des vélos différents. Une seule communauté. Ici, pas de traces : des gens.",
+    contact: "Écris-nous",
   },
   roles: {
     mentor: "Vétéran",
@@ -54,13 +57,35 @@ export const fr: Dictionary = {
     brandGloss: "Adopte un e-biker",
     line1: "Trouve ton groupe.",
     line2: "Partage ta passion.",
-    lead: "Des cyclistes de tous niveaux, âges et vélos, réunis par l’envie de pédaler. On relie ceux qui commencent à ceux qui ont déjà les kilomètres, en électrique ou musculaire, sur route, VTT ou gravel.",
+    lead: "Trouve des cyclistes près de chez toi et partage des sorties, quel que soit ton niveau ou ton vélo : électrique, VTT, route ou gravel.",
     ctaIn: "Aller à l’intranet",
-    ctaOut: "Demander une place",
+    ctaOut: "Je veux rejoindre la communauté",
+    ctaGuide: "Je veux accompagner d’autres cyclistes",
+    launchNote:
+      "Nous sommes en phase de lancement. On commence à Barcelone et dans l’aire métropolitaine, avec l’intention de grandir dans le reste de l’Espagne. Si tu vis plus loin, tu peux quand même demander une place.",
+    matchKicker: "Comment on vous relie",
+    matchTitle: "Zone, pratique et envie. Le reste s’organise.",
+    matchItems: [
+      {
+        title: "Tu dis qui tu es",
+        body: "Ta zone, si tu commences ou tu accompagnes, et si tu sors en route, VTT, gravel ou électrique. C’est pour te croiser avec des gens compatibles, pas pour t’étiqueter.",
+      },
+      {
+        title: "Un administrateur confirme l’inscription",
+        body: "Il n’y a pas d’inscription automatique. On lit la demande et on t’écrit par e-mail quand tu as une place.",
+      },
+      {
+        title: "Tu entre dans le peloton et tu demandes une adoption",
+        body: "Dans l’intranet tu vois des cyclistes de ta pratique et de ta zone. Si ça colle, tu demandes une adoption. La première sortie se parle entre vous.",
+      },
+    ],
+    closeTitle: "L’étape suivante, c’est de demander une place.",
+    closeLead:
+      "Dis-nous qui tu es et comment tu sors. Si on t’accepte, tu reçois l’accès à l’intranet pour rencontrer le peloton.",
     offerKicker: "Ce que nous proposons",
     offerTitle: "Des compagnons de sortie, pas une appli de traces.",
     offerLead:
-      "Adopta un eBiker relie les cyclistes qui veulent un groupe : ceux qui commencent et ceux qui ont déjà les kilomètres. Route, VTT ou gravel. Électrique ou musculaire.",
+      "On ne vend pas de parcours ni de kudos. On relie ceux qui veulent un groupe : ceux qui commencent et ceux qui ont déjà les kilomètres.",
     offerItems: [
       {
         title: "Trouve ton groupe",
@@ -96,7 +121,7 @@ export const fr: Dictionary = {
     ],
     about: "Qui nous sommes",
     bridge:
-      "Le vélo nous unit. La route, on la fait ensemble. Il ne s’agit pas d’opposer deux façons de voir le cyclisme, mais de montrer qu’elles peuvent cohabiter. Le meilleur compagnon n’est pas celui qui a le même vélo, c’est celui qui a envie de sortir.",
+      "Le meilleur compagnon n’est pas celui qui a le même vélo, c’est celui qui a envie de sortir.",
     veteranKicker: "Le vétéran",
     veteranTitle: "Une expérience qui se partage.",
     veteranBody:
@@ -115,9 +140,10 @@ export const fr: Dictionary = {
     manifestoCta: "Lire le manifeste",
   },
   about: {
-    metaTitle: "Qui nous sommes",
+    metaTitle: "Qui nous sommes | Communauté cycliste | Adopta un eBiker",
     metaDescription:
-      "Une communauté cycliste pour relier débutants et vétérans, en vélo électrique ou musculaire.",
+      "Adopta un eBiker est une communauté pour trouver des compagnons de sortie : débutants et vétérans, électrique ou musculaire, sur route, VTT et gravel.",
+    pageTitle: "Une communauté pour trouver des compagnons de sortie",
     title1: "Qui nous",
     title2: "sommes",
     lead: "Personne ne reste sans sortir à vélo faute de groupe, parce qu’il commence, parce qu’il n’a pas le niveau des autres ou parce qu’il roule un vélo différent.",
@@ -150,9 +176,10 @@ export const fr: Dictionary = {
     join: "Rejoindre la communauté",
   },
   beginner: {
-    metaTitle: "Qu’est-ce qu’un débutant",
+    metaTitle: "Trouve un groupe cycliste pour débutants",
     metaDescription:
-      "Quelqu’un qui commence, qui a peu d’expérience, ou qui veut des sorties plus longues. Électrique ou musculaire. Route, VTT ou gravel.",
+      "Si tu commences, si tu as peu d’expérience ou si tu veux des sorties plus longues sans te faire distancer, demande une place et trouve de la compagnie à ton rythme. Électrique, VTT, route ou gravel.",
+    pageTitle: "Trouve un groupe cycliste pour débutants",
     title: "Débutants",
     lead: "L’envie de découvrir. Quelqu’un qui commence, qui a peu de temps de selle, ou qui veut passer à des sorties plus longues, en compagnie et à son rythme.",
     heading: "Deux profils, une passion",
@@ -170,9 +197,10 @@ export const fr: Dictionary = {
     cta: "Je veux qu’on m’accompagne",
   },
   veteran: {
-    metaTitle: "Qu’est-ce qu’un vétéran",
+    metaTitle: "Ouvre ton groupe et accompagne d’autres cyclistes",
     metaDescription:
-      "Un cycliste avec des kilomètres dans les jambes et l’envie de les partager. Pas besoin de palmarès.",
+      "Si tu as déjà les kilomètres, tu peux ouvrir le groupe à ceux qui commencent. Adopter, c’est accompagner, pas diriger. Route, VTT, gravel ou électrique.",
+    pageTitle: "Accompagne d’autres cyclistes. Ouvre ton groupe.",
     title: "Vétérans",
     lead: "Une expérience qui se partage. Quelqu’un avec des kilomètres derrière lui : route, VTT, gravel ou VAE. Pas besoin de courir.",
     heading: "Adopter, c’est accompagner",
@@ -213,7 +241,26 @@ export const fr: Dictionary = {
     title1: "Entrer",
     title2: "dans l’intranet",
     lead: "Entre avec ton e-mail et mot de passe. Le compte décide si tu vas sur l’intranet ou en administration.",
-    demo: "Pour essayer : admin@adopta.local (administrateur) ou veterano@adopta.local / ebiker@adopta.local (utilisateur). Mot de passe : adopta",
+    demo: "Utilise l’e-mail et le mot de passe reçus quand ta demande a été acceptée. La première fois, tu devras le changer.",
+  },
+  barcelona: {
+    metaTitle: "Des compagnons pour sortir à vélo à Barcelone",
+    metaDescription:
+      "Une plateforme pour trouver des cyclistes à Barcelone et dans l’aire métropolitaine. Débutants et vétérans, électrique, VTT, route ou gravel. Le projet est en lancement.",
+    title: "Des compagnons pour sortir à vélo à Barcelone",
+    lead: "Adopta un eBiker commence à Barcelone et dans l’aire métropolitaine. L’objectif : que personne ne reste sans groupe parce qu’il commence, à cause du vélo qu’il roule, ou parce qu’il ne connaît personne.",
+    body: [
+      "Si tu vis à Barcelone, au Baix Llobregat, au Vallès, au Maresme ou dans une autre commune de l’aire métropolitaine, tu peux demander une place et dire dans quelle discipline tu sors.",
+      "On n’affirme pas qu’il y a déjà un groupe actif dans chaque quartier. On construit la communauté : plus il y a de cyclistes, plus il est facile de croiser des gens de la même zone et du même rythme.",
+      "S’il y a encore peu de membres près de chez toi, un administrateur peut te mettre en contact quand quelqu’un de compatible apparaît. En attendant, ta demande reste enregistrée.",
+    ],
+    coverageTitle: "Couverture réelle",
+    coverage:
+      "Le lancement se concentre sur Barcelone et l’aire métropolitaine. L’intention est de grandir dans le reste de l’Espagne. Si tu vis hors de cette zone, tu peux quand même rejoindre.",
+    emptyTitle: "S’il y a encore peu de cyclistes dans ta zone",
+    empty:
+      "Demande une place quand même. On n’invente ni groupes ni sorties. Quand quelqu’un de compatible arrive, l’inscription relue sert justement à faire cette mise en relation avec calme.",
+    start: "Demander une place à Barcelone",
   },
   admin: {
     kicker: "Administration",
@@ -326,6 +373,7 @@ export const fr: Dictionary = {
     { q: "Puis-je sortir avec quelqu’un qui a un autre vélo ?", a: "Oui, si le parcours, le rythme et les vélos sont compatibles. On l’organise à l’avance et tout le monde sait à quoi s’attendre." },
     { q: "Faut-il un niveau physique précis ?", a: "Non. Chacun indique un niveau approximatif et le type de sortie. C’est plus simple de trouver un groupe au bon rythme." },
     { q: "La plateforme sert-elle seulement à apprendre ?", a: "Non. Aussi aux vétérans qui cherchent de nouveaux partenaires, à ceux qui veulent d’autres parcours, et à ceux qui veulent simplement élargir leur cercle." },
+    { q: "C’est seulement pour Barcelone ?", a: "Le lancement commence à Barcelone et dans l’aire métropolitaine, avec l’intention de grandir dans le reste de l’Espagne. Si tu vis plus loin, tu peux demander une place : on ne promet pas un groupe actif dans chaque ville, mais ta demande reste pour quand des gens près de chez toi arriveront." },
   ],
   forms: {
     name: "Prénom",
@@ -368,11 +416,21 @@ export const fr: Dictionary = {
     ask: "Demander une adoption",
     sent: "Demande envoyée. Si {name} accepte, le lien reste ouvert.",
     requestOk: "Nous avons bien reçu ta demande d’inscription. L’administrateur la examinera et te répondra par e-mail.",
+    requestOkNext:
+      "Tu n’as rien d’autre à faire maintenant. Si on t’accepte, tu recevras un e-mail avec l’accès à l’intranet. La première fois, tu devras changer le mot de passe.",
+    whyPlace: "Pour te proposer des gens de ta zone, pas n’importe où.",
+    whyRole: "Tu peux être vétéran dans une discipline et débutant dans une autre. Coche celles qui te correspondent.",
+    whyInterested: "Pour croiser des profils de la même discipline : route, VTT ou gravel.",
+    dataUse:
+      "Nous utilisons ces informations pour examiner ta demande et, si tu es accepté, créer ta place. Elles ne sont pas publiées sur le site public.",
   },
   intranet: {
     kicker: "Intranet",
     hello: "Salut, {name}",
-    intro: "{role} · {discipline} · {city}. L’adoption se fait ici. Les traces, dehors : Komoot, Strava ou ce que tu utilises déjà.",
+    intro: "{role} · {discipline} · {city}. L’adoption se fait ici. Si tu connectes Strava, tes progrès et tes traces apparaissent sur la fiche, en lecture seule.",
+    nextTitle: "Étape suivante",
+    nextLead:
+      "Ouvre le peloton pour trouver des cyclistes de ta discipline et de ta zone, ou va sur ta place pour revoir le profil et connecter Strava.",
     asked: "On te demande",
     bonds: "Liens",
     seePeloton: "Voir le peloton",
@@ -418,6 +476,52 @@ export const fr: Dictionary = {
     declined: "refusé",
     changeTitle: "Change ton mot de passe",
     changeLead: "C’est la première connexion. Choisis un nouveau mot de passe. Tu ne peux pas garder adopta.",
+    stravaTitle: "Strava",
+    stravaLead:
+      "Connecte ton compte pour montrer km, dénivelé et traces sur ta fiche. Sur Strava tu peux entrer avec Google, Apple ou ton e-mail. Personne n’édite les sorties ici : on les voit seulement, pour proposer des traces.",
+    stravaConnect: "Connecter Strava",
+    stravaConnectGoogle: "Continuer avec Google",
+    stravaConnected: "Connecté en tant que {name}",
+    stravaSync: "Actualiser les sorties",
+    stravaSyncing: "Actualisation…",
+    stravaDisconnect: "Déconnecter",
+    stravaDisconnectConfirm: "Retirer Strava de ta place ? Les sorties enregistrées seront effacées.",
+    stravaEmpty: "Pas encore de sorties vélo à afficher.",
+    stravaMissingConfig: "Strava n’est pas configuré dans cet environnement.",
+    stravaLast30: "30 derniers jours",
+    calendarPrev: "Mois précédent",
+    calendarNext: "Mois suivant",
+    calendarClose: "Fermer",
+    calendarSummary: "Résumé du mois",
+    calendarPickMonth: "Mois",
+    calendarPickYear: "Année",
+    calendarWeekdays: ["L", "M", "M", "J", "V", "S", "D"],
+    calendarMonths: [
+      "Janvier",
+      "Février",
+      "Mars",
+      "Avril",
+      "Mai",
+      "Juin",
+      "Juillet",
+      "Août",
+      "Septembre",
+      "Octobre",
+      "Novembre",
+      "Décembre",
+    ],
+    stravaKm: "Km",
+    stravaElevation: "Dénivelé",
+    stravaTime: "Temps",
+    stravaOpen: "Voir sur Strava",
+    stravaNoPolyline: "Cette sortie n’a pas de trace pour la carte.",
+    stravaSynced: "Mis à jour",
+    stravaOk: "Strava est à jour.",
+    stravaOff: "Strava déconnecté.",
+    stravaDenied: "L’autorisation Strava n’a pas été donnée.",
+    stravaTaken: "Ce compte Strava est déjà lié à une autre place.",
+    stravaConfig: "Les clés Strava manquent sur le serveur.",
+    stravaError: "Impossible de connecter Strava. Réessaie.",
   },
   notFound: {
     kicker: "Hors carte",
@@ -452,5 +556,7 @@ export const fr: Dictionary = {
     bikeBeginner: "VAE pas encore de fiche",
     bio: "Tout juste arrivé. Ça sent encore le carton.",
     looking: "Quelqu’un avec qui sortir samedi prochain.",
+    strava: "Impossible de déconnecter Strava.",
+    stravaSync: "Impossible d’actualiser les sorties Strava.",
   },
 };

@@ -6,6 +6,7 @@ export const paths = {
   principiante: "/principiante",
   veterano: "/veterano",
   entrar: "/entrar",
+  barcelona: "/barcelona",
   intranet: "/intranet",
   admin: "/admin",
   adminMembers: "/admin/miembros",
@@ -35,6 +36,7 @@ export function hrefs(locale: string) {
     principiante: `${base}/principiante`,
     veterano: `${base}/veterano`,
     entrar: `${base}/entrar`,
+    barcelona: `${base}/barcelona`,
     intranet: `${base}/intranet`,
     admin: `${base}/admin`,
     adminMembers: `${base}/admin/miembros`,
@@ -52,9 +54,9 @@ export function adminNav(locale: string) {
   const links = hrefs(locale);
   return [
     { href: links.admin, key: "controlPanel" as const },
+    { href: links.adminRequests, key: "requests" as const },
     { href: links.adminMembers, key: "members" as const },
     { href: links.adminMeetups, key: "meetups" as const },
-    { href: links.adminRequests, key: "requests" as const },
   ];
 }
 
@@ -120,6 +122,9 @@ export function safeIntranetPath(
   locale: string = defaultLocale,
 ) {
   const lang: Locale = isLocale(locale) ? locale : defaultLocale;
+  if (value && value.includes("/api/strava/connect")) {
+    return `/api/strava/connect?locale=${lang}`;
+  }
   if (value && value.includes("/admin")) return withLocale(lang, value);
   if (value && value.includes("/intranet")) return withLocale(lang, value);
   return `/${lang}/intranet`;

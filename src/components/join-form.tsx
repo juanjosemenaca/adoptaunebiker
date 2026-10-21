@@ -2,6 +2,7 @@
 
 import { startTransition, useActionState, useEffect, useState, type FormEvent } from "react";
 import { joinCommunity } from "@/app/actions";
+import { analyticsEvents, trackEvent } from "@/lib/analytics";
 import type { Dictionary } from "@/i18n/types";
 import { COUNTRIES, OTHER_PLACE, countryById, countryLabel } from "@/lib/places";
 import { disciplines, practices } from "@/lib/labels";
@@ -105,9 +106,10 @@ export function JoinForm({
   t,
 }: {
   locale: string;
-  t: Dictionary;
+  t: Pick<Dictionary, "forms" | "disciplines">;
 }) {
   const [draft, setDraft] = useState(emptyDraft);
+  const [started, setStarted] = useState(false);
   const [state, action, pending] = useActionState(
     async (_prev: State, formData: FormData): Promise<State> => {
       const result = await joinCommunity(formData);
@@ -119,10 +121,17 @@ export function JoinForm({
   useEffect(() => {
     if (state.ok) {
       sessionStorage.removeItem(DRAFT_KEY);
+      trackEvent(analyticsEvents.registrationComplete);
       return;
     }
     setDraft(readDraft());
   }, [state.ok]);
+
+  function markStarted() {
+    if (started) return;
+    setStarted(true);
+    trackEvent(analyticsEvents.registrationStart);
+  }
 
   useEffect(() => {
     if (!state.ok && !state.error) return;
@@ -153,17 +162,23 @@ export function JoinForm({
 
   if (state.ok) {
     return (
-      <p
+      <div
         role="status"
         className="max-w-xl border border-volt bg-rubber p-5 text-sm leading-7 text-bone"
       >
-        {t.forms.requestOk}
-      </p>
+        <p>{t.forms.requestOk}</p>
+        <p className="mt-3 text-mist">{t.forms.requestOkNext}</p>
+      </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4 border border-line bg-rubber p-5">
+    <form
+      onSubmit={onSubmit}
+      onFocus={markStarted}
+      className="space-y-4 border border-line bg-rubber p-5"
+      aria-describedby={state.error ? "join-form-error" : undefined}
+    >
       <input type="hidden" name="locale" value={locale} />
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
         {t.forms.name}
@@ -201,6 +216,7 @@ export function JoinForm({
           className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
+      <p className="text-xs leading-6 text-mist">{t.forms.whyPlace}</p>
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
         {t.forms.country}
         <select
@@ -302,6 +318,7 @@ export function JoinForm({
           />
         </label>
       ) : null}
+      <p className="pt-2 text-xs leading-6 text-mist">{t.forms.whyRole}</p>
       <fieldset className="pt-3">
         <legend className={sectionLegendClass}>
           {t.forms.mentor}
@@ -342,6 +359,7 @@ export function JoinForm({
           ))}
         </div>
       </fieldset>
+      <p className="pt-2 text-xs leading-6 text-mist">{t.forms.whyInterested}</p>
       <fieldset className="pt-3">
         <legend className={sectionLegendClass}>
           {t.forms.interestedIn}
@@ -402,7 +420,12 @@ export function JoinForm({
           className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
-      {state.error ? <p className="text-sm text-sodium">{state.error}</p> : null}
+      {state.error ? (
+        <p id="join-form-error" role="alert" className="text-sm text-sodium">
+          {state.error}
+        </p>
+      ) : null}
+      <p className="text-xs leading-6 text-mist">{t.forms.dataUse}</p>
       <button
         type="submit"
         disabled={pending}

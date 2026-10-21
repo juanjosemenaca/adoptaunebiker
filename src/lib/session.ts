@@ -1,6 +1,6 @@
 import { riders } from "@/data/riders";
-import { isAdminEmail } from "@/lib/auth";
 import { isDiscipline } from "@/lib/labels";
+import { profileAccountKind, resolveMemberSession } from "@/lib/session-resolve";
 import { getAuthContext } from "@/lib/supabase/auth-context";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
@@ -69,7 +69,7 @@ function profileToSession(row: ProfileRow, email?: string): SessionUser {
     bio: row.bio ?? "",
     lookingFor: row.looking_for ?? "",
     email: email ?? row.email ?? undefined,
-    kind: row.kind === "admin" || isAdminEmail(email ?? row.email ?? "") ? "admin" : "user",
+    kind: profileAccountKind(row.kind),
     mustChangePassword: Boolean(row.must_change_password),
     memberStatus: row.member_status === "inactive" ? "inactive" : "active",
   };
@@ -94,48 +94,22 @@ function profileToRider(row: ProfileRow): Rider {
 }
 
 export const getSession = cache(async (): Promise<SessionUser | null> => {
-  if (!hasSupabaseEnv()) return getLegacyCookieSession();
-  const { supabase, user } = await getAuthContext();
-  if (user && supabase) {
-    const { data } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
-    if (data) {
-      const session = profileToSession(data as ProfileRow, user.email ?? undefined);
-      if (session.kind !== "admin" && session.memberStatus === "inactive") return null;
-      return session;
+  let profile: SessionUser | null = null;
+  if (hasSupabaseEnv()) {
+    const { supabase, user } = await getAuthContext();
+    if (user && supabase) {
+      const { data } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
+      if (data) {
+        profile = profileToSession(data as ProfileRow, user.email ?? undefined);
+      }
     }
   }
-  return getLegacyCookieSession();
-});
-
-async function getLegacyCookieSession(): Promise<SessionUser | null> {
   const store = await cookies();
-  const parsed = parseJson<Partial<SessionUser> | null>(
-    store.get(SESSION_COOKIE)?.value,
-    null,
-  );
-  if (!parsed?.id || !parsed.slug || !parsed.name || !parsed.role || !parsed.city) {
-    return null;
-  }
-  const disciplineRaw = String(parsed.discipline ?? "");
-  const session: SessionUser = {
-    id: parsed.id,
-    slug: parsed.slug,
-    name: parsed.name,
-    role: parsed.role === "ebiker" ? "ebiker" : "mentor",
-    discipline: isDiscipline(disciplineRaw) ? disciplineRaw : "carretera",
-    city: parsed.city,
-    country: parsed.country,
-    bike: parsed.bike ?? "",
-    bio: parsed.bio ?? "",
-    lookingFor: parsed.lookingFor ?? "",
-    email: parsed.email,
-    kind: parsed.kind === "admin" ? "admin" : "user",
-    mustChangePassword: Boolean(parsed.mustChangePassword),
-    memberStatus: parsed.memberStatus === "inactive" ? "inactive" : "active",
-  };
-  if (session.kind !== "admin" && session.memberStatus === "inactive") return null;
-  return session;
-}
+  return resolveMemberSession({
+    profile,
+    cookieValue: store.get(SESSION_COOKIE)?.value,
+  });
+});
 
 export async function getProfileSession(userId: string, email?: string) {
   const supabase = await createClient();

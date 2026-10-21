@@ -46,6 +46,12 @@ export default async function IntranetHomePage({
           city: session.city,
         })}
       </p>
+      <div className="mt-6 max-w-xl border border-line bg-rubber p-5">
+        <p className="text-[10px] uppercase tracking-[0.18em] text-sodium">
+          {t.intranet.nextTitle}
+        </p>
+        <p className="mt-2 text-sm leading-7 text-mist">{t.intranet.nextLead}</p>
+      </div>
 
       <dl className="mt-10 grid max-w-2xl grid-cols-2 gap-6 border-t border-line pt-6">
         <div>

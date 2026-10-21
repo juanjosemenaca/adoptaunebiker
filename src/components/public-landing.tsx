@@ -1,75 +1,15 @@
-import type { ReactNode } from "react";
 import Link from "next/link";
 import { Faq } from "@/components/faq";
 import { HashLink } from "@/components/hash-link";
-import { JoinForm } from "@/components/join-form";
+import { JoinPanel } from "@/components/join-panel";
+import { Apartado, PlazaCallout, Subapartado } from "@/components/public-blocks";
 import { PublicJsonLd } from "@/components/public-json-ld";
-import { logoutCommunity } from "@/app/actions";
+import { analyticsEvents } from "@/lib/analytics";
 import { isLocale } from "@/i18n/config";
 import { anchors, hrefs } from "@/lib/paths";
 import { localePath } from "@/lib/site";
 import type { Dictionary } from "@/i18n/types";
 import type { SessionUser } from "@/lib/types";
-
-function Apartado({
-  id,
-  kicker,
-  title,
-  lead,
-  children,
-}: {
-  id: string;
-  kicker?: string;
-  title: ReactNode;
-  lead?: string;
-  children: ReactNode;
-}) {
-  return (
-    <section id={id} className="mt-24 scroll-mt-28 border-t-2 border-bone/25 pt-8 sm:mt-28 sm:pt-10">
-      {kicker ? (
-        <p className="mb-3 text-[10px] uppercase tracking-[0.22em] text-sodium">{kicker}</p>
-      ) : null}
-      <h2 className="display max-w-4xl text-5xl text-bone sm:text-7xl">{title}</h2>
-      {lead ? <p className="mt-6 max-w-2xl text-lg leading-8 text-mist">{lead}</p> : null}
-      {children}
-    </section>
-  );
-}
-
-function Subapartado({ children }: { children: ReactNode }) {
-  return (
-    <div className="mt-12 border-l-2 border-sodium/45 pl-5 sm:mt-14 sm:pl-8">{children}</div>
-  );
-}
-
-function PlazaCallout({
-  kicker,
-  points,
-  href,
-  cta,
-}: {
-  kicker: string;
-  points: readonly string[];
-  href: string;
-  cta: string;
-}) {
-  return (
-    <div className="flex max-w-xl flex-col border border-line bg-rubber p-6 sm:p-8">
-      <p className="text-[10px] uppercase tracking-[0.22em] text-sodium">{kicker}</p>
-      <ul className="mt-5 flex-1 space-y-4 text-sm leading-7 text-mist">
-        {points.map((point) => (
-          <li key={point}>{point}</li>
-        ))}
-      </ul>
-      <HashLink
-        href={href}
-        className="mt-8 inline-flex min-h-11 self-start items-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
-      >
-        {cta}
-      </HashLink>
-    </div>
-  );
-}
 
 export function PublicLanding({
   locale,
@@ -89,6 +29,7 @@ export function PublicLanding({
         locale={locale}
         url={localePath(isLocale(locale) ? locale : "es")}
         t={t}
+        variant="home"
       />
       <section id="inicio" className="scroll-mt-28">
         <h1 className="display max-w-4xl text-[clamp(2.6rem,12vw,7rem)] text-bone">
@@ -107,6 +48,7 @@ export function PublicLanding({
           {t.home.line2}
         </p>
         <p className="mt-6 max-w-2xl text-lg leading-8 text-mist">{t.home.lead}</p>
+        <p className="mt-4 max-w-2xl text-sm leading-7 text-mist">{t.home.launchNote}</p>
         <p className="mt-8 max-w-3xl text-base leading-8 text-bone/90">{t.home.bridge}</p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           {session ? (
@@ -117,12 +59,21 @@ export function PublicLanding({
               {t.home.ctaIn}
             </Link>
           ) : (
-            <HashLink
-              href={jump.join}
-              className="inline-flex min-h-11 items-center justify-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
-            >
-              {t.home.ctaOut}
-            </HashLink>
+            <>
+              <HashLink
+                href={jump.join}
+                eventName={analyticsEvents.signUpCtaClick}
+                className="inline-flex min-h-11 items-center justify-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
+              >
+                {t.home.ctaOut}
+              </HashLink>
+              <HashLink
+                href={jump.veteran}
+                className="inline-flex min-h-11 items-center justify-center border border-line px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
+              >
+                {t.home.ctaGuide}
+              </HashLink>
+            </>
           )}
           <HashLink
             href={jump.how}
@@ -233,7 +184,8 @@ export function PublicLanding({
               ))}
             </div>
             <HashLink
-              href={jump.how}
+              href={jump.join}
+              eventName={analyticsEvents.signUpCtaClick}
               className="mt-8 inline-flex min-h-11 items-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
             >
               {t.about.join}
@@ -281,6 +233,23 @@ export function PublicLanding({
       </Apartado>
 
       <Apartado
+        kicker={t.home.matchKicker}
+        title={t.home.matchTitle}
+      >
+        <ol className="mt-8 grid gap-4 sm:grid-cols-3">
+          {t.home.matchItems.map((item, index) => (
+            <li key={item.title} className="border border-line bg-rubber p-5">
+              <p className="display text-3xl text-sodium">0{index + 1}</p>
+              <h3 className="mt-3 text-sm font-semibold uppercase tracking-[0.14em]">
+                {item.title}
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-mist">{item.body}</p>
+            </li>
+          ))}
+        </ol>
+      </Apartado>
+
+      <Apartado
         id="entrar"
         title={
           <>
@@ -305,45 +274,9 @@ export function PublicLanding({
           </ol>
         </Subapartado>
 
-        {session ? (
-          <Subapartado>
-            <div id="crear-plaza" className="max-w-xl scroll-mt-28 border border-volt bg-rubber p-6">
-              <p className="text-[11px] uppercase tracking-[0.24em] text-volt">
-                {t.enter.inside}
-              </p>
-              <h3 className="display mt-3 text-4xl">{session.name}</h3>
-              <p className="mt-3 text-mist">
-                {session.role === "mentor" ? t.roles.mentor : t.roles.beginner} ·{" "}
-                {t.disciplines[session.discipline]} · {session.city}
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link
-                  href={links.intranet}
-                  className="bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
-                >
-                  {t.enter.goIntranet}
-                </Link>
-                <form action={logoutCommunity}>
-                  <input type="hidden" name="locale" value={locale} />
-                  <button
-                    type="submit"
-                    className="border border-line px-5 py-3 text-xs uppercase tracking-[0.2em] text-mist"
-                  >
-                    {t.enter.logout}
-                  </button>
-                </form>
-              </div>
-            </div>
-          </Subapartado>
-        ) : (
-          <Subapartado>
-            <div id="crear-plaza" className="scroll-mt-28">
-              <h3 className="display text-2xl sm:text-3xl">{t.enter.fresh}</h3>
-              <p className="mt-3 mb-6 max-w-xl text-sm text-mist">{t.enter.freshLead}</p>
-              <JoinForm locale={locale} t={t} />
-            </div>
-          </Subapartado>
-        )}
+        <Subapartado>
+          <JoinPanel locale={locale} t={t} session={session} />
+        </Subapartado>
       </Apartado>
 
       <Apartado id="codigo" title={t.nav.code} lead={t.enter.codeLead}>
@@ -366,6 +299,27 @@ export function PublicLanding({
         <Subapartado>
           <Faq items={t.faq} />
         </Subapartado>
+      </Apartado>
+
+      <Apartado title={t.home.closeTitle} lead={t.home.closeLead}>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          {session ? (
+            <Link
+              href={links.intranet}
+              className="inline-flex min-h-11 items-center justify-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
+            >
+              {t.home.ctaIn}
+            </Link>
+          ) : (
+            <HashLink
+              href={jump.join}
+              eventName={analyticsEvents.signUpCtaClick}
+              className="inline-flex min-h-11 items-center justify-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
+            >
+              {t.home.ctaOut}
+            </HashLink>
+          )}
+        </div>
       </Apartado>
     </div>
   );

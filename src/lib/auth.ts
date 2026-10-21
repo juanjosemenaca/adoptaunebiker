@@ -1,21 +1,28 @@
 import { riders } from "@/data/riders";
+import {
+  DEMO_ADMIN_EMAIL,
+  DEMO_MEMBER_EMAILS,
+  DEMO_PASSWORD,
+  demoAuthEnabled,
+  isDemoLoginAllowed,
+} from "@/lib/demo-auth";
 import type { AccountKind, SessionUser } from "@/lib/types";
 
-export const DEMO_PASSWORD = "adopta";
+export { DEMO_PASSWORD, demoAuthEnabled };
 
 export const demoAccounts = [
   {
-    email: "veterano@adopta.local",
+    email: DEMO_MEMBER_EMAILS[0],
     riderId: "r-nuria",
   },
   {
-    email: "ebiker@adopta.local",
+    email: DEMO_MEMBER_EMAILS[1],
     riderId: "r-leo",
   },
 ] as const;
 
 export const demoAdmin = {
-  email: "admin@adopta.local",
+  email: DEMO_ADMIN_EMAIL,
   name: "Administración",
 } as const;
 
@@ -73,4 +80,14 @@ export function demoUserByEmail(email: string): SessionUser | null {
   const demo = demoAccounts.find((item) => item.email === email);
   if (!demo) return null;
   return riderToSession(demo.riderId, email);
+}
+
+export function demoSessionFromLogin(
+  email: string,
+  password: string,
+  nodeEnv: string | undefined = process.env.NODE_ENV,
+): SessionUser | null {
+  if (!isDemoLoginAllowed(email, password, nodeEnv)) return null;
+  if (isAdminEmail(email)) return adminSession();
+  return demoUserByEmail(email);
 }

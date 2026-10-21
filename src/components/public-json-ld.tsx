@@ -5,19 +5,27 @@ export function PublicJsonLd({
   locale,
   url,
   t,
+  variant = "home",
+  pageTitle,
+  crumbs,
 }: {
   locale: string;
   url: string;
   t: Dictionary;
+  variant?: "home" | "page";
+  pageTitle?: string;
+  crumbs?: { name: string; url: string }[];
 }) {
   const origin = siteUrl();
   const organizationId = `${origin}/#organization`;
+  const websiteId = `${origin}/#website`;
   const organization = {
     "@context": "https://schema.org",
     "@type": ["Organization", "SportsOrganization"],
     "@id": organizationId,
     name: "Adopta un eBiker",
     url: origin,
+    email: "hola@adoptaunebiker.com",
     logo: {
       "@type": "ImageObject",
       url: `${origin}/logo.png`,
@@ -27,20 +35,14 @@ export function PublicJsonLd({
     description: t.meta.description,
     sport: "Cycling",
     areaServed: "ES",
-    knowsAbout: [
-      "Ciclismo",
-      "e-bike",
-      "MTB",
-      "Carretera",
-      "Gravel",
-      t.home.offerTitle,
-    ],
+    knowsAbout: ["Ciclismo", "e-bike", "MTB", "Carretera", "Gravel"],
   };
   const website = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": websiteId,
     name: "Adopta un eBiker",
-    url,
+    url: origin,
     inLanguage: locale,
     description: t.meta.description,
     publisher: { "@id": organizationId },
@@ -50,57 +52,50 @@ export function PublicJsonLd({
     "@type": "WebPage",
     "@id": `${url}#webpage`,
     url,
-    name: t.meta.title,
+    name: pageTitle ?? t.meta.title,
     description: t.meta.description,
     inLanguage: locale,
-    isPartOf: { "@id": url },
+    isPartOf: { "@id": websiteId },
     about: { "@id": organizationId },
     primaryImageOfPage: `${origin}/logo.png`,
   };
-  const offers = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    name: t.home.offerTitle,
-    description: t.home.offerLead,
-    itemListElement: t.home.offerItems.map((item, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      name: item.title,
-      description: item.body,
-    })),
-  };
-  const faq = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: t.faq.map((item) => ({
-      "@type": "Question",
-      name: item.q,
-      acceptedAnswer: { "@type": "Answer", text: item.a },
-    })),
-  };
+
+  const graphs = [organization, website, webpage] as object[];
+
+  if (variant === "home") {
+    graphs.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: t.faq.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
+    });
+  }
+
+  if (crumbs && crumbs.length > 0) {
+    graphs.push({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: crumbs.map((crumb, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: crumb.name,
+        item: crumb.url,
+      })),
+    });
+  }
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(website) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webpage) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(offers) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }}
-      />
+      {graphs.map((graph, index) => (
+        <script
+          key={index}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
+        />
+      ))}
     </>
   );
 }

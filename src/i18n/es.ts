@@ -2,9 +2,9 @@ import type { Dictionary } from "@/i18n/types";
 
 export const es: Dictionary = {
   meta: {
-    title: "Adopta un eBiker · Grupetas para principiantes y veteranos",
+    title: "Encuentra compañeros para salir en bici | Adopta un eBiker",
     description:
-      "Comunidad ciclista para encontrar compañeros de salida. Principiantes y veteranos, e-bike o bici convencional, en carretera, MTB y gravel. Pides plaza y un administrador te confirma el alta.",
+      "Encuentra ciclistas de tu zona y comparte rutas, sea cual sea tu nivel o tu bicicleta: eléctrica, MTB, carretera o gravel. El lanzamiento empieza en Barcelona y su área metropolitana.",
   },
   nav: {
     home: "Inicio",
@@ -30,6 +30,8 @@ export const es: Dictionary = {
     requests: "Solicitudes",
     logoff: "Log off",
     collapseMenu: "Recoger menú",
+    barcelona: "Barcelona",
+    contact: "Contacto",
   },
   kickers: {
     idea: "La idea",
@@ -42,6 +44,7 @@ export const es: Dictionary = {
     alone: "No vas solo.",
     blurb:
       "La misma pasión. Distintas bicicletas. Una sola comunidad. Aquí no hay tracks: hay gente.",
+    contact: "Escríbenos",
   },
   roles: {
     mentor: "Veterano",
@@ -54,13 +57,35 @@ export const es: Dictionary = {
     brandGloss: "",
     line1: "Encuentra tu grupeta.",
     line2: "Comparte tu pasión.",
-    lead: "Ciclistas de todos los niveles, edades y bicicletas, unidos por las ganas de salir a pedalear. Conectamos a quien empieza con quien ya lleva kilómetros, con bici eléctrica o convencional, en carretera, MTB o gravel.",
+    lead: "Encuentra ciclistas de tu zona y comparte rutas, sea cual sea tu nivel o tu bicicleta: eléctrica, MTB, carretera o gravel.",
     ctaIn: "Ir a la intranet",
-    ctaOut: "Pedir plaza",
+    ctaOut: "Quiero unirme a la comunidad",
+    ctaGuide: "Quiero acompañar a otros ciclistas",
+    launchNote:
+      "Estamos en fase de lanzamiento. Empezamos en Barcelona y su área metropolitana, con la intención de crecer al resto de España. Si vives más lejos, también puedes pedir plaza.",
+    matchKicker: "Cómo os encontramos",
+    matchTitle: "Zona, modalidad y ganas. El resto se organiza.",
+    matchItems: [
+      {
+        title: "Dices quién eres",
+        body: "Zona, si empiezas o acompañas, y si sales en carretera, MTB, gravel o e-bike. Sirve para cruzarte con gente compatible, no para etiquetarte.",
+      },
+      {
+        title: "Un administrador confirma el alta",
+        body: "No hay registro automático. Revisamos la solicitud y te escribimos por correo cuando tienes plaza.",
+      },
+      {
+        title: "Entras al pelotón y pides adopción",
+        body: "En la intranet ves ciclistas de tu modalidad y zona. Si encaja, pides adopción. La primera salida se habla entre vosotros.",
+      },
+    ],
+    closeTitle: "El siguiente paso es pedir plaza.",
+    closeLead:
+      "Cuéntanos quién eres y cómo sales. Si te aceptan, te llega el acceso a la intranet para conocer al pelotón.",
     offerKicker: "Qué ofrecemos",
     offerTitle: "Compañeros de salida, no una app de tracks.",
     offerLead:
-      "Adopta un eBiker conecta a ciclistas que quieren grupeta: quien empieza y quien ya tiene kilómetros. En carretera, MTB o gravel. Con e-bike o bici convencional.",
+      "No vendemos recorridos ni kudos. Conectamos a quien quiere grupeta: quien empieza y quien ya tiene kilómetros.",
     offerItems: [
       {
         title: "Encuentra tu grupeta",
@@ -96,7 +121,7 @@ export const es: Dictionary = {
     ],
     about: "Quiénes somos",
     bridge:
-      "La bicicleta nos une. El camino lo hacemos juntos. No se trata de enfrentar dos maneras de entender el ciclismo, sino de demostrar que pueden convivir. El mejor compañero de ruta no es quien lleva tu misma bici, sino quien comparte tus ganas de salir.",
+      "El mejor compañero de ruta no es quien lleva tu misma bici, sino quien comparte tus ganas de salir.",
     veteranKicker: "El veterano",
     veteranTitle: "Experiencia que se comparte.",
     veteranBody:
@@ -115,9 +140,10 @@ export const es: Dictionary = {
     manifestoCta: "Leer el manifiesto",
   },
   about: {
-    metaTitle: "Quiénes somos",
+    metaTitle: "Quiénes somos | Comunidad ciclista | Adopta un eBiker",
     metaDescription:
-      "Una comunidad ciclista para conectar principiantes y veteranos, con bici eléctrica o convencional.",
+      "Adopta un eBiker es una comunidad para encontrar compañeros de salida: principiantes y veteranos, e-bike o bici convencional, en carretera, MTB y gravel.",
+    pageTitle: "Una comunidad para encontrar compañeros de salida",
     title1: "Quiénes",
     title2: "somos",
     lead: "Nadie se queda sin salir en bici por no tener grupo, por estar empezando, por no tener el nivel de los demás o por usar una bici distinta.",
@@ -150,9 +176,10 @@ export const es: Dictionary = {
     join: "Únete a la comunidad",
   },
   beginner: {
-    metaTitle: "Qué es un principiante",
+    metaTitle: "Encuentra un grupo de ciclismo para principiantes",
     metaDescription:
-      "Quien empieza, lleva poco o quiere rutas más largas. Eléctrica o convencional. Carretera, MTB o gravel.",
+      "Si estás empezando, llevas poco o quieres rutas más largas sin quedarte atrás, pide plaza y busca compañía a tu ritmo. E-bike, MTB, carretera o gravel.",
+    pageTitle: "Encuentra un grupo de ciclismo para principiantes",
     title: "Principiantes",
     lead: "Ilusión por descubrir. Quien acaba de empezar, lleva poco tiempo o quiere dar el salto a rutas más largas, en compañía y a su ritmo.",
     heading: "Dos perfiles, una pasión",
@@ -170,9 +197,10 @@ export const es: Dictionary = {
     cta: "Quiero que me acompañen",
   },
   veteran: {
-    metaTitle: "Qué es un veterano",
+    metaTitle: "Abre tu grupeta y acompaña a otros ciclistas",
     metaDescription:
-      "Ciclista con kilómetros a las espaldas y ganas de compartirlos. No hace falta palmarés.",
+      "Si ya tienes kilómetros, puedes abrir la grupeta a quien empieza. Adoptar es acompañar, no dirigir. Carretera, MTB, gravel o e-bike.",
+    pageTitle: "Acompaña a otros ciclistas. Abre tu grupeta.",
     title: "Veteranos",
     lead: "Experiencia que se comparte. Alguien con kilómetros a las espaldas: carretera, MTB, gravel o e-bike. No tiene por qué competir.",
     heading: "Adoptar es acompañar",
@@ -213,7 +241,26 @@ export const es: Dictionary = {
     title1: "Entrar",
     title2: "a la intranet",
     lead: "Entra con tu correo y clave. La cuenta decide si vas a la intranet o a administración.",
-    demo: "Para probar: admin@adopta.local (administrador) o veterano@adopta.local / ebiker@adopta.local (usuario). Clave: adopta",
+    demo: "Usa el correo y la clave que recibiste al aceptar tu solicitud. La primera vez tendrás que cambiarla.",
+  },
+  barcelona: {
+    metaTitle: "Compañeros para salir en bici en Barcelona",
+    metaDescription:
+      "Plataforma para encontrar ciclistas en Barcelona y su área metropolitana. Principiantes y veteranos, e-bike, MTB, carretera o gravel. El proyecto está en lanzamiento.",
+    title: "Compañeros para salir en bici en Barcelona",
+    lead: "Adopta un eBiker empieza en Barcelona y su área metropolitana. El objetivo es que nadie se quede sin grupeta por estar empezando, por el tipo de bici o por no conocer a nadie con quien salir.",
+    body: [
+      "Si vives en Barcelona, el Baix Llobregat, el Vallès, el Maresme u otra localidad del área metropolitana, puedes pedir plaza y decir en qué modalidad sales.",
+      "No afirmamos que ya haya una grupeta activa en cada barrio. Estamos construyendo la comunidad: cuantos más ciclistas se apunten, más fácil será cruzar gente de la misma zona y ritmo.",
+      "Si aún hay pocos miembros cerca, un administrador puede ponerte en contacto cuando aparezca alguien compatible. Mientras tanto, tu solicitud queda registrada.",
+    ],
+    coverageTitle: "Cobertura real",
+    coverage:
+      "El lanzamiento se centra en Barcelona y su área metropolitana. La intención es crecer al resto de España. Si vives fuera de esa zona, también puedes unirte.",
+    emptyTitle: "Si todavía hay pocos ciclistas en tu zona",
+    empty:
+      "Pide plaza igual. No inventamos grupos ni salidas. Cuando haya alguien compatible, el alta revisada sirve precisamente para hacer ese cruce con calma.",
+    start: "Pedir plaza en Barcelona",
   },
   admin: {
     kicker: "Administración",
@@ -326,6 +373,7 @@ export const es: Dictionary = {
     { q: "¿Puedo salir con quien lleva otra bici?", a: "Sí, si la ruta, el ritmo y las bicis son compatibles. Se organiza con antelación y todo el mundo sabe qué esperar." },
     { q: "¿Hace falta un nivel físico determinado?", a: "No. Cada cual indica su nivel aproximado y el tipo de salida. Así es más fácil encontrar una grupeta con ritmo compatible." },
     { q: "¿La plataforma es solo para aprender?", a: "No. También para veteranos que buscan nuevos compañeros, quien quiere otros recorridos y quien simplemente quiere ampliar su círculo." },
+    { q: "¿Esto es solo para Barcelona?", a: "El lanzamiento empieza en Barcelona y su área metropolitana, con la intención de crecer al resto de España. Si vives más lejos, puedes pedir plaza: no prometemos una grupeta activa en cada localidad, pero tu solicitud queda para cuando haya gente cerca." },
   ],
   forms: {
     name: "Nombre",
@@ -368,11 +416,21 @@ export const es: Dictionary = {
     ask: "Pedir adopción",
     sent: "Petición enviada. Si {name} acepta, el vínculo queda abierto.",
     requestOk: "Hemos recibido tu solicitud de alta. El administrador la revisará y te responderá por correo.",
+    requestOkNext:
+      "No tienes que hacer nada más ahora. Si te aceptan, te llegará un correo con el acceso a la intranet. La primera vez tendrás que cambiar la clave.",
+    whyPlace: "Para proponerte gente de tu zona, no de cualquier sitio.",
+    whyRole: "Puedes ser veterano en una modalidad y principiante en otra. Marca las que te representen.",
+    whyInterested: "Así cruzamos perfiles de la misma modalidad: carretera, MTB o gravel.",
+    dataUse:
+      "Usamos estos datos para revisar tu solicitud y, si te aceptan, crear tu plaza. No los publicamos en la web abierta.",
   },
   intranet: {
     kicker: "Intranet",
     hello: "Hola, {name}",
-    intro: "{role} · {discipline} · {city}. Aquí se pide adopción. Las rutas, fuera: Komoot, Strava o lo que ya uses.",
+    intro: "{role} · {discipline} · {city}. Aquí se pide adopción. Si conectas Strava, tu progreso y tus trazas se ven en la ficha, solo lectura.",
+    nextTitle: "Siguiente paso",
+    nextLead:
+      "Abre el pelotón para encontrar ciclistas de tu modalidad y zona, o entra en tu plaza para revisar el perfil y conectar Strava.",
     asked: "Te piden",
     bonds: "Vínculos",
     seePeloton: "Ver pelotón",
@@ -418,6 +476,52 @@ export const es: Dictionary = {
     declined: "rechazado",
     changeTitle: "Cambia tu clave",
     changeLead: "Es el primer acceso. Elige una clave nueva. No puedes dejar adopta.",
+    stravaTitle: "Strava",
+    stravaLead:
+      "Conecta tu cuenta para mostrar km, desnivel y trazas en tu ficha. En Strava puedes entrar con Google, Apple o tu correo. Nadie edita las salidas aquí: solo se ven, para proponer rutas.",
+    stravaConnect: "Conectar Strava",
+    stravaConnectGoogle: "Continuar con Google",
+    stravaConnected: "Conectado como {name}",
+    stravaSync: "Actualizar salidas",
+    stravaSyncing: "Actualizando…",
+    stravaDisconnect: "Desconectar",
+    stravaDisconnectConfirm: "¿Quitar Strava de tu plaza? Se borran las salidas guardadas.",
+    stravaEmpty: "Aún no hay salidas de bici para mostrar.",
+    stravaMissingConfig: "Strava no está configurado en este entorno.",
+    stravaLast30: "Últimos 30 días",
+    calendarPrev: "Mes anterior",
+    calendarNext: "Mes siguiente",
+    calendarClose: "Cerrar",
+    calendarSummary: "Resumen mensual",
+    calendarPickMonth: "Mes",
+    calendarPickYear: "Año",
+    calendarWeekdays: ["L", "M", "X", "J", "V", "S", "D"],
+    calendarMonths: [
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre",
+    ],
+    stravaKm: "Km",
+    stravaElevation: "Desnivel",
+    stravaTime: "Tiempo",
+    stravaOpen: "Ver en Strava",
+    stravaNoPolyline: "Esta salida no trae traza para el mapa.",
+    stravaSynced: "Actualizado",
+    stravaOk: "Strava está al día.",
+    stravaOff: "Strava desconectado.",
+    stravaDenied: "No se ha dado permiso a Strava.",
+    stravaTaken: "Esa cuenta de Strava ya está ligada a otra plaza.",
+    stravaConfig: "Faltan las claves de Strava en el servidor.",
+    stravaError: "No se ha podido conectar Strava. Prueba otra vez.",
   },
   notFound: {
     kicker: "Fuera de mapa",
@@ -452,5 +556,7 @@ export const es: Dictionary = {
     bikeBeginner: "eBike aún sin ficha",
     bio: "Recién aterrizado. Todavía huele a caja.",
     looking: "Alguien con quien salir el próximo sábado.",
+    strava: "No se ha podido desconectar Strava.",
+    stravaSync: "No se han podido actualizar las salidas de Strava.",
   },
 };

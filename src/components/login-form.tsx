@@ -2,18 +2,22 @@
 
 import { useActionState } from "react";
 import { loginCommunity } from "@/app/actions";
-import type { Dictionary } from "@/i18n/types";
 
 type State = { error?: string };
 
 export function LoginForm({
   next,
   locale,
-  t,
+  labels,
 }: {
   next: string;
   locale: string;
-  t: Dictionary;
+  labels: {
+    email: string;
+    password: string;
+    entering: string;
+    enterIntranet: string;
+  };
 }) {
   const [state, action, pending] = useActionState(
     async (_prev: State, formData: FormData): Promise<State> => {
@@ -28,7 +32,7 @@ export function LoginForm({
       <input type="hidden" name="next" value={next} />
       <input type="hidden" name="locale" value={locale} />
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-        {t.forms.email}
+        {labels.email}
         <input
           name="email"
           type="email"
@@ -38,7 +42,7 @@ export function LoginForm({
         />
       </label>
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-        {t.forms.password}
+        {labels.password}
         <input
           name="password"
           type="password"
@@ -53,7 +57,7 @@ export function LoginForm({
         disabled={pending}
         className="min-h-11 w-full bg-sodium px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone disabled:opacity-60"
       >
-        {pending ? t.forms.entering : t.forms.enterIntranet}
+        {pending ? labels.entering : labels.enterIntranet}
       </button>
     </form>
   );

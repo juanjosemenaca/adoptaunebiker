@@ -3,7 +3,9 @@ import type { ReactNode } from "react";
 import Script from "next/script";
 import { cookies, headers } from "next/headers";
 import { Oswald, Figtree } from "next/font/google";
+import { AnalyticsScript } from "@/components/analytics-script";
 import { defaultLocale, htmlLang, isLocale } from "@/i18n/config";
+import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const display = Oswald({
@@ -33,9 +35,7 @@ export const metadata: Metadata = {
   description:
     "Comunidad ciclista para encontrar compañeros de salida. Principiantes y veteranos, e-bike o bici convencional, en carretera, MTB y gravel.",
   applicationName: "Adopta un eBiker",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://adoptaunebiker.com",
-  ),
+  metadataBase: new URL(siteUrl()),
   verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
     ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
     : undefined,
@@ -76,6 +76,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <Script id="open-at-inicio" strategy="beforeInteractive">
           {`try{var nav=performance.getEntriesByType("navigation")[0];var p=location.pathname;var home=/^\\/(es|ca|en|fr|de)\\/?$/.test(p)||p==="/";if(home&&nav&&nav.type==="reload"){history.scrollRestoration="manual";window.scrollTo(0,0)}}catch(e){}`}
         </Script>
+        <AnalyticsScript />
         {children}
       </body>
     </html>

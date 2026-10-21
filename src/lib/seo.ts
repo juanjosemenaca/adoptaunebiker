@@ -28,12 +28,11 @@ export function publicMetadata({
 }): Metadata {
   const lang = resolveLocale(locale);
   const url = localePath(lang, path);
-  const rest = !path || path === "/" ? "" : path.startsWith("/") ? path : `/${path}`;
   return {
     title: absoluteTitle ? { absolute: title } : title,
     description,
     alternates: {
-      canonical: `/${lang}${rest}`,
+      canonical: url,
       languages: languageAlternates(path),
     },
     openGraph: {

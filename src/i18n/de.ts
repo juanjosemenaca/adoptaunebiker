@@ -2,9 +2,9 @@ import type { Dictionary } from "@/i18n/types";
 
 export const de: Dictionary = {
   meta: {
-    title: "Adopta un eBiker · Gruppen für Einsteiger und Veteranen",
+    title: "Finde Leute zum Radfahren | Adopta un eBiker",
     description:
-      "Radsport-Community, um Leute zum Fahren zu finden. Einsteiger und Veteranen, E-Bike oder Muskelrad, auf Straße, MTB und Gravel. Du fragst um einen Platz; ein Administrator bestätigt ihn.",
+      "Finde Radfahrer in deiner Gegend und teile Touren, egal welches Niveau oder Rad: E-Bike, MTB, Straße oder Gravel. Der Start liegt in Barcelona und der Metropolregion.",
   },
   nav: {
     home: "Start",
@@ -30,6 +30,8 @@ export const de: Dictionary = {
     requests: "Anfragen",
     logoff: "Log off",
     collapseMenu: "Menü einklappen",
+    barcelona: "Barcelona",
+    contact: "Kontakt",
   },
   kickers: {
     idea: "Die Idee",
@@ -42,6 +44,7 @@ export const de: Dictionary = {
     alone: "Du fährst nicht allein.",
     blurb:
       "Dieselbe Leidenschaft. Verschiedene Räder. Eine Community. Hier gibt es keine Tracks: hier gibt es Leute.",
+    contact: "Schreib uns",
   },
   roles: {
     mentor: "Veteran",
@@ -54,13 +57,35 @@ export const de: Dictionary = {
     brandGloss: "Adoptiere einen E-Biker",
     line1: "Finde deine Gruppe.",
     line2: "Teile deine Leidenschaft.",
-    lead: "Radfahrer aller Niveaus, Alter und Räder, vereint durch die Lust zu fahren. Wir verbinden Einsteiger mit Menschen, die schon Kilometer in den Beinen haben, mit E-Bike oder Muskelrad, auf Straße, MTB oder Gravel.",
+    lead: "Finde Radfahrer in deiner Gegend und teile Touren, egal welches Niveau oder Rad: E-Bike, MTB, Straße oder Gravel.",
     ctaIn: "Zum Intranet",
-    ctaOut: "Platz anfragen",
+    ctaOut: "Ich will zur Community",
+    ctaGuide: "Ich will andere Radfahrer begleiten",
+    launchNote:
+      "Wir sind im Launch. Wir starten in Barcelona und der Metropolregion, mit dem Ziel, nach ganz Spanien zu wachsen. Wenn du weiter weg wohnst, kannst du trotzdem einen Platz anfragen.",
+    matchKicker: "Wie wir euch zusammenbringen",
+    matchTitle: "Ort, Disziplin und Lust. Der Rest organisiert sich.",
+    matchItems: [
+      {
+        title: "Du sagst, wer du bist",
+        body: "Gegend, ob du anfängst oder begleitest, und ob du Straße, MTB, Gravel oder E-Bike fährst. Das dient zum Matchen, nicht zum Etikettieren.",
+      },
+      {
+        title: "Ein Administrator bestätigt die Aufnahme",
+        body: "Es gibt keine automatische Registrierung. Wir prüfen die Anfrage und schreiben dir per Mail, wenn du einen Platz hast.",
+      },
+      {
+        title: "Du gehst ins Peloton und fragst um Adoption",
+        body: "Im Intranet siehst du Radfahrer deiner Disziplin und Gegend. Wenn es passt, fragst du um Adoption. Die erste Ausfahrt sprecht ihr unter euch ab.",
+      },
+    ],
+    closeTitle: "Der nächste Schritt ist, einen Platz anzufragen.",
+    closeLead:
+      "Erzähl uns, wer du bist und wie du fährst. Wenn du angenommen wirst, bekommst du den Intranet-Zugang und lernst das Peloton kennen.",
     offerKicker: "Was wir anbieten",
     offerTitle: "Leute zum Fahren, keine Track-App.",
     offerLead:
-      "Adopta un eBiker verbindet Radfahrer, die eine Gruppe wollen: Einsteiger und Menschen mit Kilometern in den Beinen. Straße, MTB oder Gravel. E-Bike oder Muskelrad.",
+      "Wir verkaufen keine Strecken und keine Kudos. Wir verbinden Leute, die eine Gruppe wollen: Einsteiger und Fahrer mit Kilometern in den Beinen.",
     offerItems: [
       {
         title: "Finde deine Gruppe",
@@ -96,7 +121,7 @@ export const de: Dictionary = {
     ],
     about: "Wer wir sind",
     bridge:
-      "Das Rad verbindet uns. Den Weg machen wir zusammen. Es geht nicht darum, zwei Arten des Radsports gegeneinander zu stellen, sondern zu zeigen, dass sie zusammenpassen. Der beste Partner ist nicht der mit demselben Rad, sondern der, der raus will.",
+      "Der beste Partner ist nicht der mit demselben Rad, sondern der, der raus will.",
     veteranKicker: "Der Veteran",
     veteranTitle: "Erfahrung, die man teilt.",
     veteranBody:
@@ -115,9 +140,10 @@ export const de: Dictionary = {
     manifestoCta: "Manifest lesen",
   },
   about: {
-    metaTitle: "Wer wir sind",
+    metaTitle: "Wer wir sind | Radsport-Community | Adopta un eBiker",
     metaDescription:
-      "Eine Radsport-Community, die Einsteiger und Veteranen verbindet, mit E-Bike oder Muskelrad.",
+      "Adopta un eBiker ist eine Community, um Leute zum Fahren zu finden: Einsteiger und Veteranen, E-Bike oder Muskelrad, auf Straße, MTB und Gravel.",
+    pageTitle: "Eine Community, um Leute zum Fahren zu finden",
     title1: "Wer wir",
     title2: "sind",
     lead: "Niemand bleibt ohne Ausfahrt, weil er keine Gruppe hat, weil er anfängt, weil er nicht das Niveau der anderen hat oder weil er ein anderes Rad fährt.",
@@ -150,9 +176,10 @@ export const de: Dictionary = {
     join: "Der Community beitreten",
   },
   beginner: {
-    metaTitle: "Was ein Einsteiger ist",
+    metaTitle: "Finde eine Radgruppe für Einsteiger",
     metaDescription:
-      "Jemand, der anfängt, noch neu ist oder längere Touren will. E-Bike oder Muskelrad. Straße, MTB oder Gravel.",
+      "Wenn du anfängst, noch neu bist oder längere Touren willst, ohne abgehängt zu werden, frag einen Platz an und finde Gesellschaft in deinem Tempo. E-Bike, MTB, Straße oder Gravel.",
+    pageTitle: "Finde eine Radgruppe für Einsteiger",
     title: "Einsteiger",
     lead: "Lust am Entdecken. Jemand, der gerade anfängt, noch wenig Zeit auf dem Rad hat oder den Sprung zu längeren Touren will, in Gesellschaft und im eigenen Tempo.",
     heading: "Zwei Profile, eine Leidenschaft",
@@ -170,9 +197,10 @@ export const de: Dictionary = {
     cta: "Ich will Begleitung",
   },
   veteran: {
-    metaTitle: "Was ein Veteran ist",
+    metaTitle: "Öffne deine Gruppe und begleite andere Radfahrer",
     metaDescription:
-      "Ein Radfahrer mit Kilometern in den Beinen und Lust, sie zu teilen. Kein Palmarès nötig.",
+      "Wenn du schon Kilometer hast, kannst du die Gruppe für Einsteiger öffnen. Adoptieren heißt begleiten, nicht führen. Straße, MTB, Gravel oder E-Bike.",
+    pageTitle: "Begleite andere Radfahrer. Öffne deine Gruppe.",
     title: "Veteranen",
     lead: "Erfahrung, die man teilt. Jemand mit Kilometern hinter sich: Straße, MTB, Gravel oder E-Bike. Muss nicht rasen.",
     heading: "Adoptieren heißt begleiten",
@@ -213,7 +241,26 @@ export const de: Dictionary = {
     title1: "Anmelden",
     title2: "im Intranet",
     lead: "Melde dich mit E-Mail und Passwort an. Das Konto entscheidet, ob du ins Intranet oder in die Verwaltung gehst.",
-    demo: "Zum Ausprobieren: admin@adopta.local (Administrator) oder veterano@adopta.local / ebiker@adopta.local (Benutzer). Passwort: adopta",
+    demo: "Nutze E-Mail und Passwort aus der Aufnahme-Mail. Beim ersten Login musst du das Passwort ändern.",
+  },
+  barcelona: {
+    metaTitle: "Leute zum Radfahren in Barcelona finden",
+    metaDescription:
+      "Eine Plattform, um Radfahrer in Barcelona und der Metropolregion zu finden. Einsteiger und Veteranen, E-Bike, MTB, Straße oder Gravel. Das Projekt ist im Launch.",
+    title: "Leute zum Radfahren in Barcelona finden",
+    lead: "Adopta un eBiker startet in Barcelona und der Metropolregion. Ziel: niemand bleibt ohne Gruppe, weil er anfängt, wegen des Rads oder weil er niemanden zum Fahren kennt.",
+    body: [
+      "Wenn du in Barcelona, Baix Llobregat, Vallès, Maresme oder einer anderen Stadt der Metropolregion wohnst, kannst du einen Platz anfragen und sagen, in welcher Disziplin du fährst.",
+      "Wir behaupten nicht, dass es in jedem Viertel schon eine aktive Gruppe gibt. Wir bauen die Community: je mehr Radfahrer mitmachen, desto leichter findet man Leute aus derselben Gegend und im selben Tempo.",
+      "Wenn in deiner Nähe noch wenige Mitglieder sind, kann ein Administrator euch verbinden, sobald jemand Passendes da ist. Bis dahin bleibt deine Anfrage gespeichert.",
+    ],
+    coverageTitle: "Echte Abdeckung",
+    coverage:
+      "Der Launch liegt in Barcelona und der Metropolregion. Die Absicht ist, nach ganz Spanien zu wachsen. Wenn du außerhalb wohnst, kannst du trotzdem beitreten.",
+    emptyTitle: "Wenn in deiner Gegend noch wenige Radfahrer sind",
+    empty:
+      "Frag trotzdem einen Platz an. Wir erfinden keine Gruppen und keine Ausfahrten. Wenn jemand Passendes kommt, dient die geprüfte Aufnahme genau dazu, euch ruhig zusammenzubringen.",
+    start: "Platz in Barcelona anfragen",
   },
   admin: {
     kicker: "Verwaltung",
@@ -326,6 +373,7 @@ export const de: Dictionary = {
     { q: "Kann ich mit jemandem fahren, der ein anderes Rad hat?", a: "Ja, wenn Strecke, Tempo und Räder zusammenpassen. Das plant man vorher, damit alle wissen, was kommt." },
     { q: "Braucht es ein bestimmtes Fitnesslevel?", a: "Nein. Jeder gibt ein ungefähres Niveau und die Art der Ausfahrt an. So findet man leichter eine Gruppe im passenden Tempo." },
     { q: "Ist die Plattform nur zum Lernen da?", a: "Nein. Auch für Veteranen, die neue Partner suchen, für Leute, die andere Strecken wollen, und für alle, die einfach ihren Kreis erweitern wollen." },
+    { q: "Geht das nur in Barcelona?", a: "Der Launch startet in Barcelona und der Metropolregion, mit dem Ziel, nach ganz Spanien zu wachsen. Wenn du weiter weg wohnst, kannst du trotzdem einen Platz anfragen: wir versprechen keine aktive Gruppe in jeder Stadt, aber deine Anfrage bleibt, bis Leute in der Nähe dazukommen." },
   ],
   forms: {
     name: "Vorname",
@@ -368,11 +416,21 @@ export const de: Dictionary = {
     ask: "Adoption anfragen",
     sent: "Anfrage gesendet. Wenn {name} zustimmt, bleibt die Verbindung offen.",
     requestOk: "Wir haben deine Aufnahme-Anfrage erhalten. Der Administrator prüft sie und antwortet per E-Mail.",
+    requestOkNext:
+      "Du musst jetzt nichts weiter tun. Wenn du angenommen wirst, kommt eine Mail mit dem Intranet-Zugang. Beim ersten Login musst du das Passwort ändern.",
+    whyPlace: "Damit wir dir Leute aus deiner Gegend vorschlagen, nicht irgendwen.",
+    whyRole: "Du kannst in einer Disziplin Veteran und in einer anderen Einsteiger sein. Kreuze an, was zu dir passt.",
+    whyInterested: "So matchen wir Profile derselben Disziplin: Straße, MTB oder Gravel.",
+    dataUse:
+      "Wir nutzen diese Angaben, um deine Anfrage zu prüfen und bei Zusage deinen Platz anzulegen. Sie erscheinen nicht auf der öffentlichen Website.",
   },
   intranet: {
     kicker: "Intranet",
     hello: "Hallo, {name}",
-    intro: "{role} · {discipline} · {city}. Adoption passiert hier. Tracks bleiben draußen: Komoot, Strava oder was du schon nutzt.",
+    intro: "{role} · {discipline} · {city}. Adoption passiert hier. Wenn du Strava verbindest, siehst du Fortschritt und Spuren im Profil, nur zum Ansehen.",
+    nextTitle: "Nächster Schritt",
+    nextLead:
+      "Öffne das Peloton, um Radfahrer deiner Disziplin und Gegend zu finden, oder geh zu deinem Platz, um das Profil zu prüfen und Strava zu verbinden.",
     asked: "Dich fragen",
     bonds: "Verbindungen",
     seePeloton: "Peloton ansehen",
@@ -418,6 +476,52 @@ export const de: Dictionary = {
     declined: "abgelehnt",
     changeTitle: "Passwort ändern",
     changeLead: "Das ist der erste Login. Wähle ein neues Passwort. adopta darfst du nicht behalten.",
+    stravaTitle: "Strava",
+    stravaLead:
+      "Verbinde dein Konto, um km, Höhenmeter und Spuren im Profil zu zeigen. Bei Strava kannst du dich mit Google, Apple oder E-Mail anmelden. Hier bearbeitet die Fahrten niemand: nur Ansehen, um Touren vorzuschlagen.",
+    stravaConnect: "Strava verbinden",
+    stravaConnectGoogle: "Weiter mit Google",
+    stravaConnected: "Verbunden als {name}",
+    stravaSync: "Fahrten aktualisieren",
+    stravaSyncing: "Aktualisieren…",
+    stravaDisconnect: "Trennen",
+    stravaDisconnectConfirm: "Strava von deinem Platz entfernen? Gespeicherte Fahrten werden gelöscht.",
+    stravaEmpty: "Noch keine Radfahrten zum Anzeigen.",
+    stravaMissingConfig: "Strava ist in dieser Umgebung nicht konfiguriert.",
+    stravaLast30: "Letzte 30 Tage",
+    calendarPrev: "Voriger Monat",
+    calendarNext: "Nächster Monat",
+    calendarClose: "Schließen",
+    calendarSummary: "Monatsübersicht",
+    calendarPickMonth: "Monat",
+    calendarPickYear: "Jahr",
+    calendarWeekdays: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
+    calendarMonths: [
+      "Januar",
+      "Februar",
+      "März",
+      "April",
+      "Mai",
+      "Juni",
+      "Juli",
+      "August",
+      "September",
+      "Oktober",
+      "November",
+      "Dezember",
+    ],
+    stravaKm: "Km",
+    stravaElevation: "Höhenmeter",
+    stravaTime: "Zeit",
+    stravaOpen: "Bei Strava öffnen",
+    stravaNoPolyline: "Diese Fahrt hat keine Spur für die Karte.",
+    stravaSynced: "Aktualisiert",
+    stravaOk: "Strava ist aktuell.",
+    stravaOff: "Strava getrennt.",
+    stravaDenied: "Strava-Berechtigung wurde nicht erteilt.",
+    stravaTaken: "Dieses Strava-Konto ist schon mit einem anderen Platz verbunden.",
+    stravaConfig: "Strava-Schlüssel fehlen auf dem Server.",
+    stravaError: "Strava konnte nicht verbunden werden. Versuch es erneut.",
   },
   notFound: {
     kicker: "Außerhalb der Karte",
@@ -452,5 +556,7 @@ export const de: Dictionary = {
     bikeBeginner: "E-Bike noch ohne Profil",
     bio: "Gerade gelandet. Riecht noch nach Karton.",
     looking: "Jemanden, mit dem man nächsten Samstag fährt.",
+    strava: "Strava konnte nicht getrennt werden.",
+    stravaSync: "Strava-Fahrten konnten nicht aktualisiert werden.",
   },
 };

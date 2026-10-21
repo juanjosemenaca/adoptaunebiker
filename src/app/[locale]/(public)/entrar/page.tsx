@@ -43,7 +43,16 @@ export default async function EntrarPage({
       </h1>
       <p className="mt-5 text-lg leading-8 text-mist">{t.login.lead}</p>
       <div className="mt-10">
-        <LoginForm next={next} locale={locale} t={t} />
+        <LoginForm
+          next={next}
+          locale={locale}
+          labels={{
+            email: t.forms.email,
+            password: t.forms.password,
+            entering: t.forms.entering,
+            enterIntranet: t.forms.enterIntranet,
+          }}
+        />
       </div>
       <p className="mt-6 text-xs leading-6 text-mist">{t.login.demo}</p>
     </div>

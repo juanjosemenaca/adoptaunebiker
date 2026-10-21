@@ -2,14 +2,7 @@ import type { MetadataRoute } from "next";
 import { locales } from "@/i18n/config";
 import { siteUrl } from "@/lib/site";
 
-const privatePaths = [
-  "/intranet",
-  "/admin",
-  "/entrar",
-  "/comunidad",
-  "/principiante",
-  "/veterano",
-];
+const privatePaths = ["/intranet", "/admin", "/entrar"];
 
 export default function robots(): MetadataRoute.Robots {
   const origin = siteUrl();

@@ -27,9 +27,11 @@ export type Dictionary = {
     requests: string;
     logoff: string;
     collapseMenu: string;
+    barcelona: string;
+    contact: string;
   };
   kickers: { idea: string; about: string; starts: string; shares: string; spot: string };
-  footer: { alone: string; blurb: string };
+  footer: { alone: string; blurb: string; contact: string };
   roles: { mentor: string; beginner: string; mentors: string; beginners: string };
   disciplines: { mtb: string; carretera: string; gravel: string };
   home: {
@@ -39,6 +41,13 @@ export type Dictionary = {
     lead: string;
     ctaIn: string;
     ctaOut: string;
+    ctaGuide: string;
+    launchNote: string;
+    matchKicker: string;
+    matchTitle: string;
+    matchItems: Block[];
+    closeTitle: string;
+    closeLead: string;
     offerKicker: string;
     offerTitle: string;
     offerLead: string;
@@ -64,6 +73,7 @@ export type Dictionary = {
   about: {
     metaTitle: string;
     metaDescription: string;
+    pageTitle: string;
     title1: string;
     title2: string;
     lead: string;
@@ -82,6 +92,7 @@ export type Dictionary = {
   beginner: {
     metaTitle: string;
     metaDescription: string;
+    pageTitle: string;
     title: string;
     lead: string;
     heading: string;
@@ -93,6 +104,7 @@ export type Dictionary = {
   veteran: {
     metaTitle: string;
     metaDescription: string;
+    pageTitle: string;
     title: string;
     lead: string;
     heading: string;
@@ -124,6 +136,18 @@ export type Dictionary = {
     title2: string;
     lead: string;
     demo: string;
+  };
+  barcelona: {
+    metaTitle: string;
+    metaDescription: string;
+    title: string;
+    lead: string;
+    body: [string, string, string];
+    coverageTitle: string;
+    coverage: string;
+    emptyTitle: string;
+    empty: string;
+    start: string;
   };
   admin: {
     kicker: string;
@@ -246,11 +270,18 @@ export type Dictionary = {
     ask: string;
     sent: string;
     requestOk: string;
+    requestOkNext: string;
+    whyPlace: string;
+    whyRole: string;
+    whyInterested: string;
+    dataUse: string;
   };
   intranet: {
     kicker: string;
     hello: string;
     intro: string;
+    nextTitle: string;
+    nextLead: string;
     asked: string;
     bonds: string;
     seePeloton: string;
@@ -296,6 +327,51 @@ export type Dictionary = {
     declined: string;
     changeTitle: string;
     changeLead: string;
+    stravaTitle: string;
+    stravaLead: string;
+    stravaConnect: string;
+    stravaConnectGoogle: string;
+    stravaConnected: string;
+    stravaSync: string;
+    stravaSyncing: string;
+    stravaDisconnect: string;
+    stravaDisconnectConfirm: string;
+    stravaEmpty: string;
+    stravaMissingConfig: string;
+    stravaLast30: string;
+    calendarPrev: string;
+    calendarNext: string;
+    calendarClose: string;
+    calendarSummary: string;
+    calendarPickMonth: string;
+    calendarPickYear: string;
+    calendarWeekdays: [string, string, string, string, string, string, string];
+    calendarMonths: [
+      string,
+      string,
+      string,
+      string,
+      string,
+      string,
+      string,
+      string,
+      string,
+      string,
+      string,
+      string,
+    ];
+    stravaKm: string;
+    stravaElevation: string;
+    stravaTime: string;
+    stravaOpen: string;
+    stravaNoPolyline: string;
+    stravaSynced: string;
+    stravaOk: string;
+    stravaOff: string;
+    stravaDenied: string;
+    stravaTaken: string;
+    stravaConfig: string;
+    stravaError: string;
   };
   notFound: { kicker: string; title: string; body: string; back: string };
   errors: {
@@ -325,5 +401,7 @@ export type Dictionary = {
     bikeBeginner: string;
     bio: string;
     looking: string;
+    strava: string;
+    stravaSync: string;
   };
 };

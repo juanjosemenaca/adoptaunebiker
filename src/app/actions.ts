@@ -3,14 +3,8 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import {
-  DEMO_PASSWORD,
-  adminSession,
-  demoUserByEmail,
-  isAdminEmail,
-  isEmail,
-  normalizeEmail,
-} from "@/lib/auth";
+import { DEMO_PASSWORD, demoSessionFromLogin, isEmail, normalizeEmail } from "@/lib/auth";
+import { logServerError } from "@/lib/log";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { defaultLocale, isLocale } from "@/i18n/config";
 import { isDiscipline, parsePracticeList } from "@/lib/labels";
@@ -153,7 +147,7 @@ export async function joinCommunity(formData: FormData) {
     if (error instanceof Error && error.name === "SignupExists") {
       return { error: t.errors.pendingExists };
     }
-    console.error("[joinCommunity]", error);
+    logServerError("[joinCommunity]", error);
     return { error: t.errors.send };
   }
 
@@ -196,11 +190,7 @@ export async function loginCommunity(formData: FormData) {
     }
   }
 
-  if (password !== DEMO_PASSWORD) {
-    return { error: t.errors.loginBad };
-  }
-
-  const demo = isAdminEmail(email) ? adminSession() : demoUserByEmail(email);
+  const demo = demoSessionFromLogin(email, password);
   if (!demo) {
     return { error: t.errors.loginBad };
   }
@@ -313,7 +303,7 @@ export async function setSignupWorkflowStatus(formData: FormData) {
   try {
     await updateSignupInboxStatus(id, status);
   } catch (error) {
-    console.error("[setSignupWorkflowStatus]", error);
+    logServerError("[setSignupWorkflowStatus]", error);
     return { error: t.admin.statusError };
   }
   revalidateSignupInbox(locale);
@@ -334,7 +324,7 @@ export async function rejectSignupRequestAction(formData: FormData) {
   try {
     await rejectSignupRequest(id);
   } catch (error) {
-    console.error("[rejectSignupRequestAction]", error);
+    logServerError("[rejectSignupRequestAction]", error);
     return { error: t.admin.rejectError };
   }
   revalidateSignupInbox(locale);
@@ -355,7 +345,7 @@ export async function deleteSignupRequestAction(formData: FormData) {
   try {
     await removeSignupRequest(id);
   } catch (error) {
-    console.error("[deleteSignupRequestAction]", error);
+    logServerError("[deleteSignupRequestAction]", error);
     return { error: t.admin.deleteError };
   }
   revalidateSignupInbox(locale);
@@ -383,7 +373,7 @@ export async function approveSignupRequestAction(formData: FormData) {
     });
     mailFlag = mail.sent ? "ok" : "fail";
   } catch (error) {
-    console.error("[approveSignupRequestAction]", error);
+    logServerError("[approveSignupRequestAction]", error);
     return { error: t.admin.approveError };
   }
 
@@ -418,7 +408,7 @@ export async function changePasswordAction(formData: FormData) {
   const supabase = await createClient();
   const { error } = await supabase.auth.updateUser({ password });
   if (error) {
-    console.error("[changePasswordAction]", error);
+    logServerError("[changePasswordAction]", error);
     return { error: t.errors.passwordChange };
   }
 
@@ -427,7 +417,7 @@ export async function changePasswordAction(formData: FormData) {
     .update({ must_change_password: false })
     .eq("id", session.id);
   if (flagError) {
-    console.error("[changePasswordAction] flag", flagError);
+    logServerError("[changePasswordAction] flag", flagError);
     return { error: t.errors.passwordChange };
   }
 
@@ -452,7 +442,7 @@ export async function setMemberStatusAction(formData: FormData) {
   try {
     await setMemberStatus(id, status as MemberStatus);
   } catch (error) {
-    console.error("[setMemberStatusAction]", error);
+    logServerError("[setMemberStatusAction]", error);
     return { error: t.admin.memberStatusError };
   }
 
@@ -481,7 +471,7 @@ export async function resetMemberPasswordAction(formData: FormData) {
     });
     mailFlag = mail.sent ? "ok" : "fail";
   } catch (error) {
-    console.error("[resetMemberPasswordAction]", error);
+    logServerError("[resetMemberPasswordAction]", error);
     return { error: t.admin.memberResetError };
   }
 
@@ -534,7 +524,7 @@ export async function updateMemberAction(formData: FormData) {
       lookingFor,
     });
   } catch (error) {
-    console.error("[updateMemberAction]", error);
+    logServerError("[updateMemberAction]", error);
     return { error: t.admin.memberSaveError };
   }
 
@@ -557,7 +547,7 @@ export async function addMemberNoteAction(formData: FormData) {
   try {
     await addMemberNote(id, body, session.name);
   } catch (error) {
-    console.error("[addMemberNoteAction]", error);
+    logServerError("[addMemberNoteAction]", error);
     return { error: t.admin.memberNoteError };
   }
 
@@ -580,7 +570,7 @@ export async function deleteMemberNoteAction(formData: FormData) {
   try {
     await deleteMemberNote(noteId);
   } catch (error) {
-    console.error("[deleteMemberNoteAction]", error);
+    logServerError("[deleteMemberNoteAction]", error);
     return { error: t.admin.memberNoteError };
   }
 

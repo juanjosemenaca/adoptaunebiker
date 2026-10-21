@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { Locale } from "@/i18n/config";
+import { analyticsEvents, trackEvent } from "@/lib/analytics";
 
 type NavLink = { href: string; label: string };
 
@@ -92,6 +93,7 @@ export function NavBar({
         href={cta.href}
         className="mt-2 flex min-h-11 items-center justify-center bg-sodium px-3 py-2 text-center text-xs font-semibold uppercase tracking-[0.2em] text-bone"
         onClick={(event) => {
+          trackEvent(analyticsEvents.signUpCtaClick);
           const id = hashId(cta.href);
           if (!id || !document.getElementById(id)) return;
           event.preventDefault();

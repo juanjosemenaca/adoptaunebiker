@@ -1,10 +1,11 @@
 import { defaultLocale, locales, type Locale } from "@/i18n/config";
 
+export const contactEmail = "hola@adoptaunebiker.com";
+
 export function siteUrl() {
-  return (process.env.NEXT_PUBLIC_SITE_URL ?? "https://adoptaunebiker.com").replace(
-    /\/$/,
-    "",
-  );
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const origin = raw && /^https?:\/\//i.test(raw) ? raw : "https://adoptaunebiker.com";
+  return origin.replace(/\/$/, "");
 }
 
 export function localePath(locale: Locale, path = "") {
@@ -15,10 +16,10 @@ export function localePath(locale: Locale, path = "") {
 export function languageAlternates(path = "") {
   const rest = !path || path === "/" ? "" : path.startsWith("/") ? path : `/${path}`;
   const languages: Record<string, string> = {
-    "x-default": `/${defaultLocale}${rest}`,
+    "x-default": localePath(defaultLocale, rest),
   };
   for (const locale of locales) {
-    languages[locale] = `/${locale}${rest}`;
+    languages[locale] = localePath(locale, rest);
   }
   return languages;
 }

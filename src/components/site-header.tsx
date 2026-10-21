@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { SessionUser } from "@/lib/types";
 import type { Dictionary } from "@/i18n/types";
 import type { Locale } from "@/i18n/config";
@@ -8,6 +9,7 @@ import { NavBar } from "@/components/nav-bar";
 import { anchors, hrefs, publicSectionKeys } from "@/lib/paths";
 
 export function SiteHeader({
+  session,
   variant,
   locale,
   t,
@@ -54,13 +56,45 @@ export function SiteHeader({
         <div className="flex items-center gap-3">
           <LanguageSwitch locale={locale} label={t.nav.language} />
           {variant === "public" ? (
-            <NavBar
-              locale={locale}
-              menuLabel={t.nav.menu}
-              menuOnly
-              links={publicLinks}
-              cta={{ href: links.entrar, label: t.nav.enter }}
-            />
+            session ? (
+              <>
+                <Link
+                  href={links.intranet}
+                  className="hidden min-h-11 items-center bg-sodium px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.16em] text-bone sm:inline-flex lg:text-xs lg:tracking-[0.2em]"
+                >
+                  {t.home.ctaIn}
+                </Link>
+                <NavBar
+                  locale={locale}
+                  menuLabel={t.nav.menu}
+                  menuOnly
+                  links={publicLinks}
+                  cta={{ href: links.intranet, label: t.home.ctaIn }}
+                />
+              </>
+            ) : (
+              <>
+                <Link
+                  href={links.entrar}
+                  className="hidden min-h-11 items-center text-xs uppercase tracking-[0.2em] text-mist hover:text-bone sm:inline-flex"
+                >
+                  {t.nav.enter}
+                </Link>
+                <Link
+                  href={`${links.home}${jump.join}`}
+                  className="hidden min-h-11 items-center bg-sodium px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.16em] text-bone sm:inline-flex lg:text-xs lg:tracking-[0.2em]"
+                >
+                  {t.home.ctaOut}
+                </Link>
+                <NavBar
+                  locale={locale}
+                  menuLabel={t.nav.menu}
+                  menuOnly
+                  links={[...publicLinks, { href: links.entrar, label: t.nav.enter }]}
+                  cta={{ href: `${links.home}${jump.join}`, label: t.home.ctaOut }}
+                />
+              </>
+            )
           ) : (
             <LogoutButton locale={locale} label={t.nav.logoff} />
           )}

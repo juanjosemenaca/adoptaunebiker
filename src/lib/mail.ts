@@ -128,8 +128,7 @@ function sendResendEmail(input: { to: string; subject: string; text: string }) {
     }),
   }).then(async (response) => {
     if (!response.ok) {
-      const detail = await response.text();
-      console.error("[sendResendEmail]", response.status, detail);
+      console.error("[sendResendEmail]", response.status);
       return { sent: false as const, reason: "failed" as const };
     }
     return { sent: true as const };
