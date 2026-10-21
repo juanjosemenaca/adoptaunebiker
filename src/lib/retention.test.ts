@@ -191,7 +191,7 @@ describe("inactive member retention", () => {
     assert.equal(decision.reason, "active_kept");
   });
 
-  it("never purges an admin, even if inactive", () => {
+  it("never purges an admin, even if inactive and the last one", () => {
     const decision = decideInactiveMember(
       {
         id: "admin",
@@ -372,6 +372,21 @@ describe("accepted signup minimization", () => {
     assert.equal(decision.purge, false);
     assert.equal(decision.anonymize, false);
     assert.equal(decision.reason, "accepted_linked_kept");
+  });
+
+  it("does not anonymize a recent orphan accepted request", () => {
+    const decision = decideAcceptedSignup(
+      {
+        id: "recent-orphan",
+        createdAt: "2026-09-01T00:00:00.000Z",
+        inboxStatus: "accepted",
+        status: "approved",
+      },
+      now,
+    );
+    assert.equal(decision.purge, false);
+    assert.equal(decision.anonymize, false);
+    assert.equal(decision.reason, "accepted_too_recent");
   });
 
   it("anonymizes an orphan accepted request after six months", () => {

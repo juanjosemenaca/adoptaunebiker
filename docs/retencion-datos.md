@@ -25,6 +25,7 @@ Al anonimizar una solicitud aceptada se sustituyen nombre, correo, ciudad, bici,
 - `FOR UPDATE` + `pg_advisory_xact_lock(872314)`.
 - Confirmación SQL: `p_confirm = 'purge'`. Sin eso no hay borrado, aunque se llame con service role.
 - Los usuarios no pueden cambiar `kind`, `member_status`, `retention_hold` ni las fechas de baja.
+- `009_protect_last_admin.sql` impide borrar o degradar al último administrador, también fuera del purge.
 - Dry-run y apply usan el mismo SELECT; el apply vuelve a comprobar la fila.
 
 ## Tarea
