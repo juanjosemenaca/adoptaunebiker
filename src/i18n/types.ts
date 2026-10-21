@@ -1,6 +1,55 @@
 export type Block = { title: string; body: string };
 export type Qa = { q: string; a: string };
 
+export type LegalSection = {
+  title: string;
+  paragraphs: string[];
+  items?: string[];
+  pending?: boolean;
+  table?: { caption: string; headers: string[]; rows: string[][] };
+};
+
+export type LegalDoc = {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  intro: string[];
+  sections: LegalSection[];
+};
+
+export type LegalCopy = {
+  reviewBanner: string;
+  pendingLabel: string;
+  updatedNote: string;
+  notice: LegalDoc;
+  privacy: LegalDoc;
+  cookies: LegalDoc;
+  terms: LegalDoc;
+  consent: {
+    title: string;
+    body: string;
+    acceptAll: string;
+    rejectOptional: string;
+    configure: string;
+    save: string;
+    close: string;
+    necessaryTitle: string;
+    necessaryBody: string;
+    analyticsTitle: string;
+    analyticsBody: string;
+    analyticsInactive: string;
+    settings: string;
+  };
+  nav: {
+    menu: string;
+    notice: string;
+    privacy: string;
+    cookies: string;
+    terms: string;
+    settings: string;
+  };
+};
+
 export type Dictionary = {
   meta: { title: string; description: string };
   nav: {
@@ -32,6 +81,7 @@ export type Dictionary = {
   };
   kickers: { idea: string; about: string; starts: string; shares: string; spot: string };
   footer: { alone: string; blurb: string; contact: string };
+  legal: LegalCopy;
   roles: { mentor: string; beginner: string; mentors: string; beginners: string };
   disciplines: { mtb: string; carretera: string; gravel: string };
   home: {
@@ -275,6 +325,11 @@ export type Dictionary = {
     whyRole: string;
     whyInterested: string;
     dataUse: string;
+    privacyController: string;
+    privacyPurpose: string;
+    privacyBasis: string;
+    privacyRights: string;
+    privacyPolicyLink: string;
   };
   intranet: {
     kicker: string;

@@ -3,6 +3,7 @@ import type { Dictionary } from "@/i18n/types";
 import type { Locale } from "@/i18n/config";
 import { BrandLogo } from "@/components/brand-logo";
 import { ContactLink } from "@/components/contact-link";
+import { CookieSettingsButton } from "@/components/privacy-provider";
 import { anchors, hrefs, publicSectionKeys } from "@/lib/paths";
 import { contactEmail } from "@/lib/site";
 
@@ -77,6 +78,24 @@ export function SiteFooter({
             <ContactLink email={contactEmail} label={`${t.footer.contact}: ${contactEmail}`} />
           </div>
         ) : null}
+        <nav
+          aria-label={t.legal.nav.menu}
+          className="flex flex-wrap gap-x-6 gap-y-3 border-t border-line pt-6 text-xs uppercase tracking-[0.2em] text-mist"
+        >
+          <Link href={links.avisoLegal} className="inline-flex min-h-11 items-center hover:text-bone">
+            {t.legal.nav.notice}
+          </Link>
+          <Link href={links.privacidad} className="inline-flex min-h-11 items-center hover:text-bone">
+            {t.legal.nav.privacy}
+          </Link>
+          <Link href={links.cookies} className="inline-flex min-h-11 items-center hover:text-bone">
+            {t.legal.nav.cookies}
+          </Link>
+          <Link href={links.condiciones} className="inline-flex min-h-11 items-center hover:text-bone">
+            {t.legal.nav.terms}
+          </Link>
+          <CookieSettingsButton label={t.legal.nav.settings} />
+        </nav>
       </div>
     </footer>
   );

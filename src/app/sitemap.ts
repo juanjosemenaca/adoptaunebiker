@@ -8,6 +8,10 @@ const publicPages = [
   { path: "/principiante", changeFrequency: "monthly" as const, priority: 0.8 },
   { path: "/veterano", changeFrequency: "monthly" as const, priority: 0.8 },
   { path: "/barcelona", changeFrequency: "monthly" as const, priority: 0.8 },
+  { path: "/aviso-legal", changeFrequency: "yearly" as const, priority: 0.3 },
+  { path: "/privacidad", changeFrequency: "yearly" as const, priority: 0.3 },
+  { path: "/cookies", changeFrequency: "yearly" as const, priority: 0.3 },
+  { path: "/condiciones-de-uso", changeFrequency: "yearly" as const, priority: 0.3 },
 ];
 
 function languagesFor(path: string) {

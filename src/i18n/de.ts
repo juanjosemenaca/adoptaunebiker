@@ -1,4 +1,5 @@
 import type { Dictionary } from "@/i18n/types";
+import { legalDe } from "@/i18n/legal/de";
 
 export const de: Dictionary = {
   meta: {
@@ -46,6 +47,7 @@ export const de: Dictionary = {
       "Dieselbe Leidenschaft. Verschiedene Räder. Eine Community. Hier gibt es keine Tracks: hier gibt es Leute.",
     contact: "Schreib uns",
   },
+  legal: legalDe,
   roles: {
     mentor: "Veteran",
     beginner: "Einsteiger",
@@ -423,6 +425,15 @@ export const de: Dictionary = {
     whyInterested: "So matchen wir Profile derselben Disziplin: Straße, MTB oder Gravel.",
     dataUse:
       "Wir nutzen diese Angaben, um deine Anfrage zu prüfen und bei Zusage deinen Platz anzulegen. Sie erscheinen nicht auf der öffentlichen Website.",
+    privacyController:
+      "Verantwortliche Person: die natürliche Person hinter Adopta un eBiker. Gesetzlicher Name, Steuernummer und Anschrift: [nicht angegeben].",
+    privacyPurpose:
+      "Zweck: deine Anmeldung zu prüfen und bei Annahme deinen Platz anzulegen und zu führen, einschließlich operativer E-Mails.",
+    privacyBasis:
+      "Vorgeschlagene Rechtsgrundlage, noch zu prüfen: vorvertragliche Maßnahmen auf deinen Antrag zur Prüfung der Anmeldung.",
+    privacyRights:
+      "Du kannst Auskunft, Berichtigung, Löschung, Widerspruch, Einschränkung und Datenübertragbarkeit verlangen, soweit sie gelten, unter hola@adoptaunebiker.com.",
+    privacyPolicyLink: "Datenschutzrichtlinie lesen",
   },
   intranet: {
     kicker: "Intranet",

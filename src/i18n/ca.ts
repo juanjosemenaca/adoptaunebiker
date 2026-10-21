@@ -1,4 +1,5 @@
 import type { Dictionary } from "@/i18n/types";
+import { legalCa } from "@/i18n/legal/ca";
 
 export const ca: Dictionary = {
   meta: {
@@ -46,6 +47,7 @@ export const ca: Dictionary = {
       "La mateixa passió. Distintes bicicletes. Una sola comunitat. Aquí no hi ha tracks: hi ha gent.",
     contact: "Escriu-nos",
   },
+  legal: legalCa,
   roles: {
     mentor: "Veterà",
     beginner: "Principiant",
@@ -423,6 +425,15 @@ export const ca: Dictionary = {
     whyInterested: "Així creuem perfils de la mateixa modalitat: carretera, MTB o gravel.",
     dataUse:
       "Fem servir aquestes dades per revisar la sol·licitud i, si t’accepten, crear la teva plaça. No les publiquem a la web oberta.",
+    privacyController:
+      "Responsable: persona física titular d’Adopta un eBiker. Nom legal, NIF i domicili: [no facilitats].",
+    privacyPurpose:
+      "Finalitat: tramitar la sol·licitud d’alta i, si s’accepta, crear i gestionar la plaça, amb comunicacions operatives per correu.",
+    privacyBasis:
+      "Base jurídica proposada, pendent de validar: mesures precontractuals a petició teva per examinar la sol·licitud.",
+    privacyRights:
+      "Pots exercir accés, rectificació, supressió, oposició, limitació i portabilitat, si escau, a hola@adoptaunebiker.com.",
+    privacyPolicyLink: "Llegeix la política de privadesa",
   },
   intranet: {
     kicker: "Intranet",

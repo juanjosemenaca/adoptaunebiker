@@ -1,4 +1,5 @@
 import type { Dictionary } from "@/i18n/types";
+import { legalEs } from "@/i18n/legal/es";
 
 export const es: Dictionary = {
   meta: {
@@ -46,6 +47,7 @@ export const es: Dictionary = {
       "La misma pasión. Distintas bicicletas. Una sola comunidad. Aquí no hay tracks: hay gente.",
     contact: "Escríbenos",
   },
+  legal: legalEs,
   roles: {
     mentor: "Veterano",
     beginner: "Principiante",
@@ -423,6 +425,15 @@ export const es: Dictionary = {
     whyInterested: "Así cruzamos perfiles de la misma modalidad: carretera, MTB o gravel.",
     dataUse:
       "Usamos estos datos para revisar tu solicitud y, si te aceptan, crear tu plaza. No los publicamos en la web abierta.",
+    privacyController:
+      "Responsable: persona física titular de Adopta un eBiker. Nombre legal, NIF y domicilio: [no facilitados].",
+    privacyPurpose:
+      "Finalidad: tramitar tu solicitud de alta y, si se acepta, crear y gestionar tu plaza, con comunicaciones operativas por correo.",
+    privacyBasis:
+      "Base jurídica propuesta, pendiente de validar: medidas precontractuales a petición tuya para examinar la solicitud.",
+    privacyRights:
+      "Puedes ejercer acceso, rectificación, supresión, oposición, limitación y portabilidad, cuando procedan, en hola@adoptaunebiker.com.",
+    privacyPolicyLink: "Lee la política de privacidad",
   },
   intranet: {
     kicker: "Intranet",

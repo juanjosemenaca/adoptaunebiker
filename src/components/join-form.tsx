@@ -1,11 +1,13 @@
 "use client";
 
 import { startTransition, useActionState, useEffect, useState, type FormEvent } from "react";
+import Link from "next/link";
 import { joinCommunity } from "@/app/actions";
 import { analyticsEvents, trackEvent } from "@/lib/analytics";
 import type { Dictionary } from "@/i18n/types";
 import { COUNTRIES, OTHER_PLACE, countryById, countryLabel } from "@/lib/places";
 import { disciplines, practices } from "@/lib/labels";
+import { hrefs } from "@/lib/paths";
 
 type State = { error?: string; ok?: boolean };
 
@@ -425,7 +427,21 @@ export function JoinForm({
           {state.error}
         </p>
       ) : null}
-      <p className="text-xs leading-6 text-mist">{t.forms.dataUse}</p>
+      <div className="space-y-2 text-xs leading-6 text-mist">
+        <p>{t.forms.dataUse}</p>
+        <p>{t.forms.privacyController}</p>
+        <p>{t.forms.privacyPurpose}</p>
+        <p>{t.forms.privacyBasis}</p>
+        <p>{t.forms.privacyRights}</p>
+        <p>
+          <Link
+            href={hrefs(locale).privacidad}
+            className="underline underline-offset-4 hover:text-bone"
+          >
+            {t.forms.privacyPolicyLink}
+          </Link>
+        </p>
+      </div>
       <button
         type="submit"
         disabled={pending}
