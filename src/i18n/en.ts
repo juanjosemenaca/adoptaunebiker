@@ -426,7 +426,7 @@ export const en: Dictionary = {
     dataUse:
       "We use this information to review your request and, if you are accepted, to create your spot. We do not publish it on the public site.",
     privacyController:
-      "Controller: the natural person behind Adopta un eBiker. Legal name, tax ID and address: [not provided].",
+      "Controller: JUAN JOSE MENA CASANOCA (natural person), tax ID (NIF) 46754258L. Address: Bajada de Gomis número 1, 08023 Barcelona, Spain. Contact: hola@adoptaunebiker.com.",
     privacyPurpose:
       "Purpose: to review your application and, if accepted, create and manage your membership, including operational emails.",
     privacyBasis:

@@ -1,0 +1,35 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { cookies } from "next/headers";
+import { AppShell } from "@/components/app-shell";
+import { defaultLocale, isLocale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/get-dictionary";
+import { hrefs } from "@/lib/paths";
+import { getSession } from "@/lib/session";
+import { privateMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = privateMetadata("No está");
+
+export default async function NotFound() {
+  const cookie = (await cookies()).get("NEXT_LOCALE")?.value;
+  const locale = cookie && isLocale(cookie) ? cookie : defaultLocale;
+  const [session, t] = await Promise.all([getSession(), Promise.resolve(getDictionary(locale))]);
+
+  return (
+    <AppShell session={session} variant="public" locale={locale} t={t}>
+      <div className="mx-auto max-w-xl px-4 py-24 sm:px-6">
+        <p className="text-[11px] uppercase tracking-[0.28em] text-sodium">
+          {t.notFound.kicker}
+        </p>
+        <h1 className="display mt-3 text-6xl">{t.notFound.title}</h1>
+        <p className="mt-4 text-mist">{t.notFound.body}</p>
+        <Link
+          href={hrefs(locale).home}
+          className="mt-8 inline-flex bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
+        >
+          {t.notFound.back}
+        </Link>
+      </div>
+    </AppShell>
+  );
+}

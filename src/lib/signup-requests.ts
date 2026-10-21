@@ -292,7 +292,13 @@ export async function findSignupByEmail(email: string) {
 
 export async function rejectSignupRequest(id: string) {
   const supabase = await supabaseUserClient();
+  const rejectedAt = new Date().toISOString();
   if (supabase) {
+    const withStamp = await supabase
+      .from("signup_requests")
+      .update({ inbox_status: "rejected", status: "rejected", rejected_at: rejectedAt })
+      .eq("id", id);
+    if (!withStamp.error) return;
     const both = await supabase
       .from("signup_requests")
       .update({ inbox_status: "rejected", status: "rejected" })

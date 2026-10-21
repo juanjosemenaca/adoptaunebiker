@@ -2,10 +2,10 @@ import type { LegalCopy } from "@/i18n/types";
 
 export const legalEn: LegalCopy = {
   reviewBanner:
-    "Draft for legal and language review. Not the final version. The controller’s legal name, tax ID and address are still missing. This is not a legal opinion and does not claim GDPR or Spanish data-protection compliance.",
+    "Draft for legal and language review. Not the final version. The name, tax ID and address provided have been added. This is not a legal opinion and does not claim GDPR or Spanish data-protection compliance.",
   pendingLabel: "Pending item — not definitive information",
   updatedNote:
-    "Status: draft published for review. Retention periods, legal bases and international transfers are not confirmed. The operational contact email is hola@adoptaunebiker.com.",
+    "Status: draft updated with the controller’s identifying details. Legal review of bases, retention periods and transfers is still pending. The six-month periods are an intended criterion, not an automatic deletion already in place. The operational contact email is hola@adoptaunebiker.com.",
   nav: {
     menu: "Legal information",
     notice: "Legal notice",
@@ -23,7 +23,8 @@ export const legalEn: LegalCopy = {
     save: "Save preferences",
     close: "Close",
     necessaryTitle: "Necessary",
-    necessaryBody: "Language, session and security. They cannot be turned off if you want to use the site. They do not include analytics.",
+    necessaryBody:
+      "Language, session and security. They cannot be turned off if you want to use the site. They do not include analytics.",
     analyticsTitle: "Analytics",
     analyticsBody:
       "Measurement of site use. No analytics tool is configured today. If it is switched on later, it will need a valid measurement ID and your consent.",
@@ -38,16 +39,14 @@ export const legalEn: LegalCopy = {
     sections: [
       {
         title: "Controller",
-        pending: true,
         paragraphs: [
-          "The controller is a natural person. Legal name, tax ID and address are not published yet because they have not been provided.",
-          "Until those details appear here, the contact channel is hola@adoptaunebiker.com.",
+          "The controller of the site is a natural person. No company name, register entry or telephone number is published because they have not been provided.",
         ],
         items: [
-          "Legal name: [not provided]",
-          "Tax ID: [not provided]",
-          "Address: [not provided]",
-          "Operational contact email: hola@adoptaunebiker.com.",
+          "Full name: JUAN JOSE MENA CASANOCA.",
+          "Tax ID (NIF): 46754258L.",
+          "Address: Bajada de Gomis número 1, 08023 Barcelona, Spain.",
+          "Contact email: hola@adoptaunebiker.com.",
         ],
       },
       {
@@ -93,14 +92,14 @@ export const legalEn: LegalCopy = {
     metaDescription: "How Adopta un eBiker handles applications, members and Strava.",
     title: "Privacy policy",
     intro: [
-      "This policy describes the processing the site code performs today. Where a controller detail or legal basis is unconfirmed, it is marked as pending.",
+      "This policy describes the processing the site code performs today. Where a detail, legal basis or retention period is unconfirmed, it is marked as pending. Publishing this policy does not mean GDPR or Spanish data-protection law is fully complied with.",
     ],
     sections: [
       {
         title: "Controller",
-        pending: true,
         paragraphs: [
-          "The controller will be the natural person who owns the project. Legal name, tax ID and address: [not provided].",
+          "The controller is JUAN JOSE MENA CASANOCA, a natural person, tax ID (NIF) 46754258L.",
+          "Address: Bajada de Gomis número 1, 08023 Barcelona, Spain.",
           "Contact: hola@adoptaunebiker.com.",
         ],
       },
@@ -114,57 +113,145 @@ export const legalEn: LegalCopy = {
       {
         title: "Applications, members and sign-in",
         paragraphs: [
-          "The application is stored so the organisers can review it. If it is rejected or deleted, the code does not email the applicant.",
-          "If it is accepted, an account and profile are created and an operational email is sent with access details. The first sign-in requires a password change.",
-          "Organisers can update a profile, activate or deactivate a place, reset the password and keep internal notes. Deactivation blocks intranet access.",
+          "The application is stored so the organisers can review it. If it is rejected or deleted, the code does not email the applicant. The application row stays in the database until it is deleted by hand.",
+          "If it is accepted, an account and profile are created and an operational email is sent with access details. The accepted application is not deleted: it is marked as accepted. The first sign-in requires a password change.",
+          "Organisers can update a profile, activate or deactivate a place, reset the password and keep internal notes. Deactivation makes the place inactive and blocks intranet access; it does not by itself delete the profile.",
         ],
       },
       {
         title: "Email",
         paragraphs: [
-          "Today we send operational mail only: a welcome message when an application is accepted, and a notice if the password is reset. There is no newsletter or marketing list.",
+          "Today we send operational mail only: a welcome message when an application is accepted, and a notice if the password is reset. Those messages are needed to manage applications, accounts and the running of the community.",
+          "There is no newsletter and no marketing. We do not ask for marketing consent because that purpose is not active. If a newsletter is offered later, this policy and the consent mechanism will be reviewed.",
         ],
       },
       {
         title: "Strava",
         paragraphs: [
-          "Connecting Strava is voluntary and only available to signed-in members. The site asks for read access to the profile and activities.",
+          "Connecting Strava is voluntary and optional, and only available to signed-in members. The site asks for read access to the profile and activities. That access grant is given on Strava; it is not, by itself, the legal basis for later processing of those data on Adopta un eBiker.",
           "We store athlete id, name, access and refresh tokens, and up to forty bike rides (name, type, distance, elevation, time, date, summary polyline, link and privacy flag).",
-          "Non-private rides can be seen on the peloton profile. Disconnecting deletes the local account and tries to revoke access at Strava.",
+          "Non-private rides can be seen on the peloton profile. Disconnecting deletes the local account and stored activities, and tries to revoke access at Strava.",
         ],
       },
       {
         title: "Processors used today",
+        pending: true,
         paragraphs: [
-          "These services appear in the code or the current hosting setup. Exact location and international transfers are pending confirmation.",
+          "These services appear in the code or the current hosting setup. Each one is used for a different purpose and they do not all process the same data. Exact location, the processing agreement and international transfers must be confirmed against their contracts and the real project configuration.",
         ],
         items: [
-          "Site hosting: Vercel.",
-          "Database and authentication: Supabase.",
-          "Email delivery: Resend.",
-          "Strava, only if the member connects the account.",
-          "Ride maps: OpenStreetMap tiles through Leaflet, only in the intranet when a polyline is shown.",
+          "Site hosting: Vercel. It may process technical visit data (for example IP address and request logs) to serve the pages.",
+          "Database and authentication: Supabase. It stores applications, profiles, internal notes, Strava accounts and member sessions.",
+          "Operational email: Resend. It receives the email address and name when an application is accepted or a password is reset.",
+          "Strava, only if the member connects the account. It receives the access grant and may process athlete data under its own terms.",
+          "Ride maps: OpenStreetMap tiles through Leaflet, only in the intranet when a polyline is shown. The browser requests tiles from the map provider; this site does not send them your member profile.",
         ],
       },
       {
         title: "Analytics",
         paragraphs: [
-          "Google Analytics is planned but not configured and is not loaded. There is no measurement ID. If it is switched on later, it will require prior consent and this policy will be updated.",
+          "Google Analytics is planned for later, but it is not configured and is not loaded. There is no measurement ID. Accepting cookies does not turn analytics on while that ID is missing.",
+          "If it is switched on later, prior consent will be requested where required and this policy will be updated. There is no active analytics processing today.",
         ],
       },
       {
         title: "Security and logs",
         paragraphs: [
           "Intranet access requires authentication. Server error logs are redacted so emails, passwords and tokens are not kept in clear text.",
-          "No log is a complete legal record on its own.",
+          "Those technical logs are distinct from operational application and profile data, and from backups the database provider may keep. No log in this code is a complete legal record on its own.",
         ],
       },
       {
         title: "Retention",
         pending: true,
         paragraphs: [
-          "No retention period is confirmed. In practice, applications are kept while they are reviewed; profiles while the place is active; Strava data while the connection remains.",
-          "Final legal periods must be set by the controller with advice.",
+          "The controller’s intention is not to keep applications or personal data for more than six months where that is compatible with the purpose and applicable duties.",
+          "That six-month period does not apply to data needed to keep an active account, provide the service, or handle a legal duty or claim. The code applies those rules: a weekly job lists candidates. The first cycle is a dry-run until a deletion is confirmed. Rows already rejected or inactive start the clock when the migration is applied, not at sign-up.",
+          "The table below describes what the code does. It does not claim a bulk irreversible deletion has already run.",
+        ],
+        table: {
+          caption: "Retention by category — rules in the code",
+          headers: ["Category", "What happens today", "Proposed criterion", "Event that starts the period", "Automatic deletion"],
+          rows: [
+            [
+              "Rejected applications",
+              "The row remains. Rejection is dated in rejected_at",
+              "Six months from rejection",
+              "Date the application is marked rejected (rejected_at)",
+              "Yes, if there is no hold and the weekly job confirms deletion",
+            ],
+            [
+              "Abandoned applications",
+              "There is no «abandoned» category. A pending application remains",
+              "It is not treated as abandoned. It is kept until a person decides",
+              "Does not apply. No verifiable operational rule of abandonment",
+              "No. Pending applications are not deleted",
+            ],
+            [
+              "Applications awaiting a decision",
+              "They are kept so they can be reviewed",
+              "While they are being handled. If there is no decision, the proposed six-month period",
+              "Submission of the application or last action by the organisers",
+              "No",
+            ],
+            [
+              "Accepted applications",
+              "The row is marked accepted. Useful data are copied to the profile",
+              "While the place exists, the application may keep the original text. When an inactive place is deleted, or if the application is orphaned for more than six months, personal fields are anonymised. The row remains as a record without contact data, unless there is a hold",
+              "Acceptance of the application. Anonymisation follows member closure or orphaning",
+              "The row is not deleted. It is anonymised when the member is purged or the application is orphaned",
+            ],
+            [
+              "Members with an active account",
+              "Profile, authentication and, where used, internal notes",
+              "While the place is active and the service needs those data. The six-month period does not apply",
+              "Creation of the place. The deletion period does not start while the account is active",
+              "No. Deleting these data would stop the service",
+            ],
+            [
+              "Closed accounts",
+              "The profile remains inactive; access is blocked",
+              "Six months from closure, unless a duty or claim is ongoing",
+              "Change to inactive (deactivated_at). created_at is not used",
+              "Yes, if there is no hold and the weekly job confirms deletion",
+            ],
+            [
+              "Strava connection and ride data",
+              "Kept while the connection is active",
+              "While the member keeps the connection. Disconnecting deletes them on this site",
+              "Connection or disconnection by the member",
+              "Yes on disconnect: local account and activities are deleted and access at Strava is revoked if possible. There is no monthly expiry",
+            ],
+            [
+              "Technical and security logs",
+              "Redacted error logs on the server or host",
+              "The minimum time needed to diagnose and protect the service. Still to be set",
+              "Each incident or request",
+              "Not controlled by this code",
+            ],
+            [
+              "Backups",
+              "Outside this code; they depend on the database or hosting provider",
+              "Pending confirmation with the provider. They may outlive an operational deletion",
+              "The provider’s backup cycle",
+              "Not controlled by this application",
+            ],
+            [
+              "Legal duties or claims",
+              "retention_hold can be set on the application or profile. The member cannot clear it",
+              "The time needed for that duty or claim, even if longer than six months",
+              "The fact that gives rise to the duty or claim",
+              "Deletion at six months is not promised",
+            ],
+          ],
+        },
+      },
+      {
+        title: "How the six months are applied",
+        pending: true,
+        paragraphs: [
+          "The code distinguishes rejected, pending and accepted applications, and does not delete active accounts or administrators. A weekly job lists candidates. A real deletion needs confirmation in the API and in SQL. The first cycle does not bulk-delete without reviewing that list.",
+          "Provider backups may outlive an operational deletion. A legal hold stops both deletion and anonymisation.",
         ],
       },
       {
@@ -178,66 +265,73 @@ export const legalEn: LegalCopy = {
         title: "Minors",
         pending: true,
         paragraphs: [
-          "The intended minimum age to use the site is 18. This needs legal review before it is treated as a final clause.",
+          "The intended minimum age to use the site is 18. The form does not check age. This needs legal review before it is treated as a final clause.",
         ],
       },
       {
         title: "Processing matrix (proposal, not confirmed)",
         pending: true,
         paragraphs: [
-          "The table is an internal proposal for legal review. It does not use one legal basis for every processing activity and does not claim those bases are validated.",
+          "The table is a proposal for legal review. It does not use one legal basis for every processing activity. It does not claim those bases are validated, or that the community model is a contract in every case.",
         ],
         table: {
           caption: "Purposes observed in the code",
-          headers: ["Purpose", "Data", "Proposed basis", "Recipients", "Retention", "Consent"],
+          headers: [
+            "Purpose",
+            "Proposed basis",
+            "Reasoning",
+            "What the person is told",
+            "Legal decision still needed",
+          ],
           rows: [
             [
-              "Review applications",
-              "Identity, contact, area, disciplines, free text",
+              "Handle membership applications",
               "Pre-contractual steps at the person’s request",
-              "Organisers; Supabase; Vercel",
-              "Pending",
-              "Does not replace the information notice; no generic checkbox",
+              "The person sends the form so the application can be examined. Those data are needed to assess it",
+              "Controller, purpose, that there is no marketing, and a link to this policy",
+              "Confirm that an application can be treated as a pre-contractual step and not as generic consent",
             ],
             [
-              "Create and manage the place",
-              "Profile, authentication, active or inactive status",
-              "Performance of the community relationship",
-              "Organisers; Supabase; Vercel; Resend",
-              "Pending",
-              "No",
+              "Provide the service and manage active accounts",
+              "Performance of the relationship with the member and steps needed to provide the service",
+              "After acceptance, a profile, authentication and place status are needed to use the intranet",
+              "That a place means an account, a profile visible in the intranet and operational emails",
+              "Confirm whether that relationship is a contract under GDPR article 6.1.b or another basis, given how the service actually works",
             ],
             [
-              "Operational access or password email",
-              "Name, email",
-              "Necessary for that relationship",
-              "Resend",
-              "Pending",
-              "No",
+              "Operational access or password emails",
+              "Necessary for that same relationship",
+              "Without the welcome or reset email, access cannot be given or recovered. They are not promotions",
+              "That only operational messages are sent and that there is no newsletter",
+              "Confirm that marketing consent is not required for these messages",
             ],
             [
-              "Access security",
-              "Session, redacted technical logs",
-              "Legitimate interest in security (pending)",
-              "Vercel; Supabase",
-              "Pending",
-              "No",
+              "Security, abuse prevention and account protection",
+              "Legitimate interest, still to be documented",
+              "Purpose: protect access. Necessity: authenticated session and redacted error logs. Balancing: security is expected; they are not used for marketing; logs are redacted",
+              "That there is a session and limited technical logs",
+              "Write and keep a legitimate-interest assessment. Confirm how long those logs are kept",
+            ],
+            [
+              "Tax, accounting or other legal duties",
+              "Legal obligation, only if it actually applies",
+              "The site does not invoice applications or sell places. This basis is not treated as active",
+              "It will be mentioned only if a concrete duty exists",
+              "Confirm whether any real legal duty requires data to be kept",
             ],
             [
               "Optional Strava",
-              "Tokens and synced activities",
-              "Consent when connecting",
-              "Strava; members who see non-private rides",
-              "Until disconnect",
-              "Yes, when authorising on Strava",
+              "Proposal: consent for processing on this site when connecting, distinct from the access grant on Strava",
+              "The connection is voluntary. Strava grants access; Adopta un eBiker then processes tokens and activities to show them in the intranet",
+              "That it is optional, which permissions are asked, what is stored, who sees non-private rides and how to disconnect",
+              "Confirm whether the basis is consent, performance of an optional service feature, or both, and Strava’s role as a recipient",
             ],
             [
-              "Future analytics",
-              "Site use, not defined",
-              "Consent",
-              "Pending; not active",
-              "Not applicable today",
-              "Yes, and nothing is loaded today",
+              "Future analytics (off today)",
+              "Consent, when it is switched on and required",
+              "There is no measurement ID or script today. Accepting cookies does not load analytics",
+              "That analytics is not active and that, if it is switched on, prior consent will be asked",
+              "Do not switch it on or document it as real processing until the tool exists",
             ],
           ],
         },
@@ -246,75 +340,90 @@ export const legalEn: LegalCopy = {
   },
   cookies: {
     metaTitle: "Cookie policy | Adopta un eBiker",
-    metaDescription: "Cookies and storage Adopta un eBiker actually uses.",
+    metaDescription: "Cookies and storage that Adopta un eBiker actually uses.",
     title: "Cookie policy",
     intro: [
-      "Only technologies verified in the code are listed. Duration or exact names that could not be checked are marked pending.",
+      "Only technologies verified in the code are documented here. If a duration or exact name could not be verified, it is marked as pending.",
     ],
     sections: [
       {
         title: "How to choose",
         paragraphs: [
-          "The banner lets you accept all, reject optional cookies, or configure. Rejecting is not harder than accepting. Optional boxes are not pre-ticked.",
-          "You can change your mind from Cookie settings in the footer. Saving a preference is not, on its own, complete legal proof.",
+          "The banner lets you accept all, reject optional cookies, or configure. Rejecting is no harder than accepting. Optional boxes are not pre-ticked.",
+          "You can change your mind from Cookie settings in the footer. Saving a preference is not, by itself, a complete legal record.",
         ],
       },
       {
         title: "Technical cookies on this site",
-        paragraphs: ["They are used for language, session and, if needed, the Strava flow."],
+        paragraphs: ["They are used for language, session and, where relevant, the Strava flow."],
         table: {
           caption: "First-party cookies verified in code",
           headers: ["Name", "Use", "Duration in code", "Type"],
           rows: [
-            ["NEXT_LOCALE", "Remember the language of the route", "365 days", "Technical / language preference"],
-            ["adopta.privacy", "Remember whether you decided on analytics", "180 days", "Privacy preference"],
+            ["NEXT_LOCALE", "Remember the route language", "365 days", "Technical / language preference"],
             [
-              "Supabase Auth session cookies (typical name sb-…-auth-token, sometimes chunked)",
+              "adopta.privacy",
+              "Remember whether you have decided about analytics",
+              "180 days",
+              "Privacy preference",
+            ],
+            [
+              "Supabase Auth session cookies (typical name sb-…-auth-token, sometimes split)",
               "Keep the member signed in",
-              "Pending browser verification; set by the auth library",
+              "Pending browser verification; set by the authentication library",
               "Session technical cookie",
             ],
             [
               "adopta.session",
-              "Local development session; does not grant access in production",
+              "Local development session; in production it does not grant access",
               "60 days if it is written",
               "Technical, residual",
             ],
-            ["adopta.bonds", "Adoption links stored in the browser", "60 days", "Intranet technical cookie"],
-            ["adopta.strava_oauth", "Temporary state for the Strava connection", "10 minutes", "Technical"],
+            [
+              "adopta.bonds",
+              "Adoption links stored in the browser",
+              "60 days",
+              "Intranet technical cookie",
+            ],
+            [
+              "adopta.strava_oauth",
+              "Temporary state for starting a Strava connection",
+              "10 minutes",
+              "Technical",
+            ],
           ],
         },
       },
       {
         title: "Storage that is not a cookie",
-        paragraphs: ["These are not cookies. They stay on your device."],
+        paragraphs: ["These are not cookies. They live on your device."],
         items: [
-          "sessionStorage adopta.join-form: sign-up draft, this tab only, until you send or close.",
+          "sessionStorage adopta.join-form: draft of the application form, this tab only, until you send or close.",
           "localStorage adopta.adminNav and adopta.intranetNav: whether the side menu is open. Intranet or admin only.",
         ],
       },
       {
         title: "Analytics and third parties",
         paragraphs: [
-          "Google Analytics and gtag.js are not loaded. No measurement cookies have been observed.",
-          "If you connect Strava you leave this site and Strava may use its own cookies. If a ride map is shown, the browser requests tiles from OpenStreetMap; we do not set OSM cookies.",
-          "Fonts are served with next/font, self-hosted after the build, with no Google Fonts cookie request during the visit.",
+          "Google Analytics and gtag.js are not loaded. No measurement cookies have been observed. Accepting all cookies does not load analytics if there is no valid measurement ID.",
+          "If you connect Strava, you leave this site and Strava may use its own cookies. If a ride map is shown, the browser requests tiles from OpenStreetMap; we do not set OSM cookies.",
+          "Fonts are served with next/font, self-hosted after the build, with no cookie request to Google Fonts during the visit.",
         ],
       },
       {
         title: "What rejecting optional cookies does not delete",
         paragraphs: [
-          "Rejecting analytics does not sign you out or drop the language. Technical login cookies are kept.",
+          "Rejecting analytics does not sign you out or remove the language. Technical login cookies are not deleted.",
         ],
       },
     ],
   },
   terms: {
     metaTitle: "Terms of use | Adopta un eBiker",
-    metaDescription: "Community rules for Adopta un eBiker.",
+    metaDescription: "Rules of the Adopta un eBiker community.",
     title: "Terms of use",
     intro: [
-      "These terms describe the public site, applications and the intranet. They are pending legal review.",
+      "These terms describe use of the public site, applications and the intranet. They are pending legal review.",
     ],
     sections: [
       {
@@ -327,47 +436,47 @@ export const legalEn: LegalCopy = {
         title: "Age",
         pending: true,
         paragraphs: [
-          "The intended minimum age is 18. This clause must be reviewed before it is treated as final.",
+          "The intended minimum age is 18. This clause must be reviewed before it is published as final.",
         ],
       },
       {
-        title: "Membership",
+        title: "Joining and membership",
         paragraphs: [
           "Applying does not guarantee acceptance. Organisers may accept, reject or delete an application, and deactivate a place.",
-          "Profiles must be truthful. Do not impersonate anyone.",
+          "Your profile must be truthful. Do not impersonate anyone.",
         ],
       },
       {
-        title: "Riding together",
+        title: "Riding together and safety",
         paragraphs: [
-          "The group agrees the pace. Nobody is dropped without warning. Electric assist is not a reason for contempt.",
-          "Each rider is responsible for their bike, kit and for following road and trail rules. The site does not replace common sense or insurance.",
+          "The group agrees the pace. Nobody is left behind without notice. Electric assistance is not a reason for contempt.",
+          "Each participant is responsible for their bike, their kit and for following road and trail rules. The site does not replace common sense or insurance. The controller does not run the rides and does not guarantee a group in every town.",
         ],
       },
       {
         title: "User content",
         paragraphs: [
-          "Profile text and messages must respect other people. Organisers may moderate or remove content and, if needed, deactivate the place.",
+          "Profile text and messages must respect other people. Organisers may moderate or remove content and, where appropriate, deactivate the place.",
         ],
       },
       {
         title: "Strava",
         paragraphs: [
-          "Connecting Strava is optional. By doing so you also accept Strava’s terms. You can disconnect from Your place.",
+          "Connecting Strava is optional. By doing so you also accept Strava’s terms. You can disconnect from Your place. Disconnecting deletes Strava data stored on this site and tries to revoke access.",
         ],
       },
       {
         title: "Leaving",
         paragraphs: [
-          "You can ask to leave by writing to hola@adoptaunebiker.com. Organisers may deactivate a place if these rules are broken.",
+          "You can ask to leave by writing to hola@adoptaunebiker.com. Organisers may deactivate a place if these rules are broken. Deactivating a place blocks access; it does not by itself mean all data are deleted at once.",
         ],
       },
       {
         title: "Limitation of liability",
         pending: true,
         paragraphs: [
-          "Rights that the law treats as non-waivable are not excluded. This is not an attempt to excuse wilful misconduct or gross negligence.",
-          "The controller is not liable for rides people organise among themselves beyond what applicable law, still to be determined, requires.",
+          "Rights the law treats as non-waivable are not excluded. This is not meant to excuse wilful misconduct or gross negligence.",
+          "The controller is not liable for rides people organise among themselves beyond what the applicable law, still to be determined, requires.",
         ],
       },
     ],

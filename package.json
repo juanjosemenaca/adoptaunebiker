@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test src/lib/auth.test.ts src/lib/log.test.ts src/lib/session-resolve.test.ts src/lib/privacy.test.ts src/lib/analytics.test.ts"
+    "test": "node --experimental-strip-types --test src/lib/auth.test.ts src/lib/log.test.ts src/lib/session-resolve.test.ts src/lib/privacy.test.ts src/lib/analytics.test.ts src/lib/retention.test.ts src/lib/retention-http.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

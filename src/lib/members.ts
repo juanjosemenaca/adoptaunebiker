@@ -223,6 +223,18 @@ export async function setMemberStatus(id: string, status: MemberStatus) {
     denied.name = "MemberAdminError";
     throw denied;
   }
+  const stamped =
+    status === "inactive"
+      ? { member_status: status, deactivated_at: new Date().toISOString() }
+      : { member_status: status, deactivated_at: null };
+  const withStamp = await supabase
+    .from("profiles")
+    .update(stamped)
+    .eq("id", id)
+    .eq("kind", "user")
+    .select("id");
+  if (!withStamp.error && withStamp.data?.length) return;
+
   const { data, error } = await supabase
     .from("profiles")
     .update({ member_status: status })
@@ -230,7 +242,7 @@ export async function setMemberStatus(id: string, status: MemberStatus) {
     .eq("kind", "user")
     .select("id");
   if (error || !data?.length) {
-    const failed = new Error(error?.message || "status_failed");
+    const failed = new Error(error?.message || withStamp.error?.message || "status_failed");
     failed.name = "MemberAdminError";
     throw failed;
   }

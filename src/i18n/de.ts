@@ -426,7 +426,7 @@ export const de: Dictionary = {
     dataUse:
       "Wir nutzen diese Angaben, um deine Anfrage zu prüfen und bei Zusage deinen Platz anzulegen. Sie erscheinen nicht auf der öffentlichen Website.",
     privacyController:
-      "Verantwortliche Person: die natürliche Person hinter Adopta un eBiker. Gesetzlicher Name, Steuernummer und Anschrift: [nicht angegeben].",
+      "Verantwortliche Person: JUAN JOSE MENA CASANOCA (natürliche Person), NIF 46754258L. Anschrift: Bajada de Gomis número 1, 08023 Barcelona, Spanien. Kontakt: hola@adoptaunebiker.com.",
     privacyPurpose:
       "Zweck: deine Anmeldung zu prüfen und bei Annahme deinen Platz anzulegen und zu führen, einschließlich operativer E-Mails.",
     privacyBasis:

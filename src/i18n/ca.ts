@@ -426,7 +426,7 @@ export const ca: Dictionary = {
     dataUse:
       "Fem servir aquestes dades per revisar la sol·licitud i, si t’accepten, crear la teva plaça. No les publiquem a la web oberta.",
     privacyController:
-      "Responsable: persona física titular d’Adopta un eBiker. Nom legal, NIF i domicili: [no facilitats].",
+      "Responsable: JUAN JOSE MENA CASANOCA (persona física), NIF 46754258L. Domicili: Bajada de Gomis número 1, 08023 Barcelona, Espanya. Contacte: hola@adoptaunebiker.com.",
     privacyPurpose:
       "Finalitat: tramitar la sol·licitud d’alta i, si s’accepta, crear i gestionar la plaça, amb comunicacions operatives per correu.",
     privacyBasis:
