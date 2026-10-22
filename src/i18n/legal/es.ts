@@ -17,7 +17,7 @@ export const legalEs: LegalCopy = {
   },
   consent: {
     title: "Cookies y privacidad",
-    body: "Usamos cookies técnicas para el idioma y, si entras, para la sesión. La analítica no está activada. Puedes aceptar, rechazar lo opcional o elegir categoría.",
+    body: "Usamos cookies técnicas para el idioma y, si entras, para la sesión. Si aceptas analítica, se carga Google Tag Manager. Puedes aceptar, rechazar lo opcional o elegir categoría.",
     acceptAll: "Aceptar todas",
     rejectOptional: "Rechazar las opcionales",
     configure: "Configurar preferencias",
@@ -28,7 +28,7 @@ export const legalEs: LegalCopy = {
       "Idioma, sesión y seguridad. No se pueden desactivar si quieres usar el sitio. No incluyen analítica.",
     analyticsTitle: "Analítica",
     analyticsBody:
-      "Medición de uso del sitio. Hoy no hay ninguna herramienta de analítica configurada. Si más adelante se activa, hará falta un identificador válido y tu consentimiento.",
+      "Medición de uso del sitio mediante Google Tag Manager (GTM-MX2JCJFR). Solo se carga si das consentimiento. Entonces se ejecutan las etiquetas que haya en ese contenedor.",
     analyticsInactive: "La analítica no está activada en este momento.",
     settings: "Configurar cookies",
   },
@@ -153,8 +153,8 @@ export const legalEs: LegalCopy = {
       {
         title: "Analítica",
         paragraphs: [
-          "Google Analytics está previsto para el futuro, pero no está configurado ni se carga. No hay identificador de medición. Aceptar cookies no activa analítica mientras no exista ese identificador.",
-          "Si se activa más adelante, se pedirá consentimiento previo cuando sea necesario y se actualizará esta política. Hoy no hay tratamiento analítico activo.",
+          "Si aceptas la categoría de analítica, se carga el contenedor de Google Tag Manager GTM-MX2JCJFR. Sin ese consentimiento no se inserta el script ni el iframe de Google Tag Manager.",
+          "Este código no enumera las etiquetas concretas configuradas dentro del contenedor. Quien administra GTM decide qué se dispara. Las cookies que ponga Google dependen de esas etiquetas; sus nombres y duraciones no están verificados aquí.",
         ],
       },
       {
@@ -330,11 +330,11 @@ export const legalEs: LegalCopy = {
               "Confirmar si la base es el consentimiento, la ejecución de una función opcional del servicio, o ambas, y el régimen de Strava como destinatario",
             ],
             [
-              "Analítica futura (hoy apagada)",
-              "Consentimiento, cuando se active y sea necesario",
-              "Hoy no hay identificador ni script. Aceptar cookies no carga analítica",
-              "Que la analítica no está activa y que, si se enciende, se pedirá consentimiento previo",
-              "No activar ni documentar como tratamiento real hasta que exista la herramienta",
+              "Analítica (Google Tag Manager)",
+              "Consentimiento",
+              "Se carga GTM-MX2JCJFR solo si la categoría analítica está aceptada",
+              "Que el script no se carga al rechazar o antes de decidir",
+              "Revisar las etiquetas del contenedor y si alguna implica publicidad u otro fin",
             ],
           ],
         },
@@ -408,7 +408,7 @@ export const legalEs: LegalCopy = {
       {
         title: "Analítica y terceros",
         paragraphs: [
-          "No se carga Google Analytics ni gtag.js. No hay cookies de medición observadas. Aceptar todas las cookies no carga analítica si no hay un identificador de medición válido.",
+          "Con consentimiento de analítica se carga https://www.googletagmanager.com/gtm.js y, si no hay JavaScript, el iframe ns.html del contenedor GTM-MX2JCJFR. Google puede establecer cookies propias según las etiquetas del contenedor; esas cookies de tercero no están listadas aquí porque no se han observado en este código. Sin consentimiento no se pide googletagmanager.com.",
           "Si conectas Strava, sales de este sitio y Strava puede usar sus propias cookies. Si se muestra un mapa de salida, el navegador pide teselas a OpenStreetMap; no establecemos cookies de OSM.",
           "Las fuentes se sirven con next/font, autohospedadas tras el build, sin petición de cookies a Google Fonts en la visita.",
         ],

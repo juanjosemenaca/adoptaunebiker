@@ -17,7 +17,7 @@ export const legalEn: LegalCopy = {
   },
   consent: {
     title: "Cookies and privacy",
-    body: "We use technical cookies for language and, if you sign in, for your session. Analytics is not active. You can accept, reject optional cookies, or choose a category.",
+    body: "We use technical cookies for language and, if you sign in, for your session. If you accept analytics, Google Tag Manager loads. You can accept, reject optional cookies, or choose a category.",
     acceptAll: "Accept all",
     rejectOptional: "Reject optional",
     configure: "Set preferences",
@@ -28,7 +28,7 @@ export const legalEn: LegalCopy = {
       "Language, session and security. They cannot be turned off if you want to use the site. They do not include analytics.",
     analyticsTitle: "Analytics",
     analyticsBody:
-      "Measurement of site use. No analytics tool is configured today. If it is switched on later, it will need a valid measurement ID and your consent.",
+      "Measurement of site use through Google Tag Manager (GTM-MX2JCJFR). It loads only if you consent. Tags in that container then run.",
     analyticsInactive: "Analytics is not active at the moment.",
     settings: "Cookie settings",
   },
@@ -151,8 +151,8 @@ export const legalEn: LegalCopy = {
       {
         title: "Analytics",
         paragraphs: [
-          "Google Analytics is planned for later, but it is not configured and is not loaded. There is no measurement ID. Accepting cookies does not turn analytics on while that ID is missing.",
-          "If it is switched on later, prior consent will be requested where required and this policy will be updated. There is no active analytics processing today.",
+          "If you accept the analytics category, the Google Tag Manager container GTM-MX2JCJFR loads. Without that consent the Google Tag Manager script and iframe are not inserted.",
+          "This code does not list the specific tags configured inside the container. Whoever administers GTM decides what fires. Cookies set by Google depend on those tags; their names and durations are not verified here.",
         ],
       },
       {
@@ -328,11 +328,11 @@ export const legalEn: LegalCopy = {
               "Confirm whether the basis is consent, performance of an optional service feature, or both, and Strava’s role as a recipient",
             ],
             [
-              "Future analytics (off today)",
-              "Consent, when it is switched on and required",
-              "There is no measurement ID or script today. Accepting cookies does not load analytics",
-              "That analytics is not active and that, if it is switched on, prior consent will be asked",
-              "Do not switch it on or document it as real processing until the tool exists",
+              "Analytics (Google Tag Manager)",
+              "Consent",
+              "GTM-MX2JCJFR loads only if the analytics category is accepted",
+              "That the script does not load if you reject it or before you decide",
+              "Review the container tags and whether any of them involve advertising or another purpose",
             ],
           ],
         },
@@ -406,7 +406,7 @@ export const legalEn: LegalCopy = {
       {
         title: "Analytics and third parties",
         paragraphs: [
-          "Google Analytics and gtag.js are not loaded. No measurement cookies have been observed. Accepting all cookies does not load analytics if there is no valid measurement ID.",
+          "With analytics consent the site loads https://www.googletagmanager.com/gtm.js and, if JavaScript is off, the ns.html iframe for container GTM-MX2JCJFR. Google may set its own cookies depending on the tags in the container; those third-party cookies are not listed here because they have not been observed in this code. Without consent, googletagmanager.com is not requested.",
           "If you connect Strava, you leave this site and Strava may use its own cookies. If a ride map is shown, the browser requests tiles from OpenStreetMap; we do not set OSM cookies.",
           "Fonts are served with next/font, self-hosted after the build, with no cookie request to Google Fonts during the visit.",
         ],

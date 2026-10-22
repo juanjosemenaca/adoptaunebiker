@@ -6,23 +6,50 @@ import {
   analyticsScriptSrc,
   canLoadAnalytics,
   gaMeasurementId,
+  gtmContainerId,
+  gtmInlineBootstrap,
+  gtmNoscriptSrc,
+  gtmScriptId,
 } from "@/lib/analytics";
 import { parsePrivacyCookie, privacyCookieName } from "@/lib/privacy";
 
 export async function AnalyticsScript() {
-  const id = gaMeasurementId();
+  const ga = gaMeasurementId();
+  const gtm = gtmContainerId();
   const prefs = parsePrivacyCookie((await cookies()).get(privacyCookieName)?.value);
-  if (!canLoadAnalytics(prefs, id)) return null;
-  const src = analyticsScriptSrc(id);
-  const inline = analyticsInlineConfig(id);
-  if (!src || !inline) return null;
+  if (!canLoadAnalytics(prefs, ga, gtm)) return null;
+
+  const gtmBootstrap = gtm ? gtmInlineBootstrap(gtm) : "";
+  const noscriptSrc = gtm ? gtmNoscriptSrc(gtm) : "";
+  const gaSrc = !gtm && ga ? analyticsScriptSrc(ga) : "";
+  const gaInline = !gtm && ga ? analyticsInlineConfig(ga) : "";
 
   return (
     <>
-      <Script src={src} strategy="afterInteractive" />
-      <Script id={analyticsScriptId} strategy="afterInteractive">
-        {inline}
-      </Script>
+      {gtmBootstrap ? (
+        <Script id={gtmScriptId} strategy="afterInteractive">
+          {gtmBootstrap}
+        </Script>
+      ) : null}
+      {noscriptSrc ? (
+        <noscript>
+          <iframe
+            src={noscriptSrc}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+            title="Google Tag Manager"
+          />
+        </noscript>
+      ) : null}
+      {gaSrc && gaInline ? (
+        <>
+          <Script src={gaSrc} strategy="afterInteractive" />
+          <Script id={analyticsScriptId} strategy="afterInteractive">
+            {gaInline}
+          </Script>
+        </>
+      ) : null}
     </>
   );
 }

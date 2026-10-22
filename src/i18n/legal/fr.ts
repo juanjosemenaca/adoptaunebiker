@@ -17,7 +17,7 @@ export const legalFr: LegalCopy = {
   },
   consent: {
     title: "Cookies et confidentialité",
-    body: "Nous utilisons des cookies techniques pour la langue et, si tu te connectes, pour la session. L’analytique n’est pas activée. Tu peux accepter, refuser l’optionnel ou choisir une catégorie.",
+    body: "Nous utilisons des cookies techniques pour la langue et, si tu te connectes, pour la session. Si tu acceptes l’analytique, Google Tag Manager se charge. Tu peux accepter, refuser l’optionnel ou choisir une catégorie.",
     acceptAll: "Tout accepter",
     rejectOptional: "Refuser les optionnels",
     configure: "Configurer les préférences",
@@ -28,7 +28,7 @@ export const legalFr: LegalCopy = {
       "Langue, session et sécurité. Ils ne peuvent pas être désactivés si tu veux utiliser le site. Ils n’incluent pas l’analytique.",
     analyticsTitle: "Analytique",
     analyticsBody:
-      "Mesure de l’usage du site. Aucun outil d’analytique n’est configuré aujourd’hui. S’il est activé plus tard, il faudra un identifiant valide et ton consentement.",
+      "Mesure de l’usage du site via Google Tag Manager (GTM-MX2JCJFR). Il ne se charge que si tu consens. Les balises de ce conteneur s’exécutent alors.",
     analyticsInactive: "L’analytique n’est pas activée pour le moment.",
     settings: "Configurer les cookies",
   },
@@ -153,8 +153,8 @@ export const legalFr: LegalCopy = {
       {
         title: "Analytique",
         paragraphs: [
-          "Google Analytics est prévu pour plus tard, mais n’est ni configuré ni chargé. Il n’y a pas d’identifiant de mesure. Accepter les cookies n’active pas l’analytique tant que cet identifiant n’existe pas.",
-          "S’il est activé plus tard, un consentement préalable sera demandé lorsque c’est nécessaire et cette politique sera mise à jour. Aucun traitement analytique n’est actif aujourd’hui.",
+          "Si tu acceptes la catégorie analytique, le conteneur Google Tag Manager GTM-MX2JCJFR se charge. Sans ce consentement, le script et l’iframe de Google Tag Manager ne sont pas insérés.",
+          "Ce code n’énumère pas les balises concrètes configurées dans le conteneur. Qui administre GTM décide ce qui se déclenche. Les cookies posés par Google dépendent de ces balises ; leurs noms et durées ne sont pas vérifiés ici.",
         ],
       },
       {
@@ -330,11 +330,11 @@ export const legalFr: LegalCopy = {
               "Confirmer si la base est le consentement, l’exécution d’une fonction optionnelle du service, ou les deux, et le régime de Strava comme destinataire",
             ],
             [
-              "Analytique future (éteinte aujourd’hui)",
-              "Consentement, lorsqu’elle sera activée et nécessaire",
-              "Il n’y a aujourd’hui ni identifiant ni script. Accepter les cookies ne charge pas l’analytique",
-              "Que l’analytique n’est pas active et que, si elle est allumée, un consentement préalable sera demandé",
-              "Ne pas l’activer ni la documenter comme un traitement réel tant que l’outil n’existe pas",
+              "Analytique (Google Tag Manager)",
+              "Consentement",
+              "GTM-MX2JCJFR ne se charge que si la catégorie analytique est acceptée",
+              "Que le script ne se charge pas en cas de refus ou avant de décider",
+              "Revoir les balises du conteneur et si l’une d’elles implique de la publicité ou un autre but",
             ],
           ],
         },
@@ -408,7 +408,7 @@ export const legalFr: LegalCopy = {
       {
         title: "Analytique et tiers",
         paragraphs: [
-          "Google Analytics et gtag.js ne sont pas chargés. Aucun cookie de mesure n’a été observé. Tout accepter ne charge pas l’analytique s’il n’y a pas d’identifiant de mesure valide.",
+          "Avec le consentement analytique, le site charge https://www.googletagmanager.com/gtm.js et, sans JavaScript, l’iframe ns.html du conteneur GTM-MX2JCJFR. Google peut poser ses propres cookies selon les balises du conteneur ; ces cookies tiers ne sont pas listés ici, car ils n’ont pas été observés dans ce code. Sans consentement, googletagmanager.com n’est pas appelé.",
           "Si tu connectes Strava, tu quittes ce site et Strava peut utiliser ses propres cookies. Si une carte de sortie est affichée, le navigateur demande des tuiles à OpenStreetMap ; nous n’établissons pas de cookies OSM.",
           "Les polices sont servies avec next/font, auto-hébergées après le build, sans requête de cookies vers Google Fonts pendant la visite.",
         ],

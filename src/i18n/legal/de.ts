@@ -17,7 +17,7 @@ export const legalDe: LegalCopy = {
   },
   consent: {
     title: "Cookies und Datenschutz",
-    body: "Wir nutzen technische Cookies für die Sprache und, wenn du dich anmeldest, für die Sitzung. Analyse ist nicht aktiv. Du kannst akzeptieren, Optionales ablehnen oder eine Kategorie wählen.",
+    body: "Wir nutzen technische Cookies für die Sprache und, wenn du dich anmeldest, für die Sitzung. Wenn du Analyse akzeptierst, lädt Google Tag Manager. Du kannst akzeptieren, Optionales ablehnen oder eine Kategorie wählen.",
     acceptAll: "Alle akzeptieren",
     rejectOptional: "Optionale ablehnen",
     configure: "Einstellungen wählen",
@@ -28,7 +28,7 @@ export const legalDe: LegalCopy = {
       "Sprache, Sitzung und Sicherheit. Sie lassen sich nicht abschalten, wenn du die Seite nutzen willst. Sie enthalten keine Analyse.",
     analyticsTitle: "Analyse",
     analyticsBody:
-      "Messung der Seitennutzung. Heute ist kein Analysetool konfiguriert. Wird es später eingeschaltet, braucht es eine gültige Mess-ID und deine Einwilligung.",
+      "Messung der Seitennutzung über Google Tag Manager (GTM-MX2JCJFR). Es lädt nur mit deiner Einwilligung. Dann laufen die Tags in diesem Container.",
     analyticsInactive: "Analyse ist derzeit nicht aktiv.",
     settings: "Cookies einstellen",
   },
@@ -153,8 +153,8 @@ export const legalDe: LegalCopy = {
       {
         title: "Analyse",
         paragraphs: [
-          "Google Analytics ist für später vorgesehen, aber weder konfiguriert noch geladen. Es gibt keine Mess-ID. Das Akzeptieren von Cookies schaltet Analyse nicht ein, solange diese ID fehlt.",
-          "Wird es später eingeschaltet, wird vorher eine Einwilligung eingeholt, soweit erforderlich, und diese Richtlinie wird aktualisiert. Heute gibt es keine aktive Analyseverarbeitung.",
+          "Wenn du die Kategorie Analyse akzeptierst, lädt der Google-Tag-Manager-Container GTM-MX2JCJFR. Ohne diese Einwilligung werden Skript und Iframe von Google Tag Manager nicht eingefügt.",
+          "Dieser Code listet die konkreten Tags im Container nicht auf. Wer GTM verwaltet, entscheidet, was ausgelöst wird. Cookies von Google hängen von diesen Tags ab; Namen und Laufzeiten sind hier nicht geprüft.",
         ],
       },
       {
@@ -330,11 +330,11 @@ export const legalDe: LegalCopy = {
               "Bestätigen, ob die Grundlage die Einwilligung, die Durchführung einer optionalen Dienstfunktion oder beides ist, und die Rolle von Strava als Empfänger",
             ],
             [
-              "Künftige Analyse (heute aus)",
-              "Einwilligung, wenn sie eingeschaltet wird und erforderlich ist",
-              "Heute gibt es weder Mess-ID noch Skript. Das Akzeptieren von Cookies lädt keine Analyse",
-              "Dass Analyse nicht aktiv ist und dass bei Einschalten vorher eine Einwilligung eingeholt wird",
-              "Nicht einschalten und nicht als echte Verarbeitung dokumentieren, solange das Tool fehlt",
+              "Analyse (Google Tag Manager)",
+              "Einwilligung",
+              "GTM-MX2JCJFR lädt nur, wenn die Kategorie Analyse akzeptiert ist",
+              "Dass das Skript bei Ablehnung oder vor der Entscheidung nicht lädt",
+              "Die Container-Tags prüfen und ob eines Werbung oder einen anderen Zweck betrifft",
             ],
           ],
         },
@@ -408,7 +408,7 @@ export const legalDe: LegalCopy = {
       {
         title: "Analyse und Dritte",
         paragraphs: [
-          "Google Analytics und gtag.js werden nicht geladen. Es wurden keine Mess-Cookies beobachtet. Alle Cookies akzeptieren lädt keine Analyse, wenn keine gültige Mess-ID vorhanden ist.",
+          "Mit Analyse-Einwilligung lädt die Seite https://www.googletagmanager.com/gtm.js und, ohne JavaScript, das ns.html-Iframe des Containers GTM-MX2JCJFR. Google kann eigene Cookies setzen, je nach Tags im Container; diese Drittanbieter-Cookies sind hier nicht aufgelistet, weil sie in diesem Code nicht beobachtet wurden. Ohne Einwilligung wird googletagmanager.com nicht angefragt.",
           "Wenn du Strava verbindest, verlässt du diese Website und Strava kann eigene Cookies nutzen. Wird eine Tourenkarte gezeigt, fordert der Browser Kacheln von OpenStreetMap an; wir setzen keine OSM-Cookies.",
           "Schriften kommen über next/font, nach dem Build selbst gehostet, ohne Cookie-Anfrage an Google Fonts während des Besuchs.",
         ],

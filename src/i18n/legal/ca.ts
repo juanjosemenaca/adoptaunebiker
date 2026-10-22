@@ -17,7 +17,7 @@ export const legalCa: LegalCopy = {
   },
   consent: {
     title: "Galetes i privadesa",
-    body: "Fem servir galetes tècniques per a l’idioma i, si entres, per a la sessió. L’analítica no està activada. Pots acceptar, rebutjar el que és opcional o triar categoria.",
+    body: "Fem servir galetes tècniques per a l’idioma i, si entres, per a la sessió. Si acceptes l’analítica, es carrega Google Tag Manager. Pots acceptar, rebutjar el que és opcional o triar categoria.",
     acceptAll: "Acceptar-les totes",
     rejectOptional: "Rebutjar les opcionals",
     configure: "Configurar preferències",
@@ -28,7 +28,7 @@ export const legalCa: LegalCopy = {
       "Idioma, sessió i seguretat. No es poden desactivar si vols fer servir el lloc. No inclouen analítica.",
     analyticsTitle: "Analítica",
     analyticsBody:
-      "Mesura de l’ús del lloc. Avui no hi ha cap eina d’analítica configurada. Si s’activa més endavant, caldrà un identificador vàlid i el teu consentiment.",
+      "Mesura de l’ús del lloc amb Google Tag Manager (GTM-MX2JCJFR). Només es carrega si dones consentiment. Llavors s’executen les etiquetes d’aquest contenidor.",
     analyticsInactive: "L’analítica no està activada ara mateix.",
     settings: "Configurar galetes",
   },
@@ -153,8 +153,8 @@ export const legalCa: LegalCopy = {
       {
         title: "Analítica",
         paragraphs: [
-          "Google Analytics està previst per al futur, però no està configurat ni es carrega. No hi ha identificador de mesura. Acceptar galetes no activa l’analítica mentre no existeixi aquest identificador.",
-          "Si s’activa més endavant, es demanarà consentiment previ quan calgui i s’actualitzarà aquesta política. Avui no hi ha tractament analític actiu.",
+          "Si acceptes la categoria d’analítica, es carrega el contenidor de Google Tag Manager GTM-MX2JCJFR. Sense aquest consentiment no s’insereix ni l’script ni l’iframe de Google Tag Manager.",
+          "Aquest codi no enumera les etiquetes concretes configurades dins del contenidor. Qui administra GTM decideix què es dispara. Les galetes que posi Google depenen d’aquestes etiquetes; els noms i les durades no estan verificats aquí.",
         ],
       },
       {
@@ -330,11 +330,11 @@ export const legalCa: LegalCopy = {
               "Confirmar si la base és el consentiment, l’execució d’una funció opcional del servei, o totes dues, i el règim de Strava com a destinatari",
             ],
             [
-              "Analítica futura (avui apagada)",
-              "Consentiment, quan s’activi i sigui necessari",
-              "Avui no hi ha identificador ni script. Acceptar galetes no carrega analítica",
-              "Que l’analítica no està activa i que, si s’encén, es demanarà consentiment previ",
-              "No activar ni documentar com a tractament real fins que existeixi l’eina",
+              "Analítica (Google Tag Manager)",
+              "Consentiment",
+              "Es carrega GTM-MX2JCJFR només si la categoria d’analítica està acceptada",
+              "Que l’script no es carrega si es rebutja o abans de decidir",
+              "Revisar les etiquetes del contenidor i si alguna implica publicitat o una altra finalitat",
             ],
           ],
         },
@@ -408,7 +408,7 @@ export const legalCa: LegalCopy = {
       {
         title: "Analítica i tercers",
         paragraphs: [
-          "No es carrega Google Analytics ni gtag.js. No hi ha galetes de mesura observades. Acceptar totes les galetes no carrega analítica si no hi ha un identificador de mesura vàlid.",
+          "Amb consentiment d’analítica es carrega https://www.googletagmanager.com/gtm.js i, si no hi ha JavaScript, l’iframe ns.html del contenidor GTM-MX2JCJFR. Google pot establir galetes pròpies segons les etiquetes del contenidor; aquestes galetes de tercer no estan llistades aquí perquè no s’han observat en aquest codi. Sense consentiment no es demana googletagmanager.com.",
           "Si connectes Strava, surts d’aquest lloc i Strava pot fer servir les seves pròpies galetes. Si es mostra un mapa de sortida, el navegador demana tesel·les a OpenStreetMap; no establim galetes d’OSM.",
           "Les fonts es serveixen amb next/font, autoallotjades després del build, sense petició de galetes a Google Fonts en la visita.",
         ],

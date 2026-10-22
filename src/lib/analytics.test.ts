@@ -6,11 +6,17 @@ import {
   analyticsScriptId,
   analyticsScriptSrc,
   canLoadAnalytics,
+  defaultGtmContainerId,
   disableBrowserAnalytics,
   enableBrowserAnalytics,
   gaMeasurementId,
+  gtmContainerId,
+  gtmInlineBootstrap,
+  gtmNoscriptSrc,
   hasAnalyticsCategoryConsent,
+  isAnalyticsConfigured,
   isValidGaMeasurementId,
+  isValidGtmId,
   readBrowserAnalyticsConsent,
   trackEvent,
 } from "./analytics.ts";
@@ -19,11 +25,11 @@ import { applyPrivacyChoice, privacyPolicyVersion, serializePrivacyCookie } from
 const validId = "G-TESTID01";
 
 describe("analytics gating", () => {
-  it("stays off without a measurement ID even if the visitor accepted analytics", () => {
+  it("stays off without a measurement ID or GTM container even if the visitor accepted analytics", () => {
     assert.equal(gaMeasurementId(), "");
-    assert.equal(canLoadAnalytics({ analytics: true }), false);
-    assert.equal(canLoadAnalytics({ analytics: false }), false);
-    assert.equal(canLoadAnalytics(null), false);
+    assert.equal(canLoadAnalytics({ analytics: true }, "", ""), false);
+    assert.equal(canLoadAnalytics({ analytics: false }, "", ""), false);
+    assert.equal(canLoadAnalytics(null, "", ""), false);
     assert.equal(analyticsScriptSrc(""), "");
     assert.equal(analyticsInlineConfig(""), "");
   });
@@ -33,6 +39,20 @@ describe("analytics gating", () => {
     assert.equal(isValidGaMeasurementId("UA-123-1"), false);
     assert.equal(isValidGaMeasurementId("G-"), false);
     assert.equal(gaMeasurementId("not-an-id"), "");
+  });
+
+  it("loads the configured GTM container only after analytics consent", () => {
+    assert.equal(isValidGtmId("GTM-MX2JCJFR"), true);
+    assert.equal(isValidGtmId("G-TESTID01"), false);
+    assert.equal(gtmContainerId(), defaultGtmContainerId);
+    assert.equal(gtmContainerId(""), "");
+    assert.equal(isAnalyticsConfigured(), true);
+    assert.equal(canLoadAnalytics({ analytics: true }), true);
+    assert.equal(canLoadAnalytics({ analytics: false }), false);
+    assert.equal(canLoadAnalytics(null), false);
+    assert.equal(gtmInlineBootstrap().includes(`'${defaultGtmContainerId}'`), true);
+    assert.equal(gtmInlineBootstrap().includes("gtm.js"), true);
+    assert.equal(gtmNoscriptSrc(), `https://www.googletagmanager.com/ns.html?id=${defaultGtmContainerId}`);
   });
 
   it("does not treat a missing privacy cookie as analytics consent", () => {
@@ -120,7 +140,7 @@ describe("analytics gating", () => {
     try {
       trackEvent(analyticsEvents.contactClick, validId);
       assert.deepEqual(calls, [["event", analyticsEvents.contactClick]]);
-      trackEvent(analyticsEvents.contactClick, "");
+      trackEvent(analyticsEvents.contactClick, "", "");
       assert.deepEqual(calls, [["event", analyticsEvents.contactClick]]);
     } finally {
       if (previousWindow) (globalThis as { window?: unknown }).window = previousWindow;
