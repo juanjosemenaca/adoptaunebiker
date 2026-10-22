@@ -43,7 +43,7 @@ export function publicMetadata({
       siteName: "Adopta un eBiker",
       title,
       description,
-      images: [{ url: "/logo.png", width: 852, height: 456, alt: "Adopta un eBiker" }],
+      images: [{ url: "/logo.png", width: 1000, height: 350, alt: "Adopta un eBiker" }],
     },
     twitter: {
       card: "summary_large_image",

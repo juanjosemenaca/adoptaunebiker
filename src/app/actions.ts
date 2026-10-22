@@ -7,7 +7,7 @@ import { DEMO_PASSWORD, demoSessionFromLogin, isEmail, normalizeEmail } from "@/
 import { logServerError } from "@/lib/log";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { defaultLocale, isLocale } from "@/i18n/config";
-import { isDiscipline, parsePracticeList } from "@/lib/labels";
+import { complementaryPractices, isDiscipline, parsePracticeList } from "@/lib/labels";
 import {
   OTHER_PLACE,
   countryById,
@@ -91,9 +91,10 @@ export async function joinCommunity(formData: FormData) {
   const veteranIn = parsePracticeList(
     formData.getAll("veteran").map((item) => String(item)),
   );
-  const beginnerIn = parsePracticeList(
+  const beginnerIn = complementaryPractices(
+    veteranIn,
     formData.getAll("beginner").map((item) => String(item)),
-  ).filter((item) => !veteranIn.includes(item));
+  );
   const interestedIn = formData
     .getAll("interested")
     .map((item) => String(item))

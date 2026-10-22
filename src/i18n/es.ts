@@ -56,17 +56,22 @@ export const es: Dictionary = {
   },
   disciplines: { mtb: "MTB", carretera: "Carretera", gravel: "Gravel" },
   home: {
-    brandGloss: "",
-    line1: "Encuentra tu grupeta.",
-    line2: "Comparte tu pasión.",
-    lead: "Encuentra ciclistas de tu zona y comparte rutas, sea cual sea tu nivel o tu bicicleta: eléctrica, MTB, carretera o gravel.",
+    brandGloss: "Comunidad ciclista abierta",
+    line1: "Todas las bicis.",
+    line2: "Todos los niveles.",
+    line3: "Una misma pasión.",
+    lead: "Adopta un eBiker une a quien disfruta de la bicicleta: eléctrica o convencional, principiante o con kilómetros. Aquí las diferencias no apartan: ayudan a encontrar compañía.",
+    joinMeta: "Barcelona y área metropolitana · Incorporación mediante solicitud revisada por un administrador",
+    welcomeTags: ["Carretera", "Gravel", "MTB", "Eléctrica o convencional"],
     ctaIn: "Ir a la intranet",
-    ctaOut: "Quiero unirme a la comunidad",
+    ctaOut: "Quiero formar parte de la comunidad",
+    ctaOutShort: "Quiero unirme",
     ctaGuide: "Quiero acompañar a otros ciclistas",
     launchNote:
       "Estamos en fase de lanzamiento. Empezamos en Barcelona y su área metropolitana, con la intención de crecer al resto de España. Si vives más lejos, también puedes pedir plaza.",
     matchKicker: "Cómo os encontramos",
     matchTitle: "Zona, modalidad y ganas. El resto se organiza.",
+    howTitle: "Tres pasos para formar parte",
     matchItems: [
       {
         title: "Dices quién eres",
@@ -98,10 +103,6 @@ export const es: Dictionary = {
         body: "Un veterano acompaña. Un principiante se suma. Sin ranking, sin palmarés y sin que nadie se quede atrás sin saberlo.",
       },
       {
-        title: "Todas las bicis",
-        body: "Eléctrica o muscular, da igual. Cada salida se organiza según recorrido, ritmo y autonomía del grupo.",
-      },
-      {
         title: "Alta revisada",
         body: "Envías una solicitud. Un administrador la confirma por correo. Luego entras a la intranet a conocer al pelotón.",
       },
@@ -125,12 +126,12 @@ export const es: Dictionary = {
     bridge:
       "El mejor compañero de ruta no es quien lleva tu misma bici, sino quien comparte tus ganas de salir.",
     veteranKicker: "El veterano",
-    veteranTitle: "Experiencia que se comparte.",
+    veteranTitle: "Llevas kilómetros y quieres compartirlos",
     veteranBody:
       "No hace falta palmarés. Hace falta kilómetros a las espaldas y ganas de abrir la grupeta a quien empieza, da igual la bici.",
     veteranLink: "Qué es un veterano",
     beginnerKicker: "El principiante",
-    beginnerTitle: "Ilusión por descubrir.",
+    beginnerTitle: "Empiezas, o quieres compañía a tu ritmo",
     beginnerBody:
       "Quien acaba de empezar, lleva poco o quiere rutas más largas sin miedo a quedarse atrás. Eléctrica o no. Carretera, MTB o gravel.",
     beginnerLink: "Qué es un principiante",
@@ -226,7 +227,7 @@ export const es: Dictionary = {
       "Crea tu perfil, encuentra ciclistas, organiza una grupeta y sal a pedalear. Veterano o principiante. MTB, carretera o gravel.",
     title1: "Cómo",
     title2: "funciona",
-    lead: "Cuatro pasos para encontrar tu grupeta. Eliges si eres principiante o veterano y envías una solicitud de alta. El administrador la revisa y te confirma la plaza.",
+    lead: "Tres pasos para encontrar tu grupeta. Eliges si eres principiante o veterano y envías una solicitud de alta. El administrador la revisa y te confirma la plaza.",
     codeTitle: "El código de la grupeta",
     codeLead: "Reglas simples para que una salida sea de todos, no de quien más corre.",
     inside: "Ya estás dentro",
@@ -433,6 +434,7 @@ export const es: Dictionary = {
       "Base jurídica propuesta, pendiente de validar: medidas precontractuales a petición tuya para examinar la solicitud.",
     privacyRights:
       "Puedes ejercer acceso, rectificación, supresión, oposición, limitación y portabilidad, cuando procedan, en hola@adoptaunebiker.com.",
+    privacyFold: "Condiciones legales",
     privacyPolicyLink: "Lee la política de privacidad",
   },
   intranet: {

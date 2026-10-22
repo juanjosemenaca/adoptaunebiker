@@ -29,8 +29,8 @@ export function PublicJsonLd({
     logo: {
       "@type": "ImageObject",
       url: `${origin}/logo.png`,
-      width: 852,
-      height: 456,
+      width: 1000,
+      height: 350,
     },
     description: t.meta.description,
     sport: "Cycling",

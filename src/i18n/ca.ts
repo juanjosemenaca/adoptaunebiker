@@ -56,16 +56,21 @@ export const ca: Dictionary = {
   },
   disciplines: { mtb: "MTB", carretera: "Carretera", gravel: "Gravel" },
   home: {
-    brandGloss: "Adopta un ciclista elèctric",
-    line1: "Troba la teva grupeta.",
-    line2: "Comparteix la teva passió.",
-    lead: "Troba ciclistes de la teva zona i comparteix rutes, sigui quin sigui el teu nivell o la teva bicicleta: elèctrica, MTB, carretera o gravel.",
+    brandGloss: "Comunitat ciclista oberta",
+    line1: "Totes les bicis.",
+    line2: "Tots els nivells.",
+    line3: "Una mateixa passió.",
+    lead: "Adopta un eBiker uneix qui gaudeix de la bicicleta: elèctrica o convencional, principiant o amb quilòmetres. Aquí les diferències no aparten: ajuden a trobar companyia.",
+    joinMeta: "Barcelona i àrea metropolitana · Incorporació mitjançant sol·licitud revisada per un administrador",
+    welcomeTags: ["Carretera", "Gravel", "MTB", "Elèctrica o convencional"],
     ctaIn: "Anar a la intranet",
-    ctaOut: "Vull unir-me a la comunitat",
+    ctaOut: "Vull formar part de la comunitat",
+    ctaOutShort: "Vull unir-me",
     ctaGuide: "Vull acompanyar altres ciclistes",
     launchNote:
       "Estem en fase de llançament. Comencem a Barcelona i l’àrea metropolitana, amb la intenció de créixer a la resta d’Espanya. Si vius més lluny, també pots demanar plaça.",
     matchKicker: "Com us trobem",
+    howTitle: "Tres passos per formar-ne part",
     matchTitle: "Zona, modalitat i ganes. La resta s’organitza.",
     matchItems: [
       {
@@ -98,10 +103,6 @@ export const ca: Dictionary = {
         body: "Un veterà acompanya. Un principiant s’hi suma. Sense rànquing, sense palmarès i sense que ningú es quedi enrere sense saber-ho.",
       },
       {
-        title: "Totes les bicis",
-        body: "Elèctrica o muscular, igual. Cada sortida s’organitza segons recorregut, ritme i autonomia del grup.",
-      },
-      {
         title: "Alta revisada",
         body: "Envia una sol·licitud. Un administrador la confirma per correu. Després entres a la intranet a conèixer el pelotó.",
       },
@@ -125,12 +126,12 @@ export const ca: Dictionary = {
     bridge:
       "El millor company de ruta no és qui porta la teva mateixa bici, sinó qui comparteix les ganes de sortir.",
     veteranKicker: "El veterà",
-    veteranTitle: "Experiència que es comparteix.",
+    veteranTitle: "Portes quilòmetres i vols compartir-los",
     veteranBody:
       "No cal palmarès. Calen quilòmetres a l’esquena i ganes d’obrir la grupeta a qui comença, igual quina bici.",
     veteranLink: "Què és un veterà",
     beginnerKicker: "El principiant",
-    beginnerTitle: "Il·lusió per descobrir.",
+    beginnerTitle: "Comences, o vols companyia al teu ritme",
     beginnerBody:
       "Qui acaba de començar, porta poc o vol rutes més llargues sense por de quedar-se enrere. Elèctrica o no. Carretera, MTB o gravel.",
     beginnerLink: "Què és un principiant",
@@ -226,7 +227,7 @@ export const ca: Dictionary = {
       "Crea el teu perfil, troba ciclistes, organitza una grupeta i surt a pedalar. Veterà o principiant. MTB, carretera o gravel.",
     title1: "Com",
     title2: "funciona",
-    lead: "Quatre passos per trobar la teva grupeta. Tries si ets principiant o veterà i envies una sol·licitud d’alta. L’administrador la revisa i et confirma la plaça.",
+    lead: "Tres passos per trobar la teva grupeta. Tries si ets principiant o veterà i envies una sol·licitud d’alta. L’administrador la revisa i et confirma la plaça.",
     codeTitle: "El codi de la grupeta",
     codeLead: "Regles simples perquè una sortida sigui de tothom, no de qui més corre.",
     inside: "Ja ets dins",
@@ -433,6 +434,7 @@ export const ca: Dictionary = {
       "Base jurídica proposada, pendent de validar: mesures precontractuals a petició teva per examinar la sol·licitud.",
     privacyRights:
       "Pots exercir accés, rectificació, supressió, oposició, limitació i portabilitat, si escau, a hola@adoptaunebiker.com.",
+    privacyFold: "Condicions legals",
     privacyPolicyLink: "Llegeix la política de privadesa",
   },
   intranet: {

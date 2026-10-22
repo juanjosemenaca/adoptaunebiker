@@ -56,16 +56,21 @@ export const fr: Dictionary = {
   },
   disciplines: { mtb: "VTT", carretera: "Route", gravel: "Gravel" },
   home: {
-    brandGloss: "Adopte un e-biker",
-    line1: "Trouve ton groupe.",
-    line2: "Partage ta passion.",
-    lead: "Trouve des cyclistes près de chez toi et partage des sorties, quel que soit ton niveau ou ton vélo : électrique, VTT, route ou gravel.",
+    brandGloss: "Communauté cycliste ouverte",
+    line1: "Tous les vélos.",
+    line2: "Tous les niveaux.",
+    line3: "Une même passion.",
+    lead: "Adopta un eBiker rassemble celles et ceux qui aiment le vélo : électrique ou musculaire, débutants ou avec des kilomètres. Ici les différences n’écartent personne : elles aident à trouver de la compagnie.",
+    joinMeta: "Barcelone et aire métropolitaine · Intégration sur demande relue par un administrateur",
+    welcomeTags: ["Gravel", "Route", "VTT", "Électrique ou musculaire"],
     ctaIn: "Aller à l’intranet",
-    ctaOut: "Je veux rejoindre la communauté",
+    ctaOut: "Je veux faire partie de la communauté",
+    ctaOutShort: "Je veux rejoindre",
     ctaGuide: "Je veux accompagner d’autres cyclistes",
     launchNote:
       "Nous sommes en phase de lancement. On commence à Barcelone et dans l’aire métropolitaine, avec l’intention de grandir dans le reste de l’Espagne. Si tu vis plus loin, tu peux quand même demander une place.",
     matchKicker: "Comment on vous relie",
+    howTitle: "Trois étapes pour en faire partie",
     matchTitle: "Zone, pratique et envie. Le reste s’organise.",
     matchItems: [
       {
@@ -98,10 +103,6 @@ export const fr: Dictionary = {
         body: "Un vétéran accompagne. Un débutant rejoint. Sans classement, sans palmarès, et personne n’est distancé en silence.",
       },
       {
-        title: "Tous les vélos",
-        body: "Électrique ou musculaire, peu importe. Chaque sortie se calibre selon le parcours, le rythme et l’autonomie du groupe.",
-      },
-      {
         title: "Inscription relue",
         body: "Tu envoies une demande. Un administrateur la confirme par e-mail. Ensuite tu entres dans l’intranet et tu rencontres le peloton.",
       },
@@ -125,12 +126,12 @@ export const fr: Dictionary = {
     bridge:
       "Le meilleur compagnon n’est pas celui qui a le même vélo, c’est celui qui a envie de sortir.",
     veteranKicker: "Le vétéran",
-    veteranTitle: "Une expérience qui se partage.",
+    veteranTitle: "Tu as les kilomètres et tu veux les partager",
     veteranBody:
       "Pas besoin de palmarès. Il faut des kilomètres dans les jambes et l’envie d’ouvrir le groupe à ceux qui commencent, quel que soit le vélo.",
     veteranLink: "Qu’est-ce qu’un vétéran",
     beginnerKicker: "Le débutant",
-    beginnerTitle: "L’envie de découvrir.",
+    beginnerTitle: "Tu commences, ou tu veux de la compagnie à ton rythme",
     beginnerBody:
       "Quelqu’un qui commence, qui a peu d’expérience, ou qui veut des sorties plus longues sans peur de se faire distancer. Électrique ou non. Route, VTT ou gravel.",
     beginnerLink: "Qu’est-ce qu’un débutant",
@@ -226,7 +227,7 @@ export const fr: Dictionary = {
       "Crée ton profil, trouve des cyclistes, organise une sortie et pédale. Vétéran ou débutant. VTT, route ou gravel.",
     title1: "Comment",
     title2: "ça marche",
-    lead: "Quatre étapes pour trouver ton groupe. Tu choisis débutant ou vétéran et tu envoies une demande d’inscription. L’administrateur la lit et confirme ta place.",
+    lead: "Trois étapes pour trouver ton groupe. Tu choisis débutant ou vétéran et tu envoies une demande d’inscription. L’administrateur la lit et confirme ta place.",
     codeTitle: "Le code de la sortie",
     codeLead: "Des règles simples pour qu’une sortie soit à tout le monde, pas à celui qui va le plus vite.",
     inside: "Tu es déjà dedans",
@@ -433,6 +434,7 @@ export const fr: Dictionary = {
       "Base juridique proposée, à valider : mesures précontractuelles à ta demande pour examiner la candidature.",
     privacyRights:
       "Tu peux exercer accès, rectification, effacement, opposition, limitation et portabilité, le cas échéant, à hola@adoptaunebiker.com.",
+    privacyFold: "Mentions légales",
     privacyPolicyLink: "Lire la politique de confidentialité",
   },
   intranet: {

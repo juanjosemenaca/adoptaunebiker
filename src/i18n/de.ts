@@ -56,16 +56,21 @@ export const de: Dictionary = {
   },
   disciplines: { mtb: "MTB", carretera: "Straße", gravel: "Gravel" },
   home: {
-    brandGloss: "Adoptiere einen E-Biker",
-    line1: "Finde deine Gruppe.",
-    line2: "Teile deine Leidenschaft.",
-    lead: "Finde Radfahrer in deiner Gegend und teile Touren, egal welches Niveau oder Rad: E-Bike, MTB, Straße oder Gravel.",
+    brandGloss: "Offene Radsport-Community",
+    line1: "Alle Räder.",
+    line2: "Alle Niveaus.",
+    line3: "Dieselbe Leidenschaft.",
+    lead: "Adopta un eBiker verbindet Menschen, die das Radfahren mögen: elektrisch oder konventionell, Einsteiger oder mit Kilometern. Unterschiede trennen hier nicht: sie helfen, Gesellschaft zu finden.",
+    joinMeta: "Barcelona und Metropolregion · Aufnahme nach Anfrage, die ein Administrator prüft",
+    welcomeTags: ["Gravel", "MTB", "Straße", "Elektrisch oder konventionell"],
     ctaIn: "Zum Intranet",
-    ctaOut: "Ich will zur Community",
+    ctaOut: "Ich will Teil der Community sein",
+    ctaOutShort: "Ich will mitmachen",
     ctaGuide: "Ich will andere Radfahrer begleiten",
     launchNote:
       "Wir sind im Launch. Wir starten in Barcelona und der Metropolregion, mit dem Ziel, nach ganz Spanien zu wachsen. Wenn du weiter weg wohnst, kannst du trotzdem einen Platz anfragen.",
     matchKicker: "Wie wir euch zusammenbringen",
+    howTitle: "Drei Schritte, um dabei zu sein",
     matchTitle: "Ort, Disziplin und Lust. Der Rest organisiert sich.",
     matchItems: [
       {
@@ -98,10 +103,6 @@ export const de: Dictionary = {
         body: "Ein Veteran fährt mit. Ein Einsteiger steigt ein. Kein Ranking, kein Palmarès, und niemand bleibt still abgehängt.",
       },
       {
-        title: "Jedes Rad",
-        body: "E-Bike oder Muskelrad, egal. Jede Ausfahrt richtet sich nach Strecke, Tempo und Reichweite der Gruppe.",
-      },
-      {
         title: "Geprüfte Aufnahme",
         body: "Du schickst eine Anfrage. Ein Administrator bestätigt sie per Mail. Danach gehst du ins Intranet und lernst das Peloton kennen.",
       },
@@ -125,12 +126,12 @@ export const de: Dictionary = {
     bridge:
       "Der beste Partner ist nicht der mit demselben Rad, sondern der, der raus will.",
     veteranKicker: "Der Veteran",
-    veteranTitle: "Erfahrung, die man teilt.",
+    veteranTitle: "Du hast Kilometer und willst sie teilen",
     veteranBody:
       "Kein Palmarès nötig. Es braucht Kilometer in den Beinen und Lust, die Gruppe für Einsteiger zu öffnen, egal welches Rad.",
     veteranLink: "Was ein Veteran ist",
     beginnerKicker: "Der Einsteiger",
-    beginnerTitle: "Lust am Entdecken.",
+    beginnerTitle: "Du fängst an oder willst Gesellschaft in deinem Tempo",
     beginnerBody:
       "Jemand, der gerade anfängt, noch wenig Zeit auf dem Rad hat oder längere Touren will, ohne Angst, abgehängt zu werden. E-Bike oder nicht. Straße, MTB oder Gravel.",
     beginnerLink: "Was ein Einsteiger ist",
@@ -226,7 +227,7 @@ export const de: Dictionary = {
       "Profil anlegen, Radfahrer finden, eine Gruppenausfahrt organisieren und los. Veteran oder Einsteiger. MTB, Straße oder Gravel.",
     title1: "So",
     title2: "geht’s",
-    lead: "Vier Schritte zu deiner Gruppe. Du wählst Einsteiger oder Veteran und schickst eine Aufnahme-Anfrage. Der Administrator prüft sie und bestätigt deinen Platz.",
+    lead: "Drei Schritte zu deiner Gruppe. Du wählst Einsteiger oder Veteran und schickst eine Aufnahme-Anfrage. Der Administrator prüft sie und bestätigt deinen Platz.",
     codeTitle: "Der Kodex der Gruppe",
     codeLead: "Einfache Regeln, damit eine Ausfahrt allen gehört, nicht dem Schnellsten.",
     inside: "Du bist drin",
@@ -433,6 +434,7 @@ export const de: Dictionary = {
       "Vorgeschlagene Rechtsgrundlage, noch zu prüfen: vorvertragliche Maßnahmen auf deinen Antrag zur Prüfung der Anmeldung.",
     privacyRights:
       "Du kannst Auskunft, Berichtigung, Löschung, Widerspruch, Einschränkung und Datenübertragbarkeit verlangen, soweit sie gelten, unter hola@adoptaunebiker.com.",
+    privacyFold: "Rechtliche Hinweise",
     privacyPolicyLink: "Datenschutzrichtlinie lesen",
   },
   intranet: {

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import logo from "../../public/logo.png";
 
 type BrandLogoProps = {
   className?: string;
@@ -12,8 +13,8 @@ type BrandLogoProps = {
 };
 
 const sizes = {
-  header: "h-14 w-[7rem] sm:h-16 sm:w-[8.5rem]",
-  footer: "h-[4.5rem] w-[8.5rem] sm:h-20 sm:w-[10.5rem]",
+  header: "h-10 w-[7.25rem] sm:h-12 sm:w-[10.75rem]",
+  footer: "h-14 w-[10rem] sm:h-16 sm:w-[11.5rem]",
 };
 
 export function BrandLogo({
@@ -39,10 +40,10 @@ export function BrandLogo({
       }}
     >
       <Image
-        src="/logo.png"
+        src={logo}
         alt="Adopta un eBiker"
         fill
-        sizes="170px"
+        sizes="200px"
         className="object-contain object-left"
         priority={priority}
       />

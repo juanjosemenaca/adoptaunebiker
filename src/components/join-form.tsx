@@ -90,7 +90,10 @@ function toggleLevel(current: Draft, field: "veteran" | "beginner", value: strin
     [field]: selected
       ? current[field].filter((item) => item !== value)
       : [...current[field], value],
-    [other]: selected ? current[other] : current[other].filter((item) => item !== value),
+    [other]:
+      selected || value === "ebike"
+        ? current[other]
+        : current[other].filter((item) => item !== value),
   };
 }
 
@@ -161,19 +164,11 @@ export function JoinForm({
   const countryIsOther = draft.country === OTHER_PLACE;
   const cityIsOther = countryIsOther || draft.city === OTHER_PLACE;
   const cities = country?.cities ?? [];
-  const fieldClass =
-    "mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone";
-  const sectionLegendClass =
-    "pb-1 text-base font-semibold uppercase tracking-[0.12em] text-sodium";
-
   if (state.ok) {
     return (
-      <div
-        role="status"
-        className="max-w-xl border border-volt bg-rubber p-5 text-sm leading-7 text-bone"
-      >
-        <p>{t.forms.requestOk}</p>
-        <p className="mt-3 text-mist">{t.forms.requestOkNext}</p>
+      <div role="status" className="public-join public-join-wide text-base leading-7 text-bone">
+        <p className="public-join-wide">{t.forms.requestOk}</p>
+        <p className="public-join-wide mt-3 text-mist">{t.forms.requestOkNext}</p>
       </div>
     );
   }
@@ -182,12 +177,13 @@ export function JoinForm({
     <form
       onSubmit={onSubmit}
       onFocus={markStarted}
-      className="space-y-4 border border-line bg-rubber p-5"
+      className="public-join"
       aria-describedby={state.error ? "join-form-error" : undefined}
     >
       <input type="hidden" name="locale" value={locale} />
-      <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-        {t.forms.name}
+      <div className="public-join-group">
+      <label>
+        <span>{t.forms.name}</span>
         <input
           name="name"
           required
@@ -195,11 +191,10 @@ export function JoinForm({
           autoComplete="given-name"
           value={draft.name}
           onChange={(event) => setDraft((current) => ({ ...current, name: event.target.value }))}
-          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
-      <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-        {t.forms.lastName}
+      <label>
+        <span>{t.forms.lastName}</span>
         <input
           name="lastName"
           autoComplete="family-name"
@@ -207,11 +202,10 @@ export function JoinForm({
           onChange={(event) =>
             setDraft((current) => ({ ...current, lastName: event.target.value }))
           }
-          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
-      <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-        {t.forms.email}
+      <label className="public-join-wide">
+        <span>{t.forms.email}</span>
         <input
           name="email"
           type="email"
@@ -219,12 +213,13 @@ export function JoinForm({
           autoComplete="email"
           value={draft.email}
           onChange={(event) => setDraft((current) => ({ ...current, email: event.target.value }))}
-          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
-      <p className="text-xs leading-6 text-mist">{t.forms.whyPlace}</p>
-      <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-        {t.forms.country}
+      </div>
+      <div className="public-join-group">
+      <p className="public-join-note">{t.forms.whyPlace}</p>
+      <label>
+        <span>{t.forms.country}</span>
         <select
           name="country"
           required
@@ -239,7 +234,6 @@ export function JoinForm({
               cityOther: "",
             }))
           }
-          className={fieldClass}
         >
           <option value="">{t.forms.chooseCountry}</option>
           {COUNTRIES.map((item) => (
@@ -251,8 +245,8 @@ export function JoinForm({
         </select>
       </label>
       {countryIsOther ? (
-        <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-          {t.forms.countryOther}
+        <label>
+          <span>{t.forms.countryOther}</span>
           <input
             name="countryOther"
             required
@@ -261,13 +255,12 @@ export function JoinForm({
             onChange={(event) =>
               setDraft((current) => ({ ...current, countryOther: event.target.value }))
             }
-            className={fieldClass}
           />
         </label>
       ) : null}
       {countryIsOther ? (
-        <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-          {t.forms.city}
+        <label>
+          <span>{t.forms.city}</span>
           <input
             name="cityOther"
             required
@@ -277,12 +270,11 @@ export function JoinForm({
             onChange={(event) =>
               setDraft((current) => ({ ...current, cityOther: event.target.value }))
             }
-            className={fieldClass}
           />
         </label>
       ) : (
-        <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-          {t.forms.city}
+        <label>
+          <span>{t.forms.city}</span>
           <select
             name="city"
             required
@@ -296,7 +288,6 @@ export function JoinForm({
                 cityOther: event.target.value === OTHER_PLACE ? current.cityOther : "",
               }))
             }
-            className={fieldClass}
           >
             <option value="">{t.forms.chooseCity}</option>
             {cities.map((city) => (
@@ -309,8 +300,8 @@ export function JoinForm({
         </label>
       )}
       {cityIsOther && !countryIsOther ? (
-        <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-          {t.forms.cityOther}
+        <label className="public-join-wide">
+          <span>{t.forms.cityOther}</span>
           <input
             name="cityOther"
             required
@@ -320,23 +311,23 @@ export function JoinForm({
             onChange={(event) =>
               setDraft((current) => ({ ...current, cityOther: event.target.value }))
             }
-            className={fieldClass}
           />
         </label>
       ) : null}
-      <p className="pt-2 text-xs leading-6 text-mist">{t.forms.whyRole}</p>
-      <fieldset className="pt-3">
-        <legend className={sectionLegendClass}>
+      </div>
+      <div className="public-join-group">
+      <p className="public-join-note">{t.forms.whyRole}</p>
+      <fieldset className="public-join-wide">
+        <legend>
           {t.forms.mentor}
         </legend>
         <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1">
           {practices.map((value) => (
-            <label key={`veteran-${value}`} className="inline-flex min-h-11 items-center gap-2 text-sm text-bone">
+            <label key={`veteran-${value}`} className="inline-flex min-h-12 items-center gap-2 text-base text-bone">
               <input
                 type="checkbox"
                 name="veteran"
                 value={value}
-                className="accent-sodium"
                 checked={draft.veteran.includes(value)}
                 onChange={() => setDraft((current) => toggleLevel(current, "veteran", value))}
               />
@@ -345,18 +336,17 @@ export function JoinForm({
           ))}
         </div>
       </fieldset>
-      <fieldset className="pt-3">
-        <legend className={sectionLegendClass}>
+      <fieldset className="public-join-wide">
+        <legend>
           {t.forms.beginner}
         </legend>
         <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1">
           {practices.map((value) => (
-            <label key={`beginner-${value}`} className="inline-flex min-h-11 items-center gap-2 text-sm text-bone">
+            <label key={`beginner-${value}`} className="inline-flex min-h-12 items-center gap-2 text-base text-bone">
               <input
                 type="checkbox"
                 name="beginner"
                 value={value}
-                className="accent-sodium"
                 checked={draft.beginner.includes(value)}
                 onChange={() => setDraft((current) => toggleLevel(current, "beginner", value))}
               />
@@ -365,19 +355,20 @@ export function JoinForm({
           ))}
         </div>
       </fieldset>
-      <p className="pt-2 text-xs leading-6 text-mist">{t.forms.whyInterested}</p>
-      <fieldset className="pt-3">
-        <legend className={sectionLegendClass}>
+      </div>
+      <div className="public-join-group">
+      <p className="public-join-note">{t.forms.whyInterested}</p>
+      <fieldset className="public-join-wide">
+        <legend>
           {t.forms.interestedIn}
         </legend>
         <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1">
           {disciplines.map((value) => (
-            <label key={value} className="inline-flex min-h-11 items-center gap-2 text-sm text-bone">
+            <label key={value} className="inline-flex min-h-12 items-center gap-2 text-base text-bone">
               <input
                 type="checkbox"
                 name="interested"
                 value={value}
-                className="accent-sodium"
                 checked={draft.interested.includes(value)}
                 onChange={() =>
                   setDraft((current) => ({
@@ -393,29 +384,29 @@ export function JoinForm({
           ))}
         </div>
       </fieldset>
-      <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-        {t.forms.bike}
+      </div>
+      <div className="public-join-group">
+      <label className="public-join-wide">
+        <span>{t.forms.bike}</span>
         <input
           name="bike"
           placeholder={t.forms.bikeHint}
           value={draft.bike}
           onChange={(event) => setDraft((current) => ({ ...current, bike: event.target.value }))}
-          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
-      <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-        {t.forms.ride}
+      <label className="public-join-wide">
+        <span>{t.forms.ride}</span>
         <textarea
           name="bio"
           rows={3}
           placeholder={t.forms.rideHint}
           value={draft.bio}
           onChange={(event) => setDraft((current) => ({ ...current, bio: event.target.value }))}
-          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
-      <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-        {t.forms.looking}
+      <label className="public-join-wide">
+        <span>{t.forms.looking}</span>
         <input
           name="lookingFor"
           placeholder={t.forms.lookingHint}
@@ -423,36 +414,46 @@ export function JoinForm({
           onChange={(event) =>
             setDraft((current) => ({ ...current, lookingFor: event.target.value }))
           }
-          className="mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone"
         />
       </label>
+      </div>
       {state.error ? (
-        <p id="join-form-error" role="alert" className="text-sm text-sodium">
+        <p id="join-form-error" role="alert" className="public-join-wide text-sm text-sodium">
           {state.error}
         </p>
       ) : null}
-      <div className="space-y-2 text-xs leading-6 text-mist">
-        <p>{t.forms.dataUse}</p>
-        <p>{t.forms.privacyController}</p>
-        <p>{t.forms.privacyPurpose}</p>
-        <p>{t.forms.privacyBasis}</p>
-        <p>{t.forms.privacyRights}</p>
-        <p>
-          <Link
-            href={hrefs(locale).privacidad}
-            className="underline underline-offset-4 hover:text-bone"
-          >
-            {t.forms.privacyPolicyLink}
-          </Link>
-        </p>
+      <details className="public-join-legal group">
+        <summary className="cursor-pointer list-none marker:content-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--public-accent)]">
+          <span className="flex items-center justify-between gap-3">
+            <span>{t.forms.privacyFold}</span>
+            <span className="text-lg leading-none text-mist transition group-open:rotate-45">+</span>
+          </span>
+        </summary>
+        <div className="mt-4 space-y-2 text-sm leading-6 text-mist">
+          <p>{t.forms.dataUse}</p>
+          <p>{t.forms.privacyController}</p>
+          <p>{t.forms.privacyPurpose}</p>
+          <p>{t.forms.privacyBasis}</p>
+          <p>{t.forms.privacyRights}</p>
+          <p>
+            <Link
+              href={hrefs(locale).privacidad}
+              className="underline underline-offset-4 hover:text-bone"
+            >
+              {t.forms.privacyPolicyLink}
+            </Link>
+          </p>
+        </div>
+      </details>
+      <div className="public-join-actions">
+        <button
+          type="submit"
+          disabled={pending}
+          className="public-cta w-full min-h-12 disabled:opacity-60"
+        >
+          {pending ? t.forms.creating : t.forms.create}
+        </button>
       </div>
-      <button
-        type="submit"
-        disabled={pending}
-        className="min-h-11 w-full bg-sodium px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone disabled:opacity-60"
-      >
-        {pending ? t.forms.creating : t.forms.create}
-      </button>
     </form>
   );
 }

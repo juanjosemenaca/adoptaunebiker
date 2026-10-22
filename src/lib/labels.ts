@@ -25,3 +25,8 @@ export function isPractice(value: string): value is Practice {
 export function parsePracticeList(values: string[]) {
   return [...new Set(values.map((item) => item.trim()).filter(isPractice))];
 }
+
+/** Disciplines stay exclusive between veteran and beginner; e-bike can be both. */
+export function complementaryPractices(selected: Practice[], other: string[]) {
+  return parsePracticeList(other).filter((item) => item === "ebike" || !selected.includes(item));
+}

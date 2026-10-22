@@ -89,13 +89,18 @@ export type Dictionary = {
     brandGloss: string;
     line1: string;
     line2: string;
+    line3: string;
     lead: string;
+    joinMeta: string;
+    welcomeTags: [string, string, string, string];
     ctaIn: string;
     ctaOut: string;
+    ctaOutShort: string;
     ctaGuide: string;
     launchNote: string;
     matchKicker: string;
     matchTitle: string;
+    howTitle: string;
     matchItems: Block[];
     closeTitle: string;
     closeLead: string;
@@ -330,6 +335,7 @@ export type Dictionary = {
     privacyPurpose: string;
     privacyBasis: string;
     privacyRights: string;
+    privacyFold: string;
     privacyPolicyLink: string;
   };
   intranet: {

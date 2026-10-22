@@ -10,8 +10,7 @@ import { localePath } from "@/lib/site";
 
 export type LegalKind = "notice" | "privacy" | "cookies" | "terms";
 
-const backHomeClass =
-  "inline-flex min-h-11 items-center justify-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone hover:brightness-110";
+const backHomeClass = "public-cta self-start";
 
 export const legalPathByKind: Record<LegalKind, string> = {
   notice: "/aviso-legal",
@@ -47,7 +46,7 @@ export async function LegalScreen({ locale, kind }: { locale: string; kind: Lega
   const url = localePath(lang, path);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pt-4 pb-16 sm:px-6 sm:pt-5">
+    <div className="mx-auto max-w-7xl px-4 pt-10 pb-16 sm:px-6 sm:pt-16">
       <PublicJsonLd
         locale={locale}
         url={url}
@@ -60,8 +59,8 @@ export async function LegalScreen({ locale, kind }: { locale: string; kind: Lega
         ]}
       />
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-[10px] uppercase tracking-[0.22em] text-sodium">{t.legal.nav.menu}</p>
-        <Link href={hrefs(lang).home} className={`${backHomeClass} self-start`}>
+        <p className="text-[11px] font-medium tracking-[0.16em] text-mist uppercase">{t.legal.nav.menu}</p>
+        <Link href={hrefs(lang).home} className={backHomeClass}>
           {t.legal.nav.backHome}
         </Link>
       </div>

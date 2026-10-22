@@ -8,9 +8,9 @@ import { defaultLocale, htmlLang, isLocale } from "@/i18n/config";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
-const display = Oswald({
+const brand = Oswald({
   subsets: ["latin", "latin-ext"],
-  variable: "--font-display",
+  variable: "--font-brand",
   weight: "700",
   display: "swap",
 });
@@ -18,13 +18,14 @@ const display = Oswald({
 const body = Figtree({
   subsets: ["latin", "latin-ext"],
   variable: "--font-body",
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f3eee4",
+  themeColor: "#f5f5f0",
 };
 
 export const metadata: Metadata = {
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     alternateLocale: ["ca_ES", "en_GB", "fr_FR", "de_DE"],
     url: "https://adoptaunebiker.com",
     siteName: "Adopta un eBiker",
-    images: [{ url: "/logo.png", width: 852, height: 456, alt: "Adopta un eBiker" }],
+    images: [{ url: "/logo.png", width: 1000, height: 350, alt: "Adopta un eBiker" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -70,7 +71,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html
       lang={htmlLang[locale]}
-      className={`${display.variable} ${body.variable} h-full antialiased`}
+      className={`${brand.variable} ${body.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <Script id="open-at-inicio" strategy="beforeInteractive">

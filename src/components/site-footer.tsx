@@ -18,17 +18,27 @@ export function SiteFooter({
 }) {
   const links = hrefs(locale);
 
+  const publicFooter = variant === "public";
+
   return (
-    <footer className="mt-20 border-t border-line">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 sm:flex-row sm:items-end sm:justify-between sm:px-6">
+    <footer className={`border-t border-line ${publicFooter ? "mt-0 bg-asphalt" : "mt-20"}`}>
+      <div
+        className={`mx-auto flex flex-col gap-8 px-4 py-10 sm:flex-row sm:items-end sm:justify-between sm:px-6 ${
+          publicFooter ? "max-w-7xl py-14" : "max-w-6xl"
+        }`}
+      >
         <div>
           <BrandLogo size="footer" href={links.home} />
-          <p className="display mt-5 text-4xl text-bone">{t.footer.alone}</p>
-          <p className="mt-2 max-w-sm text-sm text-mist">{t.footer.blurb}</p>
+          <p className={`mt-5 text-bone ${publicFooter ? "display text-3xl sm:text-4xl" : "display text-4xl"}`}>
+            {t.footer.alone}
+          </p>
+          <p className="mt-3 max-w-sm text-sm leading-6 text-mist">{t.footer.blurb}</p>
         </div>
         <nav
           aria-label={t.legal.nav.menu}
-          className="flex flex-col gap-1 text-xs uppercase tracking-[0.2em] text-mist sm:items-end"
+          className={`flex flex-col gap-1 text-mist sm:items-end ${
+            publicFooter ? "text-sm" : "text-xs uppercase tracking-[0.2em]"
+          }`}
         >
           <Link href={links.avisoLegal} className={linkClass}>
             {t.legal.nav.notice}

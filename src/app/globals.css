@@ -1,14 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --asphalt: #f3eee4;
-  --rubber: #fffdf8;
-  --panel: #e7dfd2;
-  --bone: #1c1814;
-  --mist: #5c554c;
-  --line: rgba(28, 24, 20, 0.14);
-  --sodium: #e67812;
-  --volt: #0c7a54;
+  --forest: #19382f;
+  --lime: #d9ee8b;
+  --graphite: #252a27;
+  --asphalt: #f5f5f0;
+  --rubber: #ffffff;
+  --panel: #ecede6;
+  --bone: #252a27;
+  --mist: #5a615c;
+  --line: rgba(37, 42, 39, 0.12);
+  --sodium: #d9ee8b;
+  --volt: #19382f;
 }
 
 @theme inline {
@@ -21,10 +24,11 @@
   --color-sodium: var(--sodium);
   --color-volt: var(--volt);
   --font-sans: var(--font-body);
-  --font-display: var(--font-display);
+  --font-display: var(--font-body);
 }
 
 html {
+  color-scheme: light;
   background: var(--asphalt);
   color: var(--bone);
   scroll-behavior: smooth;
@@ -34,16 +38,16 @@ html {
 body {
   min-height: 100%;
   background:
-    radial-gradient(1100px 520px at 88% -8%, rgba(230, 120, 18, 0.14), transparent 52%),
-    radial-gradient(900px 480px at -12% 8%, rgba(12, 122, 84, 0.08), transparent 46%),
+    radial-gradient(900px 480px at 100% -10%, rgba(25, 56, 47, 0.06), transparent 50%),
+    radial-gradient(720px 420px at -8% 0%, rgba(217, 238, 139, 0.18), transparent 46%),
     var(--asphalt);
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   color: var(--bone);
 }
 
 ::selection {
-  background: var(--sodium);
-  color: #fff8ee;
+  background: var(--lime);
+  color: var(--forest);
 }
 
 a:focus-visible,
@@ -51,42 +55,74 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid var(--volt);
+  outline: 2px solid var(--forest);
   outline-offset: 3px;
 }
 
+.bg-sodium {
+  background-color: var(--lime);
+}
+
+.text-sodium,
+.hover\:text-sodium:hover {
+  color: var(--forest);
+}
+
+.group:hover .group-hover\:text-sodium {
+  color: var(--forest);
+}
+
+.border-sodium {
+  border-color: var(--forest);
+}
+
+.bg-sodium.text-bone {
+  color: var(--graphite);
+}
+
+.bg-volt.text-bone {
+  color: var(--asphalt);
+}
+
+@media (hover: hover) {
+  .bg-sodium:hover {
+    filter: brightness(0.97);
+  }
+}
+
 .display {
-  font-family: var(--font-display), Impact, "Arial Narrow", sans-serif;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-  line-height: 0.86;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 650;
+  letter-spacing: -0.038em;
+  text-transform: none;
+  line-height: 1.08;
 }
 
 .grain {
   pointer-events: none;
   position: fixed;
   inset: 0;
-  z-index: 40;
-  opacity: 0.07;
+  z-index: 10;
+  opacity: 0.035;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.55'/></svg>");
 }
 
 .plate {
-  font-family: var(--font-display), sans-serif;
+  font-family: var(--font-brand), var(--font-display), sans-serif;
   letter-spacing: 0.14em;
 }
 
 .topo {
   background-image:
-    radial-gradient(circle at 20% 20%, rgba(28, 24, 20, 0.06) 0 1px, transparent 1.5px),
-    repeating-radial-gradient(circle at 0 0, transparent 0 18px, rgba(28, 24, 20, 0.04) 19px 20px);
+    radial-gradient(circle at 20% 20%, rgba(37, 42, 39, 0.05) 0 1px, transparent 1.5px),
+    repeating-radial-gradient(circle at 0 0, transparent 0 18px, rgba(37, 42, 39, 0.035) 19px 20px);
 }
 
 .dash {
   border-image: repeating-linear-gradient(
       90deg,
-      rgba(28, 24, 20, 0.28) 0 8px,
+      rgba(37, 42, 39, 0.22) 0 8px,
       transparent 8px 14px
     )
     1;
@@ -97,4 +133,167 @@ textarea:focus-visible {
   width: 100%;
   background: var(--panel);
   font-family: inherit;
+}
+
+/* Public-only visual layer. Intranet and admin keep the shared tokens above. */
+body:has(.public-shell) {
+  background: var(--asphalt);
+  --public-mark: #ffb52e;
+  --public-accent: #f0841a;
+}
+
+body:has(.public-shell) :is(a, button, input, select, textarea):focus-visible {
+  outline-color: var(--public-accent);
+}
+
+.public-shell {
+  background: var(--asphalt);
+  overflow-x: clip;
+  --public-mark: #ffb52e;
+  --public-accent: #f0841a;
+}
+
+.public-accent {
+  color: var(--public-accent);
+}
+
+.public-underline {
+  background-image: linear-gradient(var(--public-accent), var(--public-accent));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 3px;
+  padding-bottom: 0.08em;
+}
+
+.public-cta {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  background: var(--public-mark);
+  padding: 0.65rem 1.2rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--graphite);
+}
+
+.public-cta:hover {
+  filter: brightness(0.97);
+}
+
+@media (max-width: 639px) {
+  .public-shell header .public-cta {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+.public-photo-slot {
+  background:
+    linear-gradient(165deg, rgba(240, 132, 26, 0.12), rgba(37, 42, 39, 0.28)),
+    var(--panel);
+}
+
+.public-join {
+  display: grid;
+  gap: 1.25rem 1.15rem;
+  background: var(--rubber);
+  padding: 1.75rem 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .public-join,
+  .public-join-group {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .public-join {
+    padding: 2.25rem 2rem;
+  }
+
+  .public-join-wide,
+  .public-join-actions,
+  .public-join-group,
+  .public-join-note {
+    grid-column: 1 / -1;
+  }
+}
+
+.public-join-group {
+  display: grid;
+  gap: inherit;
+}
+
+.public-join-group + .public-join-group {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.public-join-note {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--mist);
+}
+
+.public-join label:not(:has([type="checkbox"])) {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--bone);
+}
+
+.public-join label:not(:has([type="checkbox"])):has([required]) > span::after {
+  content: " *";
+  color: var(--public-accent);
+}
+
+.public-join input:not([type="checkbox"]):not([type="hidden"]),
+.public-join select,
+.public-join textarea {
+  margin-top: 0.55rem;
+  min-height: 3.15rem;
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--asphalt);
+  padding: 0.75rem 0.9rem;
+  font-size: 1rem;
+  color: var(--bone);
+}
+
+.public-join textarea {
+  min-height: 7rem;
+}
+
+.public-join input[type="checkbox"] {
+  width: 1.15rem;
+  height: 1.15rem;
+  accent-color: var(--public-accent);
+}
+
+.public-join fieldset {
+  padding-top: 0.2rem;
+}
+
+.public-join legend {
+  padding-bottom: 0.35rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--bone);
+}
+
+.public-join-legal {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--line);
+  padding-top: 1.15rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--bone);
+}
+
+.public-join-legal[open] {
+  padding-bottom: 0.25rem;
 }

@@ -51,18 +51,17 @@ export function LanguageSwitch({
     <div ref={root} className="relative">
       <button
         type="button"
-        className="inline-flex h-11 min-w-[5.75rem] items-center justify-center gap-2 border border-line px-3 text-bone"
+        className="inline-flex h-8 shrink-0 items-center gap-1 px-1.5 text-[11px] font-medium tracking-[0.08em] text-mist transition-colors hover:text-bone"
         aria-expanded={open}
         aria-controls={menuId}
         aria-haspopup="menu"
         aria-label={`${label}: ${localeName[locale]}`}
         onClick={() => setOpen((value) => !value)}
       >
-        <LocaleFlag locale={locale} />
-        <span className="text-[11px] font-semibold tracking-[0.14em]">{localeLabel[locale]}</span>
+        {localeLabel[locale]}
         <span
           aria-hidden
-          className={`text-[9px] text-mist transition ${open ? "rotate-180" : ""}`}
+          className={`text-[8px] opacity-70 transition ${open ? "rotate-180" : ""}`}
         >
           ▼
         </span>
@@ -71,7 +70,7 @@ export function LanguageSwitch({
         <ul
           id={menuId}
           role="menu"
-          className="absolute top-full right-0 z-40 mt-2 min-w-48 border border-line bg-rubber py-1"
+          className="absolute top-full right-0 z-50 mt-2 min-w-48 border border-line bg-rubber py-1 shadow-sm"
         >
           {locales.map((item) => (
             <li key={item} role="none">

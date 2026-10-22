@@ -56,16 +56,21 @@ export const en: Dictionary = {
   },
   disciplines: { mtb: "MTB", carretera: "Road", gravel: "Gravel" },
   home: {
-    brandGloss: "Adopt an e-biker",
-    line1: "Find your group.",
-    line2: "Share your passion.",
-    lead: "Find cyclists near you and share rides, whatever your level or bike: e-bike, MTB, road or gravel.",
+    brandGloss: "Open cycling community",
+    line1: "Every bike.",
+    line2: "Every level.",
+    line3: "One shared passion.",
+    lead: "Adopta un eBiker brings together people who enjoy cycling: electric or conventional, beginners or riders with kilometres behind them. Differences do not set anyone aside: they help you find company.",
+    joinMeta: "Barcelona and metropolitan area · Joining is by an application reviewed by an administrator",
+    welcomeTags: ["Gravel", "MTB", "Road", "Electric or conventional"],
     ctaIn: "Go to the intranet",
-    ctaOut: "I want to join the community",
+    ctaOut: "I want to be part of the community",
+    ctaOutShort: "I want to join",
     ctaGuide: "I want to ride with other cyclists",
     launchNote:
       "We are launching. We start in Barcelona and its metropolitan area, with the aim of growing across Spain. If you live farther away, you can still ask for a spot.",
     matchKicker: "How we match you",
+    howTitle: "Three steps to take part",
     matchTitle: "Place, discipline and the urge to ride. The rest gets organised.",
     matchItems: [
       {
@@ -98,10 +103,6 @@ export const en: Dictionary = {
         body: "A veteran rides with you. A beginner joins in. No ranking, no palmarès, and nobody gets dropped in silence.",
       },
       {
-        title: "Every bike",
-        body: "E-bike or analog, it does not matter. Each ride is planned around the route, the pace and the group’s range.",
-      },
-      {
         title: "A reviewed signup",
         body: "You send a request. An administrator confirms it by email. Then you enter the intranet and meet the peloton.",
       },
@@ -125,12 +126,12 @@ export const en: Dictionary = {
     bridge:
       "The best partner is not the one on your bike. It is the one who wants to go out.",
     veteranKicker: "The veteran",
-    veteranTitle: "Experience, shared.",
+    veteranTitle: "You have the kilometres and want to share them",
     veteranBody:
       "No palmarès required. Just kilometres in the legs and the will to open the group to whoever is starting, whatever the bike.",
     veteranLink: "What a veteran is",
     beginnerKicker: "The beginner",
-    beginnerTitle: "The joy of discovering.",
+    beginnerTitle: "You are starting, or you want company at your pace",
     beginnerBody:
       "Someone who just started, has little time in, or wants longer rides without the fear of being dropped. E-bike or not. Road, MTB or gravel.",
     beginnerLink: "What a beginner is",
@@ -226,7 +227,7 @@ export const en: Dictionary = {
       "Create your profile, find cyclists, organise a group ride and go. Veteran or beginner. MTB, road or gravel.",
     title1: "How it",
     title2: "works",
-    lead: "Four steps to find your group. You choose beginner or veteran and send a join request. The administrator reviews it and confirms your spot.",
+    lead: "Three steps to find your group. You choose beginner or veteran and send a join request. The administrator reviews it and confirms your spot.",
     codeTitle: "The group ride code",
     codeLead: "Simple rules so a ride belongs to everyone, not to whoever is fastest.",
     inside: "You’re in",
@@ -433,6 +434,7 @@ export const en: Dictionary = {
       "Proposed legal basis, pending validation: pre-contractual steps at your request to review the application.",
     privacyRights:
       "You may request access, rectification, erasure, objection, restriction and portability, where they apply, at hola@adoptaunebiker.com.",
+    privacyFold: "Legal terms",
     privacyPolicyLink: "Read the privacy policy",
   },
   intranet: {

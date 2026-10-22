@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { HashLink } from "@/components/hash-link";
+import { PublicCtaIcon } from "@/components/public-cta-icon";
 import { analyticsEvents } from "@/lib/analytics";
 
 export function Apartado({
@@ -16,21 +17,21 @@ export function Apartado({
   children?: ReactNode;
 }) {
   return (
-    <section id={id} className="mt-24 scroll-mt-28 border-t-2 border-bone/25 pt-8 sm:mt-28 sm:pt-10">
+    <section id={id} className="scroll-mt-28 py-16 sm:py-20">
       {kicker ? (
-        <p className="mb-3 text-[10px] uppercase tracking-[0.22em] text-sodium">{kicker}</p>
+        <p className="mb-4 text-[11px] font-medium tracking-[0.16em] text-mist uppercase">
+          {kicker}
+        </p>
       ) : null}
-      <h2 className="display max-w-4xl text-5xl text-bone sm:text-7xl">{title}</h2>
-      {lead ? <p className="mt-6 max-w-2xl text-lg leading-8 text-mist">{lead}</p> : null}
+      <h2 className="display max-w-4xl text-3xl text-bone sm:text-[2.75rem]">{title}</h2>
+      {lead ? <p className="mt-5 max-w-2xl text-base leading-8 text-mist sm:text-lg">{lead}</p> : null}
       {children ?? null}
     </section>
   );
 }
 
 export function Subapartado({ children }: { children: ReactNode }) {
-  return (
-    <div className="mt-12 border-l-2 border-sodium/45 pl-5 sm:mt-14 sm:pl-8">{children}</div>
-  );
+  return <div className="mt-10 sm:mt-12">{children}</div>;
 }
 
 export function PlazaCallout({
@@ -38,16 +39,18 @@ export function PlazaCallout({
   points,
   href,
   cta,
+  className,
 }: {
   kicker: string;
   points: readonly string[];
   href: string;
   cta: string;
+  className?: string;
 }) {
   return (
-    <div className="flex max-w-xl flex-col border border-line bg-rubber p-6 sm:p-8">
-      <p className="text-[10px] uppercase tracking-[0.22em] text-sodium">{kicker}</p>
-      <ul className="mt-5 flex-1 space-y-4 text-sm leading-7 text-mist">
+    <div className={`flex h-full max-w-none flex-col ${className ?? ""}`}>
+      <p className="text-[11px] font-medium tracking-[0.16em] text-mist uppercase">{kicker}</p>
+      <ul className="mt-5 flex-1 space-y-3 text-sm leading-7 text-mist">
         {points.map((point) => (
           <li key={point}>{point}</li>
         ))}
@@ -55,9 +58,10 @@ export function PlazaCallout({
       <HashLink
         href={href}
         eventName={analyticsEvents.signUpCtaClick}
-        className="mt-8 inline-flex min-h-11 self-start items-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
+        className="public-cta mt-8 self-start"
       >
         {cta}
+        <PublicCtaIcon />
       </HashLink>
     </div>
   );

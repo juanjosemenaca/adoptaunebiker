@@ -70,13 +70,13 @@ export function NavBar({
   }
 
   const menu = (
-    <div className={`absolute top-full right-0 z-40 mt-2 w-72 border border-line bg-rubber p-3 ${menuOnly ? "" : "xl:hidden"}`}>
+    <div className={`absolute top-full right-0 z-50 mt-2 w-80 border border-line bg-rubber p-4 ${menuOnly ? "" : "xl:hidden"}`}>
       {links.map((link) => (
         <Link
           key={link.href}
           href={link.href}
-          className={`flex min-h-11 items-center px-2 py-2 text-sm tracking-[0.08em] ${
-            active(link.href) ? "text-sodium" : "text-mist"
+          className={`flex min-h-12 items-center px-2 py-2.5 text-base ${
+            active(link.href) ? "text-bone" : "text-mist"
           }`}
           onClick={(event) => {
             const id = hashId(link.href);
@@ -91,7 +91,7 @@ export function NavBar({
       ))}
       <Link
         href={cta.href}
-        className="mt-2 flex min-h-11 items-center justify-center bg-sodium px-3 py-2 text-center text-xs font-semibold uppercase tracking-[0.2em] text-bone"
+        className="public-cta mt-3 w-full"
         onClick={(event) => {
           trackEvent(analyticsEvents.signUpCtaClick);
           const id = hashId(cta.href);
@@ -131,7 +131,7 @@ export function NavBar({
       )}
       <button
         type="button"
-        className={`grid h-11 w-11 place-items-center border border-line text-bone ${menuOnly ? "" : "xl:hidden"}`}
+        className="grid h-11 w-11 place-items-center text-bone xl:hidden"
         aria-expanded={open}
         aria-label={menuLabel}
         onClick={() => setOpen((value) => !value)}

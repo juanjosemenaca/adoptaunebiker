@@ -1,4 +1,4 @@
-import { isDiscipline, isPractice, parsePracticeList } from "@/lib/labels";
+import { complementaryPractices, isDiscipline, isPractice, parsePracticeList } from "@/lib/labels";
 import type { Dictionary } from "@/i18n/types";
 import type { Discipline, Practice, Role } from "@/lib/types";
 
@@ -38,9 +38,7 @@ export function decodeSignupMeta(lookingFor: string): SignupMeta {
   const v3 = lookingFor.match(META_V3);
   if (v3) {
     const veteranIn = parsePracticeList(v3[1].split(","));
-    const beginnerIn = parsePracticeList(v3[2].split(",")).filter(
-      (item) => !veteranIn.includes(item),
-    );
+    const beginnerIn = complementaryPractices(veteranIn, v3[2].split(","));
     return {
       veteranIn,
       beginnerIn,
@@ -57,9 +55,7 @@ export function decodeSignupMeta(lookingFor: string): SignupMeta {
   const v2 = lookingFor.match(META_V2);
   if (v2) {
     const veteranIn = parsePracticeList(v2[1].split(","));
-    const beginnerIn = parsePracticeList(v2[2].split(",")).filter(
-      (item) => !veteranIn.includes(item),
-    );
+    const beginnerIn = complementaryPractices(veteranIn, v2[2].split(","));
     return {
       veteranIn,
       beginnerIn,
@@ -107,9 +103,7 @@ export function hydrateSignupLevels(input: {
   meta: SignupMeta;
 }) {
   let veteranIn = parsePracticeList(input.veteranIn ?? input.meta.veteranIn);
-  let beginnerIn = parsePracticeList(input.beginnerIn ?? input.meta.beginnerIn).filter(
-    (item) => !veteranIn.includes(item),
-  );
+  let beginnerIn = complementaryPractices(veteranIn, input.beginnerIn ?? input.meta.beginnerIn);
 
   if (!veteranIn.length && !beginnerIn.length) {
     const practice =

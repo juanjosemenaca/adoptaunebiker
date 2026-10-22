@@ -28,8 +28,12 @@ export function AppShell({
 
   return (
     <PrivacyGate locale={locale} t={t}>
-      <div className={`relative flex flex-col ${withSideNav ? "h-dvh overflow-hidden" : "min-h-full"}`}>
-        <div className="grain" aria-hidden />
+      <div
+        className={`relative flex flex-col ${
+          variant === "public" ? "public-shell" : ""
+        } ${withSideNav ? "h-dvh overflow-hidden" : "min-h-full"}`}
+      >
+        {variant === "public" ? null : <div className="grain" aria-hidden />}
         <a
           href="#contenido"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-sodium focus:px-3 focus:py-2 focus:text-bone"

@@ -21,11 +21,12 @@ export function HashLink({
       className={className}
       onClick={(event) => {
         if (eventName) trackEvent(eventName);
-        if (!href.startsWith("#")) return;
+        const id = href.includes("#") ? href.slice(href.indexOf("#") + 1) : "";
+        if (!id || !document.getElementById(id)) return;
         event.preventDefault();
-        history.replaceState(null, "", href);
+        history.replaceState(null, "", `#${id}`);
         window.requestAnimationFrame(() => {
-          document.getElementById(href.slice(1))?.scrollIntoView({ behavior: "smooth" });
+          document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
         });
       }}
     >

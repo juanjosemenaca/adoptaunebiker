@@ -41,7 +41,7 @@ export function AudienceLanding({
   const url = localePath(lang, path);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pt-4 pb-16 sm:px-6 sm:pt-5">
+    <div className="mx-auto max-w-7xl px-4 pt-10 pb-16 sm:px-6 sm:pt-16">
       <PublicJsonLd
         locale={locale}
         url={url}
@@ -53,31 +53,25 @@ export function AudienceLanding({
           { name: title, url },
         ]}
       />
-      <p className="text-[10px] uppercase tracking-[0.22em] text-sodium">Adopta un eBiker</p>
-      <h1 className="display mt-3 max-w-4xl text-5xl text-bone sm:text-7xl">{title}</h1>
+      <p className="text-[11px] font-medium tracking-[0.16em] text-mist uppercase">Adopta un eBiker</p>
+      <h1 className="display mt-3 max-w-4xl text-4xl text-bone sm:text-6xl">{title}</h1>
       <p className="mt-6 max-w-2xl text-lg leading-8 text-mist">{lead}</p>
       <p className="mt-4 max-w-2xl text-sm leading-7 text-mist">{t.home.launchNote}</p>
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+      <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:flex-wrap sm:items-center">
         {session ? (
-          <Link
-            href={links.intranet}
-            className="inline-flex min-h-11 items-center justify-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
-          >
+          <Link href={links.intranet} className="public-cta">
             {t.home.ctaIn}
           </Link>
         ) : (
           <HashLink
             href={jump.join}
             eventName={analyticsEvents.signUpCtaClick}
-            className="inline-flex min-h-11 items-center justify-center bg-sodium px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
+            className="public-cta"
           >
             {cta}
           </HashLink>
         )}
-        <Link
-          href={links.home}
-          className="inline-flex min-h-11 items-center justify-center border border-line px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-bone"
-        >
+        <Link href={links.home} className="text-sm text-mist hover:text-bone">
           {t.nav.home}
         </Link>
       </div>
@@ -101,14 +95,15 @@ export function AudienceLanding({
       </Apartado>
 
       <Apartado title={t.home.matchTitle}>
-        <ol className="mt-8 grid gap-4 sm:grid-cols-3">
+        <ol className="mt-8 grid gap-10 sm:grid-cols-3 sm:gap-0">
           {t.home.matchItems.map((item, index) => (
-            <li key={item.title} className="border border-line bg-rubber p-5">
-              <p className="display text-3xl text-sodium">0{index + 1}</p>
-              <h3 className="mt-3 text-sm font-semibold uppercase tracking-[0.14em]">
-                {item.title}
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-mist">{item.body}</p>
+            <li
+              key={item.title}
+              className={index === 0 ? "sm:pr-8" : "sm:border-l sm:border-line sm:px-8"}
+            >
+              <p className="display text-5xl text-mist/45">{index + 1}</p>
+              <h3 className="mt-4 text-lg font-semibold tracking-tight text-bone">{item.title}</h3>
+              <p className="mt-3 text-sm leading-7 text-mist">{item.body}</p>
             </li>
           ))}
         </ol>
