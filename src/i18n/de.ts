@@ -44,7 +44,7 @@ export const de: Dictionary = {
   footer: {
     alone: "Du fährst nicht allein.",
     blurb:
-      "Dieselbe Leidenschaft. Verschiedene Räder. Eine Community. Hier gibt es keine Tracks: hier gibt es Leute.",
+      "Dieselbe Leidenschaft. Verschiedene Räder. Eine Community.",
     contact: "Schreib uns",
   },
   legal: legalDe,
@@ -60,10 +60,23 @@ export const de: Dictionary = {
     line1: "Alle Räder.",
     line2: "Alle Niveaus.",
     line3: "Dieselbe Leidenschaft.",
-    lead: "Adopta un eBiker verbindet Menschen, die das Radfahren mögen: elektrisch oder konventionell, Einsteiger oder mit Kilometern. Unterschiede trennen hier nicht: sie helfen, Gesellschaft zu finden.",
+    lead: {
+      question: "Stört dich der Motor – oder stört dich, dass wir anders fahren?",
+      watts: "Manche treten Watt mit den Beinen. Andere addieren elektrische Watt.",
+      start: "Manche fangen heute an; andere haben tausende Kilometer. Na und?",
+      points: [
+        { title: "Weniger\nVorurteile", body: "Andere Räder, dieselbe Haltung." },
+        { title: "Mehr\nTrails", body: "Neue Orte und Erfahrungen." },
+        { title: "Mehr Abenteuer-\nGefährten", body: "Weil gute Touren zusammen besser sind." },
+      ],
+      after: "Elektrisch oder konventionell. Wichtig ist, dass du Lust hast zu fahren, zu teilen und zu genießen.",
+      close: "ANDERE RÄDER.",
+      closeAccent: "DIESELBE LEIDENSCHAFT.",
+    },
     joinMeta: "Barcelona und Metropolregion · Aufnahme nach Anfrage, die ein Administrator prüft",
-    welcomeTags: ["Gravel", "MTB", "Straße", "Elektrisch oder konventionell"],
+    welcomeTags: ["Gravel", "MTB", "Straße", "Elektrisch"],
     ctaIn: "Zum Intranet",
+    ctaHero: "Tritt der Community bei",
     ctaOut: "Ich will Teil der Community sein",
     ctaOutShort: "Ich will mitmachen",
     ctaGuide: "Ich will andere Radfahrer begleiten",
@@ -89,22 +102,43 @@ export const de: Dictionary = {
     closeTitle: "Der nächste Schritt ist, einen Platz anzufragen.",
     closeLead:
       "Erzähl uns, wer du bist und wie du fährst. Wenn du angenommen wirst, bekommst du den Intranet-Zugang und lernst das Peloton kennen.",
-    offerKicker: "Was wir anbieten",
-    offerTitle: "Leute zum Fahren, keine Track-App.",
+    operateKicker: "Wie wir funktionieren wollen",
+    operateTitle: "Du fährst raus. Wer kommt mit?",
+    operateLead:
+      "Wir haben nicht immer jemanden zum Mitfahren. Manchmal haben wir eine Strecke im Kopf; manchmal wollen wir einfach das Rad nehmen und ein paar Stunden auf zwei Rädern genießen. Deshalb gibt es Adopta un eBiker: um Radfahrer zu verbinden, die Routen teilen, neue Wege entdecken und zusammen treten wollen.",
+    operateItems: [
+      {
+        title: "Schlage eine Ausfahrt vor",
+        quote: "Samstag fahre ich durch Collserola. Etwa drei Stunden, ruhiges Tempo, Start um 9:00. Wer kommt mit?",
+        body: "Veröffentliche deinen Plan mit Tag, Uhrzeit, Gebiet, Dauer und Tempo. Wenn es zu anderen passt, habt ihr eine Ausfahrt.",
+      },
+      {
+        title: "Wer hat Lust zu fahren?",
+        quote: "Morgen Vormittag bin ich frei. Hat jemand Lust auf eine Runde?",
+        body: "Du brauchst keine fertige Strecke und musst nicht alles im Voraus planen. Manchmal reicht es zu sagen, wann du Zeit hast und worauf du Lust hast – dann entsteht ein guter Plan.",
+      },
+      {
+        title: "Andere Räder. Ein Plan.",
+        body: "Elektrisch oder konventionell, Einsteiger oder Veteran. Hier zählt, die Lust am Treten zu teilen, neue Wege zu entdecken und das Rad ohne Vorurteile und Rivalitäten zu genießen.",
+      },
+    ],
+    operateClose: "Du schlägst den Plan vor. Die Community bringt die Lust.",
+    offerKicker: "Unsere Philosophie",
+    offerTitle: "Begleiter auf der Strecke, kein Wettkampf um Kilometer.",
     offerLead:
-      "Wir verkaufen keine Strecken und keine Kudos. Wir verbinden Leute, die eine Gruppe wollen: Einsteiger und Fahrer mit Kilometern in den Beinen.",
+      "Wir sind keine App, um Strecken, Follower oder Anerkennung zu sammeln. Wir sind eine Community, um Leute zum Radfahren zu finden, Erfahrungen zu teilen und den Weg zu genießen – egal ob du gerade anfängst oder schon tausende Kilometer hast.",
     offerItems: [
       {
         title: "Finde deine Gruppe",
-        body: "Leute in deiner Gegend, in deiner Disziplin, in einem passenden Tempo. Es geht ums Fahren, nicht um Kudos.",
+        body: "Triff Radfahrer in deiner Gegend, die deine Disziplin, deine Interessen und ein passendes Tempo teilen. Es zählt nicht, wer zuerst ankommt, sondern die Lust rauszufahren, zu treten und die Gesellschaft zu genießen.",
       },
       {
-        title: "Adoption unter Radfahrern",
-        body: "Ein Veteran fährt mit. Ein Einsteiger steigt ein. Kein Ranking, kein Palmarès, und niemand bleibt still abgehängt.",
+        title: "Eine Community, die dazugibt",
+        body: "Platz ist für E-Bikes und konventionelle Räder, für Einsteiger und Erfahrene. Wir wollen, dass sich Radfahrer kennenlernen, Wissen teilen und einander ermutigen. Keine Rankings, keine Rivalitäten: jede Person bringt etwas in die Gruppe.",
       },
       {
-        title: "Geprüfte Aufnahme",
-        body: "Du schickst eine Anfrage. Ein Administrator bestätigt sie per Mail. Danach gehst du ins Intranet und lernst das Peloton kennen.",
+        title: "Zugang nach Prüfung",
+        body: "Beantrage den Zugang zur Community. Ein Administrator prüft deine Anfrage und bestätigt per E-Mail, wenn sie angenommen wird. Danach kannst du ins Intranet, andere Mitglieder kennenlernen und deine Ausfahrten organisieren.",
       },
     ],
     forWhomTitle: "Für wen",

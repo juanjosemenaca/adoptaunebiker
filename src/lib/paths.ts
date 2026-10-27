@@ -81,6 +81,8 @@ export function anchors() {
   return {
     home: "#inicio",
     community: "#comunidad",
+    offer: "#ofrecemos",
+    operate: "#funcionamos",
     beginner: "#principiante",
     veteran: "#veterano",
     how: "#entrar",

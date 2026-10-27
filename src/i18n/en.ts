@@ -44,7 +44,7 @@ export const en: Dictionary = {
   footer: {
     alone: "You’re not riding alone.",
     blurb:
-      "The same passion. Different bikes. One community. No tracks here: just people.",
+      "The same passion. Different bikes. One community.",
     contact: "Write to us",
   },
   legal: legalEn,
@@ -60,10 +60,23 @@ export const en: Dictionary = {
     line1: "Every bike.",
     line2: "Every level.",
     line3: "One shared passion.",
-    lead: "Adopta un eBiker brings together people who enjoy cycling: electric or conventional, beginners or riders with kilometres behind them. Differences do not set anyone aside: they help you find company.",
+    lead: {
+      question: "Does the motor bother you, or does it bother you that we enjoy it another way?",
+      watts: "Some pedal with watts in their legs. Others add electric watts.",
+      start: "Some start today; others have thousands of kilometres. So what?",
+      points: [
+        { title: "Fewer\nprejudices", body: "Different bikes, same attitude." },
+        { title: "More\ntrails", body: "New places and experiences." },
+        { title: "More adventure\ncompanions", body: "Because good rides are better in company." },
+      ],
+      after: "Electric or conventional. What matters is that you want to ride, share and enjoy.",
+      close: "DIFFERENT BIKES.",
+      closeAccent: "SAME PASSION.",
+    },
     joinMeta: "Barcelona and metropolitan area · Joining is by an application reviewed by an administrator",
-    welcomeTags: ["Gravel", "MTB", "Road", "Electric or conventional"],
+    welcomeTags: ["Gravel", "MTB", "Road", "Electric"],
     ctaIn: "Go to the intranet",
+    ctaHero: "Join the community",
     ctaOut: "I want to be part of the community",
     ctaOutShort: "I want to join",
     ctaGuide: "I want to ride with other cyclists",
@@ -89,22 +102,43 @@ export const en: Dictionary = {
     closeTitle: "The next step is to ask for a spot.",
     closeLead:
       "Tell us who you are and how you ride. If you are accepted, you get intranet access to meet the peloton.",
-    offerKicker: "What we offer",
-    offerTitle: "People to ride with, not another track app.",
+    operateKicker: "How we want to work",
+    operateTitle: "You’re going out on the bike. Who’s in?",
+    operateLead:
+      "We don’t always have someone to ride with. Sometimes we have a route in mind; sometimes we just feel like taking the bike and enjoying a few hours on two wheels. That’s why Adopta un eBiker exists: to connect cyclists who want to share routes, find new roads and enjoy riding together.",
+    operateItems: [
+      {
+        title: "Propose a ride",
+        quote: "Saturday I’ll ride Collserola. About three hours, easy pace, 9:00 start. Who’s in?",
+        body: "Post your plan with the day, time, area, duration and pace. If it suits other cyclists, you’ve got a ride.",
+      },
+      {
+        title: "Who fancies a spin?",
+        quote: "I’ve got tomorrow morning free. Anyone fancy a ride?",
+        body: "You don’t need a route ready or everything planned in advance. Sometimes it’s enough to say when you’re free and what you feel like doing for a good plan to appear.",
+      },
+      {
+        title: "Different bikes. One plan.",
+        body: "Electric or conventional, beginner or veteran. What matters here is sharing the wish to pedal, finding new roads and enjoying the bicycle without prejudice or rivalry.",
+      },
+    ],
+    operateClose: "You propose the plan. The community brings the energy.",
+    offerKicker: "Our philosophy",
+    offerTitle: "Riding companions, not a race for kilometres.",
     offerLead:
-      "We do not sell routes or kudos. We connect people who want a group: newcomers and riders who already have the kilometres.",
+      "We are not an app for stacking routes, followers or recognition. We are a community to find people to ride with, share experiences and enjoy the road, whether you are just starting or already have thousands of kilometres.",
     offerItems: [
       {
         title: "Find your group",
-        body: "People near you, in your discipline, at a compatible pace. The point is to ride, not to stack kudos.",
+        body: "Connect with cyclists near you who share your discipline, your interests and a pace that fits. What matters is not who arrives first, but wanting to ride, pedal and enjoy the company.",
       },
       {
-        title: "Adoption between cyclists",
-        body: "A veteran rides with you. A beginner joins in. No ranking, no palmarès, and nobody gets dropped in silence.",
+        title: "A community that adds up",
+        body: "There is room for electric and conventional bikes, beginners and the more experienced. We want cyclists to meet, share what they know and encourage each other. No rankings or rivalries: everyone brings something to the group.",
       },
       {
-        title: "A reviewed signup",
-        body: "You send a request. An administrator confirms it by email. Then you enter the intranet and meet the peloton.",
+        title: "Access with a review",
+        body: "Request access to the community. An administrator will review your request and confirm by email if it is approved. Once you are in, you can enter the intranet, meet other members and start organising rides.",
       },
     ],
     forWhomTitle: "Who it is for",

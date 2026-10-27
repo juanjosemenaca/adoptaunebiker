@@ -1,4 +1,5 @@
 export type Block = { title: string; body: string };
+export type QuotedBlock = { title: string; quote?: string; body: string };
 export type Qa = { q: string; a: string };
 
 export type LegalSection = {
@@ -90,10 +91,19 @@ export type Dictionary = {
     line1: string;
     line2: string;
     line3: string;
-    lead: string;
+    lead: {
+      question: string;
+      watts: string;
+      start: string;
+      points: [Block, Block, Block];
+      after: string;
+      close: string;
+      closeAccent: string;
+    };
     joinMeta: string;
     welcomeTags: [string, string, string, string];
     ctaIn: string;
+    ctaHero: string;
     ctaOut: string;
     ctaOutShort: string;
     ctaGuide: string;
@@ -104,6 +114,11 @@ export type Dictionary = {
     matchItems: Block[];
     closeTitle: string;
     closeLead: string;
+    operateKicker: string;
+    operateTitle: string;
+    operateLead: string;
+    operateItems: [QuotedBlock, QuotedBlock, QuotedBlock];
+    operateClose: string;
     offerKicker: string;
     offerTitle: string;
     offerLead: string;

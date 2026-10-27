@@ -111,7 +111,7 @@ export function AudienceLanding({
 
       <Apartado title={t.enter.fresh} lead={t.enter.freshLead}>
         <Subapartado>
-          <JoinPanel locale={locale} t={t} session={session} />
+          <JoinPanel locale={locale} t={t} />
         </Subapartado>
       </Apartado>
     </div>

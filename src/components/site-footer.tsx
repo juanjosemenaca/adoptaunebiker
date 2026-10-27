@@ -6,6 +6,8 @@ import { CookieSettingsButton } from "@/components/privacy-provider";
 import { hrefs } from "@/lib/paths";
 
 const linkClass = "inline-flex min-h-11 items-center hover:text-bone";
+const publicLinkClass =
+  "inline-flex min-h-8 items-center text-[11px] font-medium tracking-[0.16em] uppercase hover:text-bone";
 
 export function SiteFooter({
   variant,
@@ -21,7 +23,7 @@ export function SiteFooter({
   const publicFooter = variant === "public";
 
   return (
-    <footer className={`border-t border-line ${publicFooter ? "mt-0 bg-asphalt" : "mt-20"}`}>
+    <footer className={`${publicFooter ? "mt-0 bg-asphalt" : "mt-20 border-t border-line"}`}>
       <div
         className={`mx-auto flex flex-col gap-8 px-4 py-10 sm:flex-row sm:items-end sm:justify-between sm:px-6 ${
           publicFooter ? "max-w-7xl py-14" : "max-w-6xl"
@@ -36,23 +38,28 @@ export function SiteFooter({
         </div>
         <nav
           aria-label={t.legal.nav.menu}
-          className={`flex flex-col gap-1 text-mist sm:items-end ${
-            publicFooter ? "text-sm" : "text-xs uppercase tracking-[0.2em]"
-          }`}
+          className={
+            publicFooter
+              ? "flex flex-col gap-0.5 text-mist sm:items-end"
+              : "flex flex-col gap-1 text-xs uppercase tracking-[0.2em] text-mist sm:items-end"
+          }
         >
-          <Link href={links.avisoLegal} className={linkClass}>
+          <Link href={links.avisoLegal} className={publicFooter ? publicLinkClass : linkClass}>
             {t.legal.nav.notice}
           </Link>
-          <Link href={links.privacidad} className={linkClass}>
+          <Link href={links.privacidad} className={publicFooter ? publicLinkClass : linkClass}>
             {t.legal.nav.privacy}
           </Link>
-          <Link href={links.cookies} className={linkClass}>
+          <Link href={links.cookies} className={publicFooter ? publicLinkClass : linkClass}>
             {t.legal.nav.cookies}
           </Link>
-          <Link href={links.condiciones} className={linkClass}>
+          <Link href={links.condiciones} className={publicFooter ? publicLinkClass : linkClass}>
             {t.legal.nav.terms}
           </Link>
-          <CookieSettingsButton label={t.legal.nav.settings} />
+          <CookieSettingsButton
+            label={t.legal.nav.settings}
+            className={publicFooter ? publicLinkClass : undefined}
+          />
         </nav>
       </div>
     </footer>

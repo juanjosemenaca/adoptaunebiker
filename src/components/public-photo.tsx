@@ -5,10 +5,14 @@ export function PublicPhoto({
   slot,
   className = "",
   priority = false,
+  sizes = "(min-width: 1024px) 50vw, 100vw",
+  alt,
 }: {
   slot: PublicMediaSlot;
   className?: string;
   priority?: boolean;
+  sizes?: string;
+  alt?: string;
 }) {
   const media = publicMedia[slot];
 
@@ -22,11 +26,11 @@ export function PublicPhoto({
       {media.src ? (
         <Image
           src={media.src}
-          alt={media.alt}
+          alt={alt ?? media.alt}
           fill
           priority={priority}
           className={`object-cover ${className}`}
-          sizes="(min-width: 1024px) 50vw, 100vw"
+          sizes={sizes}
         />
       ) : null}
     </>

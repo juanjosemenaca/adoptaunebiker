@@ -112,7 +112,7 @@ export default async function BarcelonaPage({
 
       <Apartado title={t.enter.fresh} lead={t.enter.freshLead}>
         <Subapartado>
-          <JoinPanel locale={locale} t={t} session={session} heading={t.barcelona.start} />
+          <JoinPanel locale={locale} t={t} heading={t.barcelona.start} />
         </Subapartado>
       </Apartado>
     </div>

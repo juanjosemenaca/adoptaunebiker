@@ -13,8 +13,8 @@ type BrandLogoProps = {
 };
 
 const sizes = {
-  header: "h-10 w-[7.25rem] sm:h-12 sm:w-[10.75rem]",
-  footer: "h-14 w-[10rem] sm:h-16 sm:w-[11.5rem]",
+  header: "h-14 w-[12rem] sm:h-16 sm:w-[14.5rem]",
+  footer: "h-20 w-[14.5rem] sm:h-24 sm:w-[17.5rem]",
 };
 
 export function BrandLogo({
@@ -43,7 +43,7 @@ export function BrandLogo({
         src={logo}
         alt="Adopta un eBiker"
         fill
-        sizes="200px"
+        sizes="280px"
         className="object-contain object-left"
         priority={priority}
       />

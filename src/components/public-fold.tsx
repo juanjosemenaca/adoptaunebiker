@@ -34,7 +34,7 @@ export function PublicFold({
     >
       <summary className="cursor-pointer list-none marker:content-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--public-accent)]">
         <span className="flex items-center justify-between gap-4">
-          <h2 className="display text-3xl text-bone sm:text-[2.5rem]">{title}</h2>
+          <h2 className="display text-xl text-bone sm:text-2xl">{title}</h2>
           <span className="text-2xl leading-none text-mist transition group-open:rotate-45">+</span>
         </span>
       </summary>

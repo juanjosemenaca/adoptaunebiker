@@ -20,6 +20,22 @@ export const publicMedia = {
     src: "/media/close.jpg",
     alt: "Carretera de montaña al atardecer",
   },
+  road: {
+    src: "/media/discipline-road.jpg",
+    alt: "Ciclista de carretera de espaldas en el asfalto",
+  },
+  gravel: {
+    src: "/media/discipline-gravel.jpg",
+    alt: "Rueda de gravel levantando polvo en un camino",
+  },
+  mtb: {
+    src: "/media/discipline-mtb.jpg",
+    alt: "Cubierta de MTB sobre roca",
+  },
+  electric: {
+    src: "/media/discipline-electric.jpg",
+    alt: "Rueda de bicicleta eléctrica al atardecer",
+  },
 } as const;
 
 export type PublicMediaSlot = keyof typeof publicMedia;

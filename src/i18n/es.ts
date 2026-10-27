@@ -44,7 +44,7 @@ export const es: Dictionary = {
   footer: {
     alone: "No vas solo.",
     blurb:
-      "La misma pasión. Distintas bicicletas. Una sola comunidad. Aquí no hay tracks: hay gente.",
+      "La misma pasión. Distintas bicicletas. Una sola comunidad.",
     contact: "Escríbenos",
   },
   legal: legalEs,
@@ -60,10 +60,23 @@ export const es: Dictionary = {
     line1: "Todas las bicis.",
     line2: "Todos los niveles.",
     line3: "Una misma pasión.",
-    lead: "Adopta un eBiker une a quien disfruta de la bicicleta: eléctrica o convencional, principiante o con kilómetros. Aquí las diferencias no apartan: ayudan a encontrar compañía.",
+    lead: {
+      question: "¿Te molesta el motor o te molesta que disfrutemos de otra manera?",
+      watts: "Unos pedalean con vatios en las piernas. Otros suman vatios eléctricos.",
+      start: "Unos empiezan hoy; otros llevan miles de kilómetros. ¿Y qué?",
+      points: [
+        { title: "Menos\nprejuicios", body: "Distintas bicis, misma actitud." },
+        { title: "Más\nsenderos", body: "Nuevos lugares y experiencias." },
+        { title: "Más compañeros\nde aventura", body: "Porque las buenas rutas se disfrutan mejor en compañía." },
+      ],
+      after: "Eléctrica o convencional. Lo importante es que tengas ganas de rodar, compartir y disfrutar.",
+      close: "DIFERENTES BICIS.",
+      closeAccent: "MISMA PASIÓN.",
+    },
     joinMeta: "Barcelona y área metropolitana · Incorporación mediante solicitud revisada por un administrador",
-    welcomeTags: ["Carretera", "Gravel", "MTB", "Eléctrica o convencional"],
+    welcomeTags: ["Carretera", "Gravel", "MTB", "Eléctrica"],
     ctaIn: "Ir a la intranet",
+    ctaHero: "Únete a la comunidad",
     ctaOut: "Quiero formar parte de la comunidad",
     ctaOutShort: "Quiero unirme",
     ctaGuide: "Quiero acompañar a otros ciclistas",
@@ -89,22 +102,43 @@ export const es: Dictionary = {
     closeTitle: "El siguiente paso es pedir plaza.",
     closeLead:
       "Cuéntanos quién eres y cómo sales. Si te aceptan, te llega el acceso a la intranet para conocer al pelotón.",
-    offerKicker: "Qué ofrecemos",
-    offerTitle: "Compañeros de salida, no una app de tracks.",
+    operateKicker: "Cómo queremos funcionar",
+    operateTitle: "Sales en bici. ¿Quién se apunta?",
+    operateLead:
+      "No siempre tenemos con quién salir. A veces tenemos una ruta en mente; otras, simplemente nos apetece coger la bici y disfrutar de unas horas sobre dos ruedas. Por eso nace Adopta un eBiker: para conectar a ciclistas que quieren compartir rutas, descubrir nuevos caminos y disfrutar pedaleando juntos.",
+    operateItems: [
+      {
+        title: "Propón una salida",
+        quote: "El sábado saldré por Collserola. Unas tres horas, ritmo tranquilo y salida a las 9:00. ¿Quién se apunta?",
+        body: "Publica tu plan indicando el día, la hora, la zona, la duración y el ritmo. Si a otros ciclistas les encaja, ¡ya tenéis salida!",
+      },
+      {
+        title: "¿Quién se anima a rodar?",
+        quote: "Mañana tengo la mañana libre. ¿Alguien se anima a dar una vuelta en bici?",
+        body: "No hace falta tener una ruta preparada ni organizarlo todo de antemano. A veces basta con decir cuándo tienes libre y qué te apetece hacer para que surja un buen plan.",
+      },
+      {
+        title: "Diferentes bicis. Un mismo plan.",
+        body: "Eléctrica o convencional, principiante o veterano. Aquí lo importante es compartir las ganas de pedalear, descubrir nuevos caminos y disfrutar de la bicicleta sin prejuicios ni rivalidades.",
+      },
+    ],
+    operateClose: "Tú propones el plan. ¡La comunidad pone las ganas!",
+    offerKicker: "Nuestra filosofía",
+    offerTitle: "Compañeros de ruta, no una competición de kilómetros.",
     offerLead:
-      "No vendemos recorridos ni kudos. Conectamos a quien quiere grupeta: quien empieza y quien ya tiene kilómetros.",
+      "No somos una app para acumular rutas, seguidores o reconocimientos. Somos una comunidad para encontrar gente con la que salir en bicicleta, compartir experiencias y disfrutar del camino, tanto si acabas de empezar como si llevas miles de kilómetros.",
     offerItems: [
       {
         title: "Encuentra tu grupeta",
-        body: "Gente de tu zona, tu modalidad y un ritmo compatible. El objetivo es salir, no sumar kudos.",
+        body: "Conecta con ciclistas de tu zona que compartan tu modalidad, tus intereses y un ritmo compatible con el tuyo. Lo importante no es quién llega primero, sino tener ganas de salir, pedalear y disfrutar en compañía.",
       },
       {
-        title: "Adopción entre ciclistas",
-        body: "Un veterano acompaña. Un principiante se suma. Sin ranking, sin palmarés y sin que nadie se quede atrás sin saberlo.",
+        title: "Una comunidad que suma",
+        body: "Aquí tienen cabida las bicicletas eléctricas y las convencionales, los principiantes y los más experimentados. Queremos que los ciclistas se conozcan, compartan conocimientos y se animen mutuamente. Sin rankings ni rivalidades: cada persona aporta algo al grupo.",
       },
       {
-        title: "Alta revisada",
-        body: "Envías una solicitud. Un administrador la confirma por correo. Luego entras a la intranet a conocer al pelotón.",
+        title: "Acceso con revisión",
+        body: "Solicita tu acceso a la comunidad. Un administrador revisará tu solicitud y te confirmará por correo electrónico si ha sido aprobada. Una vez dentro, podrás acceder a la intranet, conocer a otros miembros y empezar a organizar tus salidas.",
       },
     ],
     forWhomTitle: "Para quién es",

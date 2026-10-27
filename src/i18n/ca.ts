@@ -44,7 +44,7 @@ export const ca: Dictionary = {
   footer: {
     alone: "No vas sol.",
     blurb:
-      "La mateixa passió. Distintes bicicletes. Una sola comunitat. Aquí no hi ha tracks: hi ha gent.",
+      "La mateixa passió. Distintes bicicletes. Una sola comunitat.",
     contact: "Escriu-nos",
   },
   legal: legalCa,
@@ -60,10 +60,23 @@ export const ca: Dictionary = {
     line1: "Totes les bicis.",
     line2: "Tots els nivells.",
     line3: "Una mateixa passió.",
-    lead: "Adopta un eBiker uneix qui gaudeix de la bicicleta: elèctrica o convencional, principiant o amb quilòmetres. Aquí les diferències no aparten: ajuden a trobar companyia.",
+    lead: {
+      question: "Et molesta el motor o et molesta que ho gaudim d’una altra manera?",
+      watts: "Uns pedalen amb watts a les cames. Altres sumen watts elèctrics.",
+      start: "Uns comencen avui; altres porten milers de quilòmetres. I què?",
+      points: [
+        { title: "Menys\nprejudicis", body: "Distintes bicis, mateixa actitud." },
+        { title: "Més\nsenders", body: "Nous llocs i experiències." },
+        { title: "Més companys\nd’aventura", body: "Perquè les bones rutes es gaudeixen millor en companyia." },
+      ],
+      after: "Elèctrica o convencional. L’important és que tinguis ganes de rodar, compartir i gaudir.",
+      close: "DIFERENTS BICIS.",
+      closeAccent: "MATEIXA PASSIÓ.",
+    },
     joinMeta: "Barcelona i àrea metropolitana · Incorporació mitjançant sol·licitud revisada per un administrador",
-    welcomeTags: ["Carretera", "Gravel", "MTB", "Elèctrica o convencional"],
+    welcomeTags: ["Carretera", "Gravel", "MTB", "Elèctrica"],
     ctaIn: "Anar a la intranet",
+    ctaHero: "Uneix-te a la comunitat",
     ctaOut: "Vull formar part de la comunitat",
     ctaOutShort: "Vull unir-me",
     ctaGuide: "Vull acompanyar altres ciclistes",
@@ -89,22 +102,43 @@ export const ca: Dictionary = {
     closeTitle: "El pas següent és demanar plaça.",
     closeLead:
       "Explica’ns qui ets i com surts. Si t’accepten, et arriba l’accés a la intranet per conèixer el pelotó.",
-    offerKicker: "Què oferim",
-    offerTitle: "Companys de sortida, no una app de tracks.",
+    operateKicker: "Com volem funcionar",
+    operateTitle: "Surts en bici. Qui s’apunta?",
+    operateLead:
+      "No sempre tenim amb qui sortir. De vegades tenim una ruta al cap; d’altres, simplement ens ve de gust agafar la bici i gaudir d’unes hores sobre dues rodes. Per això neix Adopta un eBiker: per connectar ciclistes que volen compartir rutes, descobrir nous camins i gaudir pedalejant junts.",
+    operateItems: [
+      {
+        title: "Proposar una sortida",
+        quote: "Dissabte sortiré per Collserola. Unes tres hores, ritme tranquil i sortida a les 9:00. Qui s’apunta?",
+        body: "Publica el pla amb el dia, l’hora, la zona, la durada i el ritme. Si a altres ciclistes els encaixa, ja teniu sortida!",
+      },
+      {
+        title: "Qui s’anima a rodar?",
+        quote: "Demà tinc el matí lliure. Algú s’anima a fer una volta en bici?",
+        body: "No cal tenir una ruta a punt ni organitzar-ho tot per endavant. De vegades n’hi ha prou amb dir quan tens lliure i què et ve de gust perquè sorgeixi un bon pla.",
+      },
+      {
+        title: "Bicis diferents. Un mateix pla.",
+        body: "Elèctrica o convencional, principiant o veterà. Aquí l’important és compartir les ganes de pedalar, descobrir nous camins i gaudir de la bicicleta sense prejudicis ni rivalitats.",
+      },
+    ],
+    operateClose: "Tu proposes el pla. La comunitat hi posa les ganes!",
+    offerKicker: "La nostra filosofia",
+    offerTitle: "Companys de ruta, no una competició de quilòmetres.",
     offerLead:
-      "No venem recorreguts ni kudos. Connectem qui vol grupeta: qui comença i qui ja porta quilòmetres.",
+      "No som una app per acumular rutes, seguidors o reconeixements. Som una comunitat per trobar gent amb qui sortir en bicicleta, compartir experiències i gaudir del camí, tant si acabes de començar com si portes milers de quilòmetres.",
     offerItems: [
       {
         title: "Troba la teva grupeta",
-        body: "Gent de la teva zona, la teva modalitat i un ritme compatible. L’objectiu és sortir, no sumar kudos.",
+        body: "Connecta amb ciclistes de la teva zona que comparteixin la teva modalitat, els teus interessos i un ritme compatible amb el teu. L’important no és qui arriba primer, sinó tenir ganes de sortir, pedalar i gaudir en companyia.",
       },
       {
-        title: "Adopció entre ciclistes",
-        body: "Un veterà acompanya. Un principiant s’hi suma. Sense rànquing, sense palmarès i sense que ningú es quedi enrere sense saber-ho.",
+        title: "Una comunitat que suma",
+        body: "Aquí hi caben les bicicletes elèctriques i les convencionals, els principiants i els més experimentats. Volem que els ciclistes es coneguin, comparteixin coneixements i s’animin mutuament. Sense rànquings ni rivalitats: cada persona aporta alguna cosa al grup.",
       },
       {
-        title: "Alta revisada",
-        body: "Envia una sol·licitud. Un administrador la confirma per correu. Després entres a la intranet a conèixer el pelotó.",
+        title: "Accés amb revisió",
+        body: "Sol·licita l’accés a la comunitat. Un administrador revisarà la sol·licitud i et confirmarà per correu electrònic si ha estat aprovada. Un cop dins, podràs accedir a la intranet, conèixer altres membres i començar a organitzar les sortides.",
       },
     ],
     forWhomTitle: "Per a qui és",

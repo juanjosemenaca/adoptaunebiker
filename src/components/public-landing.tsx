@@ -14,21 +14,46 @@ import { localePath } from "@/lib/site";
 import type { Dictionary } from "@/i18n/types";
 import type { SessionUser } from "@/lib/types";
 
-const valueIcons = [
-  <PeopleIcon key="people" />,
-  <HeartIcon key="heart" />,
-  <LeafIcon key="leaf" />,
-  <PeakIcon key="peak" />,
+const heroPointIcons = [
+  <ChatIcon key="chat" />,
+  <TrailIcon key="trail" />,
+  <GroupIcon key="group" />,
 ];
 
-const stepIcons = [<DocIcon key="doc" />, <ShieldIcon key="shield" />, <PeopleIcon key="step-people" />];
+type DisciplineKind = "road" | "gravel" | "mtb" | "electric";
 
-function bikeIconFor(tag: string) {
+const disciplineLook: Record<
+  DisciplineKind,
+  { slot: "road" | "gravel" | "mtb" | "electric"; radius: string; photoClass: string }
+> = {
+  road: {
+    slot: "road",
+    radius: "3.4rem 5.6rem 2.6rem 4.8rem / 3.8rem 2.8rem 4.6rem 3.2rem",
+    photoClass: "object-[74%_center]",
+  },
+  gravel: {
+    slot: "gravel",
+    radius: "5.2rem 3.1rem 5.4rem 2.7rem / 3.2rem 5rem 2.6rem 4.8rem",
+    photoClass: "object-[82%_center]",
+  },
+  mtb: {
+    slot: "mtb",
+    radius: "3rem 4.9rem 2.4rem 5.5rem / 4.4rem 2.9rem 4.8rem 3rem",
+    photoClass: "object-[80%_center]",
+  },
+  electric: {
+    slot: "electric",
+    radius: "2.6rem 5.8rem 3.5rem 2.9rem / 3.1rem 5.2rem 2.5rem 4.4rem",
+    photoClass: "object-[90%_center]",
+  },
+};
+
+function disciplineKind(tag: string): DisciplineKind {
   const key = tag.toLowerCase().normalize("NFD").replace(/\p{M}/gu, "");
-  if (key.includes("gravel")) return <PeakIcon />;
-  if (key.includes("mtb") || key.includes("vtt")) return <TreesIcon />;
-  if (key.includes("electr")) return <BoltIcon />;
-  return <RoadIcon />;
+  if (key.includes("gravel")) return "gravel";
+  if (key.includes("mtb") || key.includes("vtt")) return "mtb";
+  if (key.includes("electr")) return "electric";
+  return "road";
 }
 
 export function PublicLanding({
@@ -53,18 +78,16 @@ export function PublicLanding({
       <PublicCtaIcon />
     </HashLink>
   );
-  const shortJoinCta = session ? (
-    <Link href={links.intranet} className="public-cta">
-      {t.home.ctaIn}
-      <PublicCtaIcon />
-    </Link>
-  ) : (
-    <HashLink href={jump.join} eventName={analyticsEvents.signUpCtaClick} className="public-cta">
-      {t.home.ctaOutShort}
+  const heroCta = (
+    <HashLink
+      href={jump.join}
+      eventName={analyticsEvents.signUpCtaClick}
+      className="public-cta uppercase tracking-[0.04em]"
+    >
+      {t.home.ctaHero}
       <PublicCtaIcon />
     </HashLink>
   );
-
   return (
     <div>
       <PublicJsonLd
@@ -74,86 +97,115 @@ export function PublicLanding({
         variant="home"
       />
 
-      <section id="inicio" className="scroll-mt-28">
-        <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 pt-10 pb-10 sm:gap-10 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:pt-14 lg:pb-14">
-          <div className="flex min-w-0 flex-col justify-center">
-            <p className="text-xs font-medium tracking-[0.2em] text-mist uppercase">
-              {t.home.brandGloss}
-            </p>
-            <h1 className="display mt-5 max-w-xl text-[clamp(2.15rem,5vw,3.85rem)] text-bone">
-              {t.home.line1}
-              <br />
-              {t.home.line2}
-              <br />
-              <span className="public-accent public-underline">{t.home.line3}</span>
-            </h1>
-            <p className="mt-6 max-w-md text-base leading-8 text-mist sm:text-[1.05rem]">
-              {t.home.lead}
-            </p>
-            <div className="mt-8">{joinCta}</div>
-            <p className="mt-5 flex max-w-md items-start gap-2 text-sm leading-6 text-mist">
-              <PinIcon />
-              <span>{t.home.joinMeta}</span>
-            </p>
+      <section id="inicio" className="relative scroll-mt-28">
+        <div className="mx-auto max-w-6xl px-5 pt-10 pb-16 sm:px-8 lg:pt-14 lg:pb-20">
+          <h1 className="display text-center text-[clamp(2.25rem,4.8vw,3.7rem)] leading-[1.15] font-bold text-bone">
+            {t.home.line1} {t.home.line2}
+            <br />
+            <span className="public-accent border-b-[3px] border-current pb-1">
+              {t.home.line3}
+            </span>
+          </h1>
+
+          <div className="mx-auto mt-14 max-w-3xl space-y-5 text-center text-[1.2rem] leading-8 text-bone/80 sm:text-[1.28rem] sm:leading-9">
+            <p>{t.home.lead.question}</p>
+            <p>{t.home.lead.watts}</p>
+            <p>{t.home.lead.start}</p>
           </div>
-          <div className="relative min-w-0 overflow-hidden aspect-[4/3]">
-            <PublicPhoto slot="hero" priority className="object-[center_88%]" />
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/40 to-transparent" />
-            <p className="display absolute top-5 right-5 max-w-[9.5rem] text-right text-sm leading-5 text-white sm:top-7 sm:right-7 sm:text-base">
-              {t.footer.blurb
-                .split(/(?<=\.)\s+/)
-                .slice(0, 2)
-                .map((line) => (
-                  <span key={line} className="block">
-                    {line}
-                  </span>
-                ))}
-            </p>
-          </div>
+
+          <ul className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-0">
+            {t.home.lead.points.map((point, index) => (
+              <li
+                key={point.title}
+                className={`flex flex-col items-center gap-3 text-center md:px-8 ${
+                  index > 0 ? "md:border-l md:border-black/10" : ""
+                }`}
+              >
+                <span className="public-accent shrink-0">{heroPointIcons[index]}</span>
+                <div>
+                  <p className="whitespace-pre-line text-[1.15rem] font-semibold leading-[1.25] text-bone">
+                    {point.title}
+                  </p>
+                  <p className="mx-auto mt-2 max-w-[13.5rem] text-[0.9rem] leading-6 text-mist">{point.body}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <p className="mx-auto mt-12 max-w-3xl text-center text-[1.2rem] leading-8 text-bone/80 sm:text-[1.28rem] sm:leading-9">
+            {t.home.lead.after}
+          </p>
+          <p className="display mt-12 text-center text-[clamp(1.25rem,2.4vw,1.7rem)] font-bold tracking-[-0.02em] text-bone">
+            {t.home.lead.close}{" "}
+            <span className="public-accent border-b-[3px] border-current pb-0.5">
+              {t.home.lead.closeAccent}
+            </span>
+          </p>
+          <div className="mt-14 flex justify-center">{heroCta}</div>
         </div>
       </section>
 
-      <ul className="mx-auto grid max-w-7xl grid-cols-1 border-y border-line sm:grid-cols-2 lg:grid-cols-4">
-        {t.home.welcomeTags.map((tag) => (
-          <li
-            key={tag}
-            className="flex min-h-20 items-center gap-4 border-line px-6 py-6 text-base text-bone sm:min-h-24 sm:text-lg max-sm:border-b sm:max-lg:odd:border-r sm:max-lg:[&:nth-child(-n+2)]:border-b lg:border-r lg:last:border-r-0"
-          >
-            <span className="public-accent [&>svg]:h-7 [&>svg]:w-7">{bikeIconFor(tag)}</span>
-            <span className="font-medium tracking-tight">{tag}</span>
-          </li>
-        ))}
-      </ul>
+      <section className="px-4 py-8 sm:px-6 sm:py-10">
+        <ul className="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4 lg:gap-3">
+          {t.home.welcomeTags.map((tag) => {
+            const kind = disciplineKind(tag);
+            const look = disciplineLook[kind];
+
+            return (
+              <li
+                key={tag}
+                className="relative aspect-[5/3] overflow-hidden"
+                style={{ borderRadius: look.radius }}
+              >
+                <PublicPhoto
+                  slot={look.slot}
+                  alt=""
+                  className={look.photoClass}
+                  sizes="(min-width: 1024px) 20vw, (min-width: 640px) 40vw, 100vw"
+                />
+                <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#f5f5f0] from-0% via-[#f5f5f0]/92 via-16% to-transparent to-40%" />
+                <span className="absolute inset-y-0 left-0 z-10 flex w-11 items-center justify-center sm:w-12">
+                  <span
+                    className={`-rotate-90 whitespace-nowrap font-bold tracking-tight text-bone ${
+                      tag.length > 14 ? "text-[0.8rem] sm:text-sm" : "text-base sm:text-lg"
+                    }`}
+                  >
+                    {tag}
+                  </span>
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
 
       <section id="entrar" className="mx-auto max-w-7xl scroll-mt-28 px-4 py-16 sm:px-6 sm:py-24">
         <p className="text-xs font-medium tracking-[0.2em] text-mist uppercase">{t.nav.how}</p>
         <h2 className="display mt-4 max-w-lg text-4xl text-bone sm:text-5xl">{t.home.howTitle}</h2>
-        <ol className="mt-12 grid gap-12 md:grid-cols-3 md:gap-10">
+        <ol className="mt-14 grid gap-12 md:grid-cols-3 md:gap-0">
           {t.home.matchItems.map((item, index) => (
-            <li key={item.title} className="relative">
-              <div className="flex items-center gap-3">
-                <span className="grid h-12 w-12 place-items-center rounded-full border border-line text-lg font-semibold text-bone">
-                  {index + 1}
-                </span>
-                <span className="public-accent">{stepIcons[index]}</span>
-                {index < 2 ? (
-                  <span className="ml-auto hidden text-mist md:inline" aria-hidden>
-                    →
-                  </span>
-                ) : null}
-              </div>
-              <h3 className="mt-5 text-xl font-semibold tracking-tight text-bone">{item.title}</h3>
+            <li key={item.title} className="relative md:px-8 md:first:pl-0 md:last:pr-0">
+              {index < 2 ? (
+                <span
+                  className="pointer-events-none absolute top-7 left-16 right-0 hidden h-px bg-line md:block"
+                  aria-hidden
+                />
+              ) : null}
+              <span className="relative z-10 grid h-14 w-14 place-items-center rounded-full bg-[var(--public-mark)] text-lg font-bold text-[var(--graphite)]">
+                {index + 1}
+              </span>
+              <h3 className="mt-6 text-xl font-semibold tracking-tight text-bone">{item.title}</h3>
               <p className="mt-3 text-base leading-7 text-mist">{item.body}</p>
             </li>
           ))}
         </ol>
       </section>
 
-      <section className="border-t border-line">
+      <section>
         <div className="mx-auto grid max-w-7xl lg:grid-cols-2">
           <section
             id="principiante"
-            className="grid scroll-mt-28 items-center gap-8 border-l-4 border-[var(--public-accent)] bg-rubber px-4 py-16 sm:grid-cols-[0.85fr_1.15fr] sm:px-6 sm:py-20"
+            className="grid scroll-mt-28 items-center gap-8 bg-rubber px-4 py-16 sm:grid-cols-[0.85fr_1.15fr] sm:px-6 sm:py-20"
           >
             <div className="relative aspect-[4/5] overflow-hidden bg-panel">
               <PublicPhoto slot="beginner" className="object-[center_40%]" />
@@ -166,7 +218,6 @@ export function PublicLanding({
                 {t.home.beginnerTitle}
               </h2>
               <p className="mt-4 max-w-sm text-base leading-7 text-mist">{t.beginner.lead}</p>
-              <div className="mt-8">{shortJoinCta}</div>
             </div>
           </section>
           <section
@@ -179,7 +230,6 @@ export function PublicLanding({
               </p>
               <h2 className="display mt-3 text-3xl sm:text-[2.25rem]">{t.home.veteranTitle}</h2>
               <p className="mt-4 max-w-sm text-base leading-7 text-asphalt/80">{t.veteran.lead}</p>
-              <div className="mt-8">{shortJoinCta}</div>
             </div>
             <div className="relative order-first aspect-[4/5] overflow-hidden sm:order-none">
               <PublicPhoto slot="veteran" className="object-[20%_45%]" />
@@ -188,29 +238,29 @@ export function PublicLanding({
         </div>
       </section>
 
-      <section
-        id="comunidad"
-        className="mx-auto max-w-7xl scroll-mt-28 px-4 py-16 sm:px-6 sm:py-24"
-      >
-        <div className="max-w-2xl">
-          <p className="text-xs font-medium tracking-[0.2em] text-mist uppercase">
-            {t.kickers.about}
-          </p>
-          <h2 className="display mt-4 text-4xl text-bone sm:text-5xl">{t.about.pageTitle}</h2>
-          <p className="mt-6 text-base leading-8 text-mist sm:text-lg">{t.about.lead}</p>
-        </div>
-        <ul className="mt-12 grid gap-10 sm:grid-cols-2 lg:gap-x-16 lg:gap-y-14">
-          {t.about.wants.map((item, index) => (
-            <li key={item.title} className="border-t border-line pt-6">
-              <span className="public-accent">{valueIcons[index]}</span>
-              <h3 className="mt-4 text-lg font-semibold tracking-tight text-bone">{item.title}</h3>
-              <p className="mt-2 text-base leading-7 text-mist">{item.body}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <Apartado
+          id="funcionamos"
+          kicker={t.home.operateKicker}
+          title={t.home.operateTitle}
+          lead={t.home.operateLead}
+        >
+          <ul className="mt-12 grid gap-10 sm:grid-cols-3">
+            {t.home.operateItems.map((item) => (
+              <li key={item.title} className="border-t border-line pt-6">
+                <h3 className="text-lg font-semibold tracking-tight text-bone">{item.title}</h3>
+                {item.quote ? (
+                  <p className="mt-3 text-base leading-7 text-mist italic">«{item.quote}»</p>
+                ) : null}
+                <p className="mt-3 text-base leading-7 text-mist">{item.body}</p>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-12 text-center text-[1.2rem] font-semibold leading-8 text-bone sm:text-[1.28rem]">
+            {t.home.operateClose}
+          </p>
+        </Apartado>
+
         <Apartado
           id="ofrecemos"
           kicker={t.home.offerKicker}
@@ -228,7 +278,7 @@ export function PublicLanding({
         </Apartado>
       </div>
 
-      <section className="border-y border-line bg-panel">
+      <section className="bg-panel">
         <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
           <p className="text-xs font-medium tracking-[0.2em] text-mist uppercase">
             {t.kickers.spot}
@@ -236,7 +286,7 @@ export function PublicLanding({
           <h2 className="display mt-4 max-w-xl text-4xl text-bone sm:text-5xl">{t.enter.fresh}</h2>
           <p className="mt-5 max-w-xl text-base leading-8 text-mist">{t.enter.freshLead}</p>
           <div className="mt-10">
-            <JoinPanel locale={locale} t={t} session={session} featured />
+            <JoinPanel locale={locale} t={t} featured />
           </div>
         </div>
       </section>
@@ -268,7 +318,7 @@ export function PublicLanding({
         </PublicFold>
       </div>
 
-      <section className="border-t border-line">
+      <section>
         <div className="mx-auto grid max-w-7xl lg:grid-cols-2">
           <div className="relative aspect-[16/10] overflow-hidden lg:aspect-auto lg:min-h-[26rem]">
             <PublicPhoto slot="close" className="object-[center_55%]" />
@@ -295,109 +345,50 @@ export function PublicLanding({
   );
 }
 
-function PinIcon() {
+function ChatIcon() {
   return (
-    <svg viewBox="0 0 16 16" className="mt-1 h-3.5 w-3.5 shrink-0" fill="none" aria-hidden>
+    <svg viewBox="0 0 32 32" className="h-11 w-11" fill="none" aria-hidden>
       <path
-        d="M8 8.6a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2Z"
+        d="M6.5 8.2c0-1.5 1.2-2.7 2.7-2.7h13.6c1.5 0 2.7 1.2 2.7 2.7v9.4c0 1.5-1.2 2.7-2.7 2.7h-5.4l-5.2 3.8v-3.8H9.2c-1.5 0-2.7-1.2-2.7-2.7V8.2Z"
         stroke="currentColor"
-        strokeWidth="1.2"
+        strokeWidth="1.7"
+        strokeLinejoin="round"
       />
-      <path
-        d="M8 14s4.2-3.4 4.2-6.6A4.2 4.2 0 0 0 8 3.2 4.2 4.2 0 0 0 3.8 7.4C3.8 10.6 8 14 8 14Z"
-        stroke="currentColor"
-        strokeWidth="1.2"
-      />
+      <path d="M11 13h10" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
     </svg>
   );
 }
 
-function PeopleIcon() {
+function TrailIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" aria-hidden>
-      <circle cx="9" cy="8" r="2.2" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M4.8 16.8c.4-2.2 2.2-3.4 4.2-3.4s3.8 1.2 4.2 3.4" stroke="currentColor" strokeWidth="1.4" />
-      <circle cx="16.2" cy="8.4" r="1.8" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M15 13.6c1.7 0 3.2.9 3.7 2.6" stroke="currentColor" strokeWidth="1.4" />
-    </svg>
-  );
-}
-
-function HeartIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" aria-hidden>
+    <svg viewBox="0 0 32 32" className="h-11 w-11" fill="none" aria-hidden>
       <path
-        d="M12 18s-6.2-3.7-6.2-7.2A3.3 3.3 0 0 1 12 8.4a3.3 3.3 0 0 1 6.2 2.4C18.2 14.3 12 18 12 18Z"
+        d="M5 23.5 16 7.5 27 23.5"
         stroke="currentColor"
-        strokeWidth="1.4"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9 23.5c5.5-8 12-8.4 18.5 0"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
       />
     </svg>
   );
 }
 
-function LeafIcon() {
+function GroupIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" aria-hidden>
-      <path
-        d="M6 16.5c6.5.6 10.8-3.6 11.2-10.2C10.6 6.7 6.4 11 6 16.5Z"
-        stroke="currentColor"
-        strokeWidth="1.4"
-      />
-      <path d="M9 14.2c1.8-1.6 3.8-2.6 6.2-3.2" stroke="currentColor" strokeWidth="1.4" />
+    <svg viewBox="0 0 32 32" className="h-11 w-11" fill="none" aria-hidden>
+      <circle cx="16" cy="9.2" r="3.1" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M8.6 24.2c.7-3.6 3.6-5.4 7.4-5.4s6.7 1.8 7.4 5.4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <circle cx="7.4" cy="11.2" r="2.4" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M3.6 23.2c.4-2.3 2-3.5 4.2-3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <circle cx="24.6" cy="11.2" r="2.4" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M28.4 23.2c-.4-2.3-2-3.5-4.2-3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
     </svg>
   );
 }
 
-function PeakIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" aria-hidden>
-      <path d="m4 17 5.2-8.2 3.1 4.8 2.2-3.4L20 17" stroke="currentColor" strokeWidth="1.4" />
-    </svg>
-  );
-}
-
-function RoadIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" aria-hidden>
-      <path d="M3 18h18" stroke="currentColor" strokeWidth="1.4" />
-      <path d="m6.5 18 3.2-12h4.6l3.2 12" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M12 8v2.2M12 13v2.2" stroke="currentColor" strokeWidth="1.4" />
-    </svg>
-  );
-}
-
-function TreesIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" aria-hidden>
-      <path d="m8.2 16-3-5h2.2L5.8 7.4h4.6L8.8 4.8" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M8.2 16v3.4" stroke="currentColor" strokeWidth="1.4" />
-      <path d="m16.4 16.2-3.2-5.2h2.3l-2.6-4h4.8l-1.7-2.6" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M16.4 16.2V19.4" stroke="currentColor" strokeWidth="1.4" />
-    </svg>
-  );
-}
-
-function BoltIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" aria-hidden>
-      <path d="m13 3-7 10h5l-1 8 7-10h-5l1-8Z" stroke="currentColor" strokeWidth="1.4" />
-    </svg>
-  );
-}
-
-function DocIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
-      <path d="M7.5 4.5h6.2L18 8.8V19.5H7.5V4.5Z" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M13.6 4.5V8.8H18" stroke="currentColor" strokeWidth="1.4" />
-    </svg>
-  );
-}
-
-function ShieldIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
-      <path d="M12 3.8 19 6.4v6.2c0 4.2-3 6.8-7 8.2-4-1.4-7-4-7-8.2V6.4L12 3.8Z" stroke="currentColor" strokeWidth="1.4" />
-    </svg>
-  );
-}

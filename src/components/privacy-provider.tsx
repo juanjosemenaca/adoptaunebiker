@@ -44,13 +44,19 @@ export function usePrivacySettings() {
   return ctx;
 }
 
-export function CookieSettingsButton({ label }: { label: string }) {
+export function CookieSettingsButton({
+  label,
+  className,
+}: {
+  label: string;
+  className?: string;
+}) {
   const { openSettings } = usePrivacySettings();
   return (
     <button
       type="button"
       onClick={openSettings}
-      className="inline-flex min-h-11 items-center hover:text-bone"
+      className={className ?? "inline-flex min-h-11 items-center hover:text-bone"}
     >
       {label}
     </button>

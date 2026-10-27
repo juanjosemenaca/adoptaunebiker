@@ -44,7 +44,7 @@ export const fr: Dictionary = {
   footer: {
     alone: "Tu ne roules pas seul.",
     blurb:
-      "La même passion. Des vélos différents. Une seule communauté. Ici, pas de traces : des gens.",
+      "La même passion. Des vélos différents. Une seule communauté.",
     contact: "Écris-nous",
   },
   legal: legalFr,
@@ -60,10 +60,23 @@ export const fr: Dictionary = {
     line1: "Tous les vélos.",
     line2: "Tous les niveaux.",
     line3: "Une même passion.",
-    lead: "Adopta un eBiker rassemble celles et ceux qui aiment le vélo : électrique ou musculaire, débutants ou avec des kilomètres. Ici les différences n’écartent personne : elles aident à trouver de la compagnie.",
+    lead: {
+      question: "C’est le moteur qui te dérange, ou le fait qu’on en profite autrement ?",
+      watts: "Certains pédalent avec des watts dans les jambes. D’autres ajoutent des watts électriques.",
+      start: "Certains commencent aujourd’hui ; d’autres ont des milliers de kilomètres. Et alors ?",
+      points: [
+        { title: "Moins de\npréjugés", body: "Des vélos différents, la même attitude." },
+        { title: "Plus de\nsentiers", body: "De nouveaux lieux et expériences." },
+        { title: "Plus de compagnons\nd’aventure", body: "Parce que les belles sorties se savent mieux à plusieurs." },
+      ],
+      after: "Électrique ou musculaire. L’important, c’est l’envie de rouler, de partager et de profiter.",
+      close: "DES VÉLOS DIFFÉRENTS.",
+      closeAccent: "LA MÊME PASSION.",
+    },
     joinMeta: "Barcelone et aire métropolitaine · Intégration sur demande relue par un administrateur",
-    welcomeTags: ["Gravel", "Route", "VTT", "Électrique ou musculaire"],
+    welcomeTags: ["Gravel", "Route", "VTT", "Électrique"],
     ctaIn: "Aller à l’intranet",
+    ctaHero: "Rejoins la communauté",
     ctaOut: "Je veux faire partie de la communauté",
     ctaOutShort: "Je veux rejoindre",
     ctaGuide: "Je veux accompagner d’autres cyclistes",
@@ -89,22 +102,43 @@ export const fr: Dictionary = {
     closeTitle: "L’étape suivante, c’est de demander une place.",
     closeLead:
       "Dis-nous qui tu es et comment tu sors. Si on t’accepte, tu reçois l’accès à l’intranet pour rencontrer le peloton.",
-    offerKicker: "Ce que nous proposons",
-    offerTitle: "Des compagnons de sortie, pas une appli de traces.",
+    operateKicker: "Comment nous voulons fonctionner",
+    operateTitle: "Tu sors à vélo. Qui se joint ?",
+    operateLead:
+      "On n’a pas toujours quelqu’un avec qui sortir. Parfois on a une route en tête ; parfois on a juste envie de prendre le vélo et de profiter de quelques heures sur deux roues. C’est pour ça qu’Adopta un eBiker existe : relier des cyclistes qui veulent partager des sorties, découvrir de nouveaux chemins et pédaler ensemble.",
+    operateItems: [
+      {
+        title: "Propose une sortie",
+        quote: "Samedi je sors dans Collserola. Environ trois heures, rythme cool, départ à 9h00. Qui se joint ?",
+        body: "Publie ton plan avec le jour, l’heure, la zone, la durée et le rythme. Si ça convient à d’autres cyclistes, vous avez une sortie.",
+      },
+      {
+        title: "Qui a envie de rouler ?",
+        quote: "J’ai la matinée de demain. Quelqu’un se joint pour un tour à vélo ?",
+        body: "Pas besoin d’avoir une route prête ni de tout organiser à l’avance. Parfois il suffit de dire quand tu es libre et ce dont tu as envie pour qu’un bon plan apparaisse.",
+      },
+      {
+        title: "Des vélos différents. Un même plan.",
+        body: "Électrique ou musculaire, débutant ou vétéran. Ici, l’important c’est de partager l’envie de pédaler, de découvrir de nouveaux chemins et de profiter du vélo sans préjugés ni rivalités.",
+      },
+    ],
+    operateClose: "Tu proposes le plan. La communauté met l’envie.",
+    offerKicker: "Notre philosophie",
+    offerTitle: "Des compagnons de route, pas une course aux kilomètres.",
     offerLead:
-      "On ne vend pas de parcours ni de kudos. On relie ceux qui veulent un groupe : ceux qui commencent et ceux qui ont déjà les kilomètres.",
+      "Nous ne sommes pas une appli pour empiler les parcours, les abonnés ou les reconnaissances. Nous sommes une communauté pour trouver des gens avec qui sortir à vélo, partager des expériences et profiter du chemin, que tu commences aujourd’hui ou que tu aies déjà des milliers de kilomètres.",
     offerItems: [
       {
         title: "Trouve ton groupe",
-        body: "Des gens près de chez toi, dans ta pratique, à un rythme compatible. Le but, c’est de sortir, pas d’empiler les kudos.",
+        body: "Relie-toi à des cyclistes près de chez toi qui partagent ta pratique, tes envies et un rythme compatible. L’important n’est pas qui arrive le premier, mais l’envie de sortir, de pédaler et de profiter ensemble.",
       },
       {
-        title: "Adoption entre cyclistes",
-        body: "Un vétéran accompagne. Un débutant rejoint. Sans classement, sans palmarès, et personne n’est distancé en silence.",
+        title: "Une communauté qui additionne",
+        body: "Il y a de la place pour les vélos électriques et musculaires, les débutants et les plus expérimentés. On veut que les cyclistes se rencontrent, partagent ce qu’ils savent et s’encouragent. Sans classements ni rivalités : chacun apporte quelque chose au groupe.",
       },
       {
-        title: "Inscription relue",
-        body: "Tu envoies une demande. Un administrateur la confirme par e-mail. Ensuite tu entres dans l’intranet et tu rencontres le peloton.",
+        title: "Accès après relecture",
+        body: "Demande l’accès à la communauté. Un administrateur relit ta demande et te confirme par e-mail si elle est acceptée. Une fois à l’intérieur, tu peux entrer dans l’intranet, rencontrer d’autres membres et commencer à organiser tes sorties.",
       },
     ],
     forWhomTitle: "Pour qui",
