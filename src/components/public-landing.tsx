@@ -179,65 +179,6 @@ export function PublicLanding({
         </ul>
       </section>
 
-      <section id="entrar" className="mx-auto max-w-7xl scroll-mt-28 px-4 py-16 sm:px-6 sm:py-24">
-        <p className="text-xs font-medium tracking-[0.2em] text-mist uppercase">{t.nav.how}</p>
-        <h2 className="display mt-4 max-w-lg text-4xl text-bone sm:text-5xl">{t.home.howTitle}</h2>
-        <ol className="mt-14 grid gap-12 md:grid-cols-3 md:gap-0">
-          {t.home.matchItems.map((item, index) => (
-            <li key={item.title} className="relative md:px-8 md:first:pl-0 md:last:pr-0">
-              {index < 2 ? (
-                <span
-                  className="pointer-events-none absolute top-7 left-16 right-0 hidden h-px bg-line md:block"
-                  aria-hidden
-                />
-              ) : null}
-              <span className="relative z-10 grid h-14 w-14 place-items-center rounded-full bg-[var(--public-mark)] text-lg font-bold text-[var(--graphite)]">
-                {index + 1}
-              </span>
-              <h3 className="mt-6 text-xl font-semibold tracking-tight text-bone">{item.title}</h3>
-              <p className="mt-3 text-base leading-7 text-mist">{item.body}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section>
-        <div className="mx-auto grid max-w-7xl lg:grid-cols-2">
-          <section
-            id="principiante"
-            className="grid scroll-mt-28 items-center gap-8 bg-rubber px-4 py-16 sm:grid-cols-[0.85fr_1.15fr] sm:px-6 sm:py-20"
-          >
-            <div className="relative aspect-[4/5] overflow-hidden bg-panel">
-              <PublicPhoto slot="beginner" className="object-[center_40%]" />
-            </div>
-            <div>
-              <p className="text-xs font-medium tracking-[0.2em] text-mist uppercase">
-                {t.roles.beginner}
-              </p>
-              <h2 className="display mt-3 text-3xl text-bone sm:text-[2.25rem]">
-                {t.home.beginnerTitle}
-              </h2>
-              <p className="mt-4 max-w-sm text-base leading-7 text-mist">{t.beginner.lead}</p>
-            </div>
-          </section>
-          <section
-            id="veterano"
-            className="grid scroll-mt-28 items-center gap-8 bg-[var(--graphite)] px-4 py-16 text-asphalt sm:grid-cols-[1.15fr_0.85fr] sm:px-6 sm:py-20"
-          >
-            <div>
-              <p className="text-xs font-medium tracking-[0.2em] text-asphalt/60 uppercase">
-                {t.roles.mentor}
-              </p>
-              <h2 className="display mt-3 text-3xl sm:text-[2.25rem]">{t.home.veteranTitle}</h2>
-              <p className="mt-4 max-w-sm text-base leading-7 text-asphalt/80">{t.veteran.lead}</p>
-            </div>
-            <div className="relative order-first aspect-[4/5] overflow-hidden sm:order-none">
-              <PublicPhoto slot="veteran" className="object-[20%_45%]" />
-            </div>
-          </section>
-        </div>
-      </section>
-
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <Apartado
           id="funcionamos"
@@ -249,10 +190,17 @@ export function PublicLanding({
             {t.home.operateItems.map((item) => (
               <li key={item.title} className="border-t border-line pt-6">
                 <h3 className="text-lg font-semibold tracking-tight text-bone">{item.title}</h3>
+                {item.lead ? (
+                  <p className="mt-3 text-base font-semibold leading-7 text-bone">{item.lead}</p>
+                ) : null}
                 {item.quote ? (
                   <p className="mt-3 text-base leading-7 text-mist italic">«{item.quote}»</p>
                 ) : null}
-                <p className="mt-3 text-base leading-7 text-mist">{item.body}</p>
+                {item.body.split("\n\n").map((paragraph) => (
+                  <p key={paragraph} className="mt-3 text-base leading-7 text-mist">
+                    {paragraph}
+                  </p>
+                ))}
               </li>
             ))}
           </ul>
@@ -271,46 +219,119 @@ export function PublicLanding({
             {t.home.offerItems.map((item) => (
               <li key={item.title} className="border-t border-line pt-6">
                 <h3 className="text-lg font-semibold tracking-tight text-bone">{item.title}</h3>
-                <p className="mt-3 text-base leading-7 text-mist">{item.body}</p>
+                {item.body.split("\n\n").map((paragraph) => (
+                  <p key={paragraph} className="mt-3 text-base leading-7 text-mist">
+                    {paragraph}
+                  </p>
+                ))}
               </li>
             ))}
           </ul>
+          <p className="mt-12 text-center text-[1.2rem] font-semibold leading-8 text-bone sm:text-[1.28rem]">
+            {t.home.offerClose}
+          </p>
         </Apartado>
       </div>
 
-      <section className="bg-panel">
-        <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
+      <section>
+        <div className="mx-auto grid max-w-7xl lg:grid-cols-2">
+          <section
+            id="principiante"
+            className="grid scroll-mt-28 items-stretch gap-8 bg-rubber px-4 py-16 sm:grid-cols-[0.85fr_1.15fr] sm:px-6 sm:py-20"
+          >
+            <div className="relative aspect-[4/5] overflow-hidden bg-panel sm:aspect-auto sm:min-h-[22rem]">
+              <PublicPhoto slot="beginner" className="object-[center_40%]" />
+            </div>
+            <div>
+              <h2 className="display text-3xl text-bone sm:text-[2.25rem]">{t.home.beginnerTitle}</h2>
+              <p className="mt-4 text-lg font-semibold leading-7 text-bone">{t.home.beginnerLead}</p>
+              {t.home.beginnerBody.split("\n\n").map((paragraph) => (
+                <p key={paragraph} className="mt-4 text-base leading-7 text-mist">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </section>
+          <section
+            id="veterano"
+            className="grid scroll-mt-28 items-stretch gap-8 bg-[#f8e6c8] px-4 py-16 sm:grid-cols-[1.15fr_0.85fr] sm:px-6 sm:py-20"
+          >
+            <div>
+              <h2 className="display text-3xl text-bone sm:text-[2.25rem]">{t.home.veteranTitle}</h2>
+              <p className="mt-4 text-lg font-semibold leading-7 text-bone">{t.home.veteranLead}</p>
+              {t.home.veteranBody.split("\n\n").map((paragraph) => (
+                <p key={paragraph} className="mt-4 text-base leading-7 text-mist">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+            <div className="relative order-first aspect-[4/5] overflow-hidden sm:order-none sm:aspect-auto sm:min-h-[22rem]">
+              <PublicPhoto slot="veteran" className="object-[20%_45%]" />
+            </div>
+          </section>
+        </div>
+        <p className="mx-auto max-w-7xl px-4 py-14 text-center text-[1.2rem] font-semibold leading-8 text-bone sm:px-6 sm:text-[1.28rem]">
+          {t.home.giveClose}
+        </p>
+      </section>
+
+      <section id="entrar" className="mx-auto max-w-7xl scroll-mt-28 px-4 py-16 sm:px-6 sm:py-24">
+        <p className="text-xs font-medium tracking-[0.2em] text-mist uppercase">{t.nav.how}</p>
+        <h2 className="display mt-4 max-w-lg text-4xl text-bone sm:text-5xl">{t.home.howTitle}</h2>
+        <ol className="mt-14 grid gap-12 md:grid-cols-3 md:gap-0">
+          {t.home.matchItems.map((item, index) => (
+            <li key={item.title} className="relative md:px-8 md:first:pl-0 md:last:pr-0">
+              {index < 2 ? (
+                <span
+                  className="pointer-events-none absolute top-7 left-16 right-0 hidden h-px bg-line md:block"
+                  aria-hidden
+                />
+              ) : null}
+              <span className="relative z-10 grid h-14 w-14 place-items-center rounded-full bg-[var(--public-mark)] text-lg font-bold text-[var(--graphite)]">
+                {index + 1}
+              </span>
+              <h3 className="mt-6 text-xl font-semibold tracking-tight text-bone">{item.title}</h3>
+              {item.body.split("\n\n").map((paragraph) => (
+                <p key={paragraph} className="mt-3 text-base leading-7 text-mist">
+                  {paragraph}
+                </p>
+              ))}
+            </li>
+          ))}
+        </ol>
+        <p className="mt-14 text-center text-[1.2rem] font-semibold leading-8 text-bone sm:text-[1.28rem]">
+          {t.home.howClose}
+        </p>
+      </section>
+
+      <section className="px-4 py-16 sm:px-6 sm:py-24">
+        <div className="public-join-card mx-auto max-w-2xl border border-line bg-rubber px-5 py-8 sm:px-10 sm:py-12">
           <p className="text-xs font-medium tracking-[0.2em] text-mist uppercase">
             {t.kickers.spot}
           </p>
-          <h2 className="display mt-4 max-w-xl text-4xl text-bone sm:text-5xl">{t.enter.fresh}</h2>
-          <p className="mt-5 max-w-xl text-base leading-8 text-mist">{t.enter.freshLead}</p>
-          <div className="mt-10">
+          <h2 className="display mt-4 text-3xl text-bone sm:text-4xl">{t.enter.fresh}</h2>
+          <p className="mt-4 text-base leading-7 text-mist">{t.enter.freshLead}</p>
+          <div className="mt-8">
             <JoinPanel locale={locale} t={t} featured />
           </div>
         </div>
       </section>
 
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
-        <PublicFold id="codigo" title={t.nav.code} lead={t.enter.codeLead}>
-          <ol className="divide-y divide-line border-y border-line">
-            {t.code.map((item, index) => (
-              <li key={item.title}>
-                <details className="group/item py-5">
-                    <summary className="cursor-pointer list-none marker:content-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--public-accent)]">
-                    <span className="flex items-start justify-between gap-4">
-                      <span>
-                        <span className="text-[11px] tracking-[0.14em] text-mist">0{index + 1}</span>
-                        <h3 className="mt-2 text-base font-semibold leading-6 text-bone">{item.title}</h3>
-                      </span>
-                      <span className="text-mist transition group-open/item:rotate-45">+</span>
-                    </span>
-                  </summary>
-                  <p className="mt-3 max-w-3xl text-sm leading-7 text-mist">{item.body}</p>
-                </details>
-              </li>
-            ))}
-          </ol>
+        <PublicFold id="codigo" title={t.nav.code}>
+          <div className="mx-auto max-w-xl">
+            <h3 className="display text-center text-3xl text-bone sm:text-4xl">{t.enter.codeTitle}</h3>
+            <ol className="mt-10 space-y-5">
+              {t.code.map((item, index) => (
+                <li key={item.title} className="grid grid-cols-[2.75rem_1fr] items-baseline gap-4">
+                  <span className="text-sm font-bold tabular-nums tracking-[0.12em] text-[var(--public-accent)]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h4 className="text-base font-semibold leading-7 text-bone">{item.title}</h4>
+                </li>
+              ))}
+            </ol>
+          </div>
         </PublicFold>
 
         <PublicFold id="faq" title={t.nav.faq}>

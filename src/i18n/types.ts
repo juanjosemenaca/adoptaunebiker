@@ -1,5 +1,5 @@
 export type Block = { title: string; body: string };
-export type QuotedBlock = { title: string; quote?: string; body: string };
+export type QuotedBlock = { title: string; lead?: string; quote?: string; body: string };
 export type Qa = { q: string; a: string };
 
 export type LegalSection = {
@@ -112,6 +112,7 @@ export type Dictionary = {
     matchTitle: string;
     howTitle: string;
     matchItems: Block[];
+    howClose: string;
     closeTitle: string;
     closeLead: string;
     operateKicker: string;
@@ -123,16 +124,22 @@ export type Dictionary = {
     offerTitle: string;
     offerLead: string;
     offerItems: Block[];
+    offerClose: string;
     forWhomTitle: string;
     forWhom: Block[];
     about: string;
     bridge: string;
+    giveTitle: string;
+    giveLead: string;
+    giveClose: string;
     veteranKicker: string;
     veteranTitle: string;
+    veteranLead: string;
     veteranBody: string;
     veteranLink: string;
     beginnerKicker: string;
     beginnerTitle: string;
+    beginnerLead: string;
     beginnerBody: string;
     beginnerLink: string;
     how: string;

@@ -103,7 +103,11 @@ export function AudienceLanding({
             >
               <p className="display text-5xl text-mist/45">{index + 1}</p>
               <h3 className="mt-4 text-lg font-semibold tracking-tight text-bone">{item.title}</h3>
-              <p className="mt-3 text-sm leading-7 text-mist">{item.body}</p>
+              {item.body.split("\n\n").map((paragraph) => (
+                <p key={paragraph} className="mt-3 text-sm leading-7 text-mist">
+                  {paragraph}
+                </p>
+              ))}
             </li>
           ))}
         </ol>

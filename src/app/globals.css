@@ -222,6 +222,11 @@ body:has(.public-shell) :is(a, button, input, select, textarea):focus-visible {
   }
 }
 
+.public-join-card .public-join {
+  background: transparent;
+  padding: 0;
+}
+
 .public-join-group {
   display: grid;
   gap: inherit;

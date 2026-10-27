@@ -27,11 +27,10 @@ export function JoinPanel({
         </>
       )}
       <JoinForm locale={locale} t={{ forms: t.forms, disciplines: t.disciplines }} />
-      <p className="mt-6 text-sm leading-6 text-mist">
+      <p className="mt-6 text-center text-sm leading-6">
         <Link href={links.entrar} className="text-bone underline underline-offset-4 hover:text-sodium">
           {t.enter.have}
         </Link>
-        {` · ${t.enter.haveLead}`}
       </p>
     </div>
   );

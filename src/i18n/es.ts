@@ -22,7 +22,7 @@ export const es: Dictionary = {
     menu: "Abrir menú",
     skip: "Saltar al contenido",
     language: "Idioma",
-    code: "Código interno",
+    code: "Los 10 mandamientos",
     faq: "Preguntas frecuentes",
     admin: "Administración",
     controlPanel: "Panel de control",
@@ -87,60 +87,66 @@ export const es: Dictionary = {
     howTitle: "Tres pasos para formar parte",
     matchItems: [
       {
-        title: "Dices quién eres",
-        body: "Zona, si empiezas o acompañas, y si sales en carretera, MTB, gravel o e-bike. Sirve para cruzarte con gente compatible, no para etiquetarte.",
+        title: "Cuéntanos quién eres",
+        body: "Dinos de dónde eres, qué modalidad practicas y si buscas aprender, compartir tu experiencia o simplemente encontrar gente con quien salir.\n\nPuedes ser principiante en gravel y veterano en MTB. Aquí no te encasillamos: queremos conocerte para conectar perfiles compatibles.",
       },
       {
-        title: "Un administrador confirma el alta",
-        body: "No hay registro automático. Revisamos la solicitud y te escribimos por correo cuando tienes plaza.",
+        title: "Solicita tu plaza",
+        body: "Un administrador revisará tu solicitud y te confirmará por correo electrónico si ha sido aprobada.\n\nQueremos construir una comunidad cuidada, con personas que compartan nuestra filosofía de respeto, colaboración y disfrute de la bicicleta.",
       },
       {
-        title: "Entras al pelotón y pides adopción",
-        body: "En la intranet ves ciclistas de tu modalidad y zona. Si encaja, pides adopción. La primera salida se habla entre vosotros.",
+        title: "Conoce al pelotón",
+        body: "Cuando tengas acceso a la intranet, podrás conocer a otros ciclistas de tu zona y modalidad, descubrir perfiles compatibles y solicitar una adopción.\n\nEl siguiente paso es sencillo: hablar, proponer una salida y empezar a compartir kilómetros.",
       },
     ],
+    howClose: "Tu próxima grupeta puede empezar con un simple «¿Quién se apunta?».",
     closeTitle: "El siguiente paso es pedir plaza.",
     closeLead:
       "Cuéntanos quién eres y cómo sales. Si te aceptan, te llega el acceso a la intranet para conocer al pelotón.",
-    operateKicker: "Cómo queremos funcionar",
-    operateTitle: "Sales en bici. ¿Quién se apunta?",
+    operateKicker: "Cómo queremos rodar",
+    operateTitle: "Tienes bici. Tienes ganas. ¿Quién se apunta?",
     operateLead:
-      "No siempre tenemos con quién salir. A veces tenemos una ruta en mente; otras, simplemente nos apetece coger la bici y disfrutar de unas horas sobre dos ruedas. Por eso nace Adopta un eBiker: para conectar a ciclistas que quieren compartir rutas, descubrir nuevos caminos y disfrutar pedaleando juntos.",
+      "Hay días en los que tienes una ruta en mente y otros en los que simplemente te apetece salir. A veces tienes tiempo el sábado por la mañana; otras, te surge una tarde libre a última hora.\n\nNo hace falta organizar una salida multitudinaria ni pertenecer a un grupo cerrado. La idea es sencilla: compartir tus planes para que otros ciclistas puedan sumarse.",
     operateItems: [
       {
-        title: "Propón una salida",
-        quote: "El sábado saldré por Collserola. Unas tres horas, ritmo tranquilo y salida a las 9:00. ¿Quién se apunta?",
-        body: "Publica tu plan indicando el día, la hora, la zona, la duración y el ritmo. Si a otros ciclistas les encaja, ¡ya tenéis salida!",
+        title: "Propón tu salida",
+        lead: "Tú pones el plan. Otros pueden apuntarse.",
+        quote:
+          "Este sábado quiero hacer una ruta por Collserola. Unas tres horas, ritmo tranquilo y salida a las 9:00. ¿Quién se apunta?",
+        body: "Indica la zona, el día, la hora, la duración aproximada, el recorrido y el ritmo que tienes en mente. Así, otros ciclistas podrán valorar si les encaja.",
       },
       {
-        title: "¿Quién se anima a rodar?",
-        quote: "Mañana tengo la mañana libre. ¿Alguien se anima a dar una vuelta en bici?",
-        body: "No hace falta tener una ruta preparada ni organizarlo todo de antemano. A veces basta con decir cuándo tienes libre y qué te apetece hacer para que surja un buen plan.",
+        title: "Lanza la pregunta",
+        lead: "¿Tienes un rato libre? Cuéntalo.",
+        quote: "Mañana tengo la mañana libre y me apetece hacer unos kilómetros. ¿Alguien se anima?",
+        body: "No necesitas tenerlo todo organizado. A veces basta con compartir cuándo puedes salir y qué te apetece hacer para que surja un buen plan.",
       },
-      {
-        title: "Diferentes bicis. Un mismo plan.",
-        body: "Eléctrica o convencional, principiante o veterano. Aquí lo importante es compartir las ganas de pedalear, descubrir nuevos caminos y disfrutar de la bicicleta sin prejuicios ni rivalidades.",
-      },
-    ],
-    operateClose: "Tú propones el plan. ¡La comunidad pone las ganas!",
-    offerKicker: "Nuestra filosofía",
-    offerTitle: "Compañeros de ruta, no una competición de kilómetros.",
-    offerLead:
-      "No somos una app para acumular rutas, seguidores o reconocimientos. Somos una comunidad para encontrar gente con la que salir en bicicleta, compartir experiencias y disfrutar del camino, tanto si acabas de empezar como si llevas miles de kilómetros.",
-    offerItems: [
       {
         title: "Encuentra tu grupeta",
-        body: "Conecta con ciclistas de tu zona que compartan tu modalidad, tus intereses y un ritmo compatible con el tuyo. Lo importante no es quién llega primero, sino tener ganas de salir, pedalear y disfrutar en compañía.",
-      },
-      {
-        title: "Una comunidad que suma",
-        body: "Aquí tienen cabida las bicicletas eléctricas y las convencionales, los principiantes y los más experimentados. Queremos que los ciclistas se conozcan, compartan conocimientos y se animen mutuamente. Sin rankings ni rivalidades: cada persona aporta algo al grupo.",
-      },
-      {
-        title: "Acceso con revisión",
-        body: "Solicita tu acceso a la comunidad. Un administrador revisará tu solicitud y te confirmará por correo electrónico si ha sido aprobada. Una vez dentro, podrás acceder a la intranet, conocer a otros miembros y empezar a organizar tus salidas.",
+        lead: "Ni todos tenemos el mismo nivel ni todos buscamos lo mismo.",
+        body: "Hay quien disfruta de las rutas largas, quien prefiere una salida corta entre semana y quien quiere descubrir nuevos caminos.\n\nConectar con personas que comparten tus intereses, tu modalidad y un ritmo compatible hace que sea más fácil organizar salidas que disfrutéis todos.",
       },
     ],
+    operateClose: "Menos tiempo buscando con quién salir. Más tiempo disfrutando de la bici.",
+    offerKicker: "Nuestra filosofía",
+    offerTitle: "Diferentes bicis. Mismas ganas de rodar.",
+    offerLead:
+      "No estamos aquí para ver quién acumula más kilómetros, quién sube más rápido o quién lleva la bicicleta más cara.\n\nEstamos aquí para disfrutar de la bicicleta, descubrir nuevos caminos y conocer personas con las que compartir esa pasión.",
+    offerItems: [
+      {
+        title: "La bici no define a la persona",
+        body: "Eléctrica o convencional, carretera, MTB o gravel. Cada modalidad tiene sus particularidades y cada ciclista sus preferencias.\n\nLo importante es encontrar rutas, ritmos y compañeros compatibles, sin convertir las diferencias en motivos de enfrentamiento.",
+      },
+      {
+        title: "Compartir también es avanzar",
+        body: "Quien lleva años pedaleando puede ayudar a quien empieza. Y quien empieza puede descubrir lugares, aportar nuevas ideas y disfrutar de la experiencia desde otra perspectiva.\n\nNo se trata de demostrar quién sabe más, sino de disfrutar juntos.",
+      },
+      {
+        title: "El respeto va por delante",
+        body: "Cada salida debe adaptarse a quienes participan. El ritmo, la dificultad y las condiciones de la ruta se hablan antes de empezar.\n\nNadie tiene que demostrar nada ni quedarse atrás por no estar a la altura de las expectativas de otro.",
+      },
+    ],
+    offerClose: "Diferentes bicis. Diferentes caminos. Una misma pasión.",
     forWhomTitle: "Para quién es",
     forWhom: [
       {
@@ -159,15 +165,20 @@ export const es: Dictionary = {
     about: "Quiénes somos",
     bridge:
       "El mejor compañero de ruta no es quien lleva tu misma bici, sino quien comparte tus ganas de salir.",
+    giveTitle: "Todos tenemos algo que aportar",
+    giveLead: "A veces necesitas que te acompañen. Otras, te toca acompañar.",
+    giveClose: "Hoy puedes acompañar. Mañana puedes aprender. Siempre puedes compartir.",
     veteranKicker: "El veterano",
-    veteranTitle: "Llevas kilómetros y quieres compartirlos",
+    veteranTitle: "¿Llevas kilómetros a tus espaldas?",
+    veteranLead: "Tu experiencia puede abrir caminos a otros.",
     veteranBody:
-      "No hace falta palmarés. Hace falta kilómetros a las espaldas y ganas de abrir la grupeta a quien empieza, da igual la bici.",
+      "Conoces rutas, tienes trucos que compartir y sabes lo que se aprende pedaleando. Acompañar a alguien que empieza puede ser una forma estupenda de disfrutar de la bicicleta desde otra perspectiva.\n\nY, por supuesto, también puedes encontrar nuevos compañeros de tu nivel y descubrir rutas diferentes.",
     veteranLink: "Qué es un veterano",
     beginnerKicker: "El principiante",
-    beginnerTitle: "Empiezas, o quieres compañía a tu ritmo",
+    beginnerTitle: "¿Estás empezando?",
+    beginnerLead: "Aprende, gana confianza y disfruta a tu ritmo.",
     beginnerBody:
-      "Quien acaba de empezar, lleva poco o quiere rutas más largas sin miedo a quedarse atrás. Eléctrica o no. Carretera, MTB o gravel.",
+      "Quizá llevas poco tiempo con la bici, quieres probar una modalidad nueva o te gustaría atreverte con rutas más largas.\n\nEncontrar a alguien con experiencia puede marcar la diferencia. Comparte tus dudas, descubre nuevos recorridos y disfruta aprendiendo, sin presiones ni comparaciones.",
     beginnerLink: "Qué es un principiante",
     how: "Cómo funciona",
     manifestoKicker: "El manifiesto",
@@ -262,7 +273,7 @@ export const es: Dictionary = {
     title1: "Cómo",
     title2: "funciona",
     lead: "Tres pasos para encontrar tu grupeta. Eliges si eres principiante o veterano y envías una solicitud de alta. El administrador la revisa y te confirma la plaza.",
-    codeTitle: "El código de la grupeta",
+    codeTitle: "Aquí venimos a rodar juntos.",
     codeLead: "Reglas simples para que una salida sea de todos, no de quien más corre.",
     inside: "Ya estás dentro",
     goIntranet: "Ir a la intranet",
@@ -395,12 +406,16 @@ export const es: Dictionary = {
     { title: "Pasión por la bicicleta", body: "Nos une pedalear, descubrir sitios y la libertad que da la bici. El resto es secundario." },
   ],
   code: [
-    { title: "El ritmo lo decide el grupo, no el ego.", body: "Antes de salir, un ritmo realista y un recorrido adecuado a quienes participan." },
-    { title: "Nadie se queda atrás sin saberlo.", body: "Se conoce el nivel de exigencia y qué hacer si alguien necesita parar o abandonar." },
-    { title: "La asistencia eléctrica no es motivo de prejuicio.", body: "Cada cual elige su bici. Lo importante es conocer la ruta y las limitaciones del equipo." },
-    { title: "El veterano acompaña; el principiante participa.", body: "La experiencia ayuda, pero la salida es de todos." },
-    { title: "La seguridad es cosa de todos.", body: "Normas, equipamiento y avisar de lo importante antes y durante la ruta." },
-    { title: "El respeto va por delante de los kilómetros.", body: "Ni burlas ni desprecio por bici, edad, nivel o experiencia." },
+    { title: "Propón planes claros. ¡Cuanto menos lío, mejor!", body: "" },
+    { title: "Si te apuntas, ¡que sea con ganas y compromiso!", body: "" },
+    { title: "Llega a la hora acordada. ¡La ruta no espera!", body: "" },
+    { title: "Si no puedes venir, avisa. ¡Que nadie se quede esperando!", body: "" },
+    { title: "Respeta el plan y a quien se ha currado organizarlo.", body: "" },
+    { title: "Adapta tu ritmo al grupo. ¡Aquí no venimos a competir!", body: "" },
+    { title: "No dejes a nadie atrás. ¡Rodamos en equipo!", body: "" },
+    { title: "Elige tu bici, eléctrica o convencional. ¡Aquí cabemos todos!", body: "" },
+    { title: "Ponte el casco y usa el sentido común. ¡Mejor disfrutar sin sustos!", body: "" },
+    { title: "Comparte buen rollo y ganas de pedalear. ¡De eso va todo esto!", body: "" },
   ],
   faqTitle: "Preguntas frecuentes",
   faq: [

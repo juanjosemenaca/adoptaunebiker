@@ -24,7 +24,13 @@ export function Apartado({
         </p>
       ) : null}
       <h2 className="display max-w-4xl text-3xl text-bone sm:text-[2.75rem]">{title}</h2>
-      {lead ? <p className="mt-5 max-w-2xl text-base leading-8 text-mist sm:text-lg">{lead}</p> : null}
+      {lead
+        ? lead.split("\n\n").map((paragraph) => (
+            <p key={paragraph} className="mt-5 max-w-3xl text-base leading-8 text-mist sm:text-lg">
+              {paragraph}
+            </p>
+          ))
+        : null}
       {children ?? null}
     </section>
   );

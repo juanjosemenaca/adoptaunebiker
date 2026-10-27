@@ -22,7 +22,7 @@ export const en: Dictionary = {
     menu: "Open menu",
     skip: "Skip to content",
     language: "Language",
-    code: "Internal code",
+    code: "The 10 commandments",
     faq: "Frequently asked questions",
     admin: "Admin",
     controlPanel: "Control panel",
@@ -87,60 +87,66 @@ export const en: Dictionary = {
     matchTitle: "Place, discipline and the urge to ride. The rest gets organised.",
     matchItems: [
       {
-        title: "You say who you are",
-        body: "Where you ride, whether you are starting or guiding, and whether you go out on road, MTB, gravel or e-bike. It is for matching, not labelling.",
+        title: "Tell us who you are",
+        body: "Tell us where you are from, what you ride and whether you want to learn, share experience or simply find people to go out with.\n\nYou can be a beginner in gravel and a veteran in MTB. We do not box you in: we want to know you so we can connect compatible profiles.",
       },
       {
-        title: "An administrator confirms the signup",
-        body: "There is no automatic registration. We review the request and email you when you have a spot.",
+        title: "Ask for your spot",
+        body: "An administrator will review your request and confirm by email if it is approved.\n\nWe want a cared-for community of people who share our philosophy of respect, collaboration and enjoying the bicycle.",
       },
       {
-        title: "You enter the peloton and ask for adoption",
-        body: "In the intranet you see cyclists in your discipline and area. If it fits, you ask for adoption. The first ride is arranged between you.",
+        title: "Meet the peloton",
+        body: "When you have intranet access, you can meet other cyclists in your area and discipline, find compatible profiles and ask for an adoption.\n\nThe next step is simple: talk, propose a ride and start sharing kilometres.",
       },
     ],
+    howClose: "Your next group ride can start with a simple “Who’s in?”.",
     closeTitle: "The next step is to ask for a spot.",
     closeLead:
       "Tell us who you are and how you ride. If you are accepted, you get intranet access to meet the peloton.",
-    operateKicker: "How we want to work",
-    operateTitle: "You’re going out on the bike. Who’s in?",
+    operateKicker: "How we want to ride",
+    operateTitle: "You’ve got a bike. You’ve got the urge. Who’s in?",
     operateLead:
-      "We don’t always have someone to ride with. Sometimes we have a route in mind; sometimes we just feel like taking the bike and enjoying a few hours on two wheels. That’s why Adopta un eBiker exists: to connect cyclists who want to share routes, find new roads and enjoy riding together.",
+      "Some days you have a route in mind and others you simply feel like going out. Sometimes you have Saturday morning; other times a free afternoon appears at the last minute.\n\nYou don’t need a huge group ride or a closed club. The idea is simple: share your plans so other cyclists can join.",
     operateItems: [
       {
-        title: "Propose a ride",
-        quote: "Saturday I’ll ride Collserola. About three hours, easy pace, 9:00 start. Who’s in?",
-        body: "Post your plan with the day, time, area, duration and pace. If it suits other cyclists, you’ve got a ride.",
+        title: "Propose your ride",
+        lead: "You set the plan. Others can join.",
+        quote:
+          "This Saturday I want a ride through Collserola. About three hours, easy pace, 9:00 start. Who’s in?",
+        body: "Give the area, day, time, approximate duration, route and the pace you have in mind. Then others can see if it fits.",
       },
       {
-        title: "Who fancies a spin?",
-        quote: "I’ve got tomorrow morning free. Anyone fancy a ride?",
-        body: "You don’t need a route ready or everything planned in advance. Sometimes it’s enough to say when you’re free and what you feel like doing for a good plan to appear.",
+        title: "Ask the question",
+        lead: "Have you got a free window? Say so.",
+        quote: "Tomorrow morning is free and I feel like doing some kilometres. Anyone up for it?",
+        body: "You don’t need everything organised. Sometimes sharing when you can go out and what you feel like doing is enough for a good plan to appear.",
       },
-      {
-        title: "Different bikes. One plan.",
-        body: "Electric or conventional, beginner or veteran. What matters here is sharing the wish to pedal, finding new roads and enjoying the bicycle without prejudice or rivalry.",
-      },
-    ],
-    operateClose: "You propose the plan. The community brings the energy.",
-    offerKicker: "Our philosophy",
-    offerTitle: "Riding companions, not a race for kilometres.",
-    offerLead:
-      "We are not an app for stacking routes, followers or recognition. We are a community to find people to ride with, share experiences and enjoy the road, whether you are just starting or already have thousands of kilometres.",
-    offerItems: [
       {
         title: "Find your group",
-        body: "Connect with cyclists near you who share your discipline, your interests and a pace that fits. What matters is not who arrives first, but wanting to ride, pedal and enjoy the company.",
-      },
-      {
-        title: "A community that adds up",
-        body: "There is room for electric and conventional bikes, beginners and the more experienced. We want cyclists to meet, share what they know and encourage each other. No rankings or rivalries: everyone brings something to the group.",
-      },
-      {
-        title: "Access with a review",
-        body: "Request access to the community. An administrator will review your request and confirm by email if it is approved. Once you are in, you can enter the intranet, meet other members and start organising rides.",
+        lead: "We don’t all have the same level, and we don’t all want the same thing.",
+        body: "Some enjoy long rides, some prefer a short weekday spin, and some want to discover new paths.\n\nConnecting with people who share your interests, your discipline and a compatible pace makes it easier to organise rides everyone enjoys.",
       },
     ],
+    operateClose: "Less time looking for someone to ride with. More time enjoying the bike.",
+    offerKicker: "Our philosophy",
+    offerTitle: "Different bikes. The same urge to ride.",
+    offerLead:
+      "We are not here to see who stacks the most kilometres, who climbs fastest or who rides the most expensive bike.\n\nWe are here to enjoy the bicycle, discover new paths and meet people with whom to share that passion.",
+    offerItems: [
+      {
+        title: "The bike does not define the person",
+        body: "Electric or conventional, road, MTB or gravel. Each discipline has its particularities and each cyclist their preferences.\n\nWhat matters is finding compatible routes, paces and companions, without turning differences into reasons to clash.",
+      },
+      {
+        title: "Sharing is also progress",
+        body: "Someone who has been riding for years can help someone who is starting. And someone who is starting can find places, bring new ideas and enjoy the experience from another angle.\n\nIt is not about proving who knows more. It is about enjoying it together.",
+      },
+      {
+        title: "Respect comes first",
+        body: "Each ride should fit the people who take part. Pace, difficulty and the conditions of the route are talked through before you start.\n\nNobody has to prove anything or get left behind for not meeting someone else’s expectations.",
+      },
+    ],
+    offerClose: "Different bikes. Different roads. The same passion.",
     forWhomTitle: "Who it is for",
     forWhom: [
       {
@@ -159,15 +165,20 @@ export const en: Dictionary = {
     about: "Who we are",
     bridge:
       "The best partner is not the one on your bike. It is the one who wants to go out.",
+    giveTitle: "We all have something to give",
+    giveLead: "Sometimes you need company. Other times, it’s your turn to ride with someone.",
+    giveClose: "Today you can accompany. Tomorrow you can learn. You can always share.",
     veteranKicker: "The veteran",
-    veteranTitle: "You have the kilometres and want to share them",
+    veteranTitle: "Do you have kilometres behind you?",
+    veteranLead: "Your experience can open the way for others.",
     veteranBody:
-      "No palmarès required. Just kilometres in the legs and the will to open the group to whoever is starting, whatever the bike.",
+      "You know routes, you have tricks to share and you know what you learn by riding. Accompanying someone who is starting can be a great way to enjoy the bicycle from another angle.\n\nAnd of course, you can also find new companions at your level and discover different routes.",
     veteranLink: "What a veteran is",
     beginnerKicker: "The beginner",
-    beginnerTitle: "You are starting, or you want company at your pace",
+    beginnerTitle: "Are you starting out?",
+    beginnerLead: "Learn, gain confidence and enjoy at your pace.",
     beginnerBody:
-      "Someone who just started, has little time in, or wants longer rides without the fear of being dropped. E-bike or not. Road, MTB or gravel.",
+      "Maybe you have only been riding a short while, you want to try a new discipline, or you would like to take on longer routes.\n\nFinding someone with experience can make the difference. Share your questions, discover new rides and enjoy learning, without pressure or comparisons.",
     beginnerLink: "What a beginner is",
     how: "How it works",
     manifestoKicker: "The manifesto",
@@ -262,7 +273,7 @@ export const en: Dictionary = {
     title1: "How it",
     title2: "works",
     lead: "Three steps to find your group. You choose beginner or veteran and send a join request. The administrator reviews it and confirms your spot.",
-    codeTitle: "The group ride code",
+    codeTitle: "We come here to ride together.",
     codeLead: "Simple rules so a ride belongs to everyone, not to whoever is fastest.",
     inside: "You’re in",
     goIntranet: "Go to the intranet",
@@ -395,12 +406,16 @@ export const en: Dictionary = {
     { title: "Passion for the bike", body: "What unites us is pedalling, finding new places and the freedom of the bike. The rest is secondary." },
   ],
   code: [
-    { title: "The group sets the pace, not the ego.", body: "Before you leave, a realistic pace and a route that fits who is coming." },
-    { title: "Nobody is left behind unannounced.", body: "Everyone knows how hard it will be and what to do if someone needs to stop or turn back." },
-    { title: "Electric assist is not a reason for prejudice.", body: "Each rider chooses their bike. What matters is knowing the route and the limits of the kit." },
-    { title: "The veteran accompanies; the beginner takes part.", body: "Experience helps, but the ride belongs to everyone." },
-    { title: "Safety is everyone’s job.", body: "Rules, kit, and calling out what matters before and during the ride." },
-    { title: "Respect comes before kilometres.", body: "No mockery or contempt for bike, age, level or experience." },
+    { title: "Propose clear plans. The less fuss, the better!", body: "" },
+    { title: "If you sign up, do it with energy and commitment!", body: "" },
+    { title: "Arrive at the agreed time. The route won’t wait!", body: "" },
+    { title: "If you can’t come, say so. Nobody should be left waiting!", body: "" },
+    { title: "Respect the plan and the person who put the work into organising it.", body: "" },
+    { title: "Match your pace to the group. We are not here to race!", body: "" },
+    { title: "Don’t leave anyone behind. We ride as a team!", body: "" },
+    { title: "Choose your bike, electric or conventional. There is room for everyone!", body: "" },
+    { title: "Wear a helmet and use common sense. Better to enjoy without scares!", body: "" },
+    { title: "Share good vibes and the urge to pedal. That’s what this is about!", body: "" },
   ],
   faqTitle: "Frequently asked questions",
   faq: [

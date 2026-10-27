@@ -22,7 +22,7 @@ export const ca: Dictionary = {
     menu: "Obrir menú",
     skip: "Saltar al contingut",
     language: "Idioma",
-    code: "Codi intern",
+    code: "Els 10 manaments",
     faq: "Preguntes freqüents",
     admin: "Administració",
     controlPanel: "Panell de control",
@@ -87,60 +87,66 @@ export const ca: Dictionary = {
     matchTitle: "Zona, modalitat i ganes. La resta s’organitza.",
     matchItems: [
       {
-        title: "Dius qui ets",
-        body: "Zona, si comences o acompanyes, i si surts en carretera, MTB, gravel o e-bike. Serveix per creuar-te amb gent compatible, no per etiquetar-te.",
+        title: "Explica’ns qui ets",
+        body: "Digues d’on ets, quina modalitat practiques i si busques aprendre, compartir la teva experiència o simplement trobar gent amb qui sortir.\n\nPots ser principiant en gravel i veterà en MTB. Aquí no t’encasellem: et volem conèixer per connectar perfils compatibles.",
       },
       {
-        title: "Un administrador confirma l’alta",
-        body: "No hi ha registre automàtic. Revisem la sol·licitud i t’escrivim per correu quan tens plaça.",
+        title: "Sol·licita la teva plaça",
+        body: "Un administrador revisarà la sol·licitud i et confirmarà per correu electrònic si ha estat aprovada.\n\nVolem construir una comunitat cuidada, amb persones que comparteixin la nostra filosofia de respecte, col·laboració i gaudi de la bicicleta.",
       },
       {
-        title: "Entres al pelotó i demanes adopció",
-        body: "A la intranet veus ciclistes de la teva modalitat i zona. Si encaixa, demanes adopció. La primera sortida es parla entre vosaltres.",
+        title: "Coneix el pelotó",
+        body: "Quan tinguis accés a la intranet, podràs conèixer altres ciclistes de la teva zona i modalitat, descobrir perfils compatibles i sol·licitar una adopció.\n\nEl pas següent és senzill: parlar, proposar una sortida i començar a compartir quilòmetres.",
       },
     ],
+    howClose: "La teva propera grupeta pot començar amb un simple «Qui s’apunta?».",
     closeTitle: "El pas següent és demanar plaça.",
     closeLead:
       "Explica’ns qui ets i com surts. Si t’accepten, et arriba l’accés a la intranet per conèixer el pelotó.",
-    operateKicker: "Com volem funcionar",
-    operateTitle: "Surts en bici. Qui s’apunta?",
+    operateKicker: "Com volem rodar",
+    operateTitle: "Tens bici. Tens ganes. Qui s’apunta?",
     operateLead:
-      "No sempre tenim amb qui sortir. De vegades tenim una ruta al cap; d’altres, simplement ens ve de gust agafar la bici i gaudir d’unes hores sobre dues rodes. Per això neix Adopta un eBiker: per connectar ciclistes que volen compartir rutes, descobrir nous camins i gaudir pedalejant junts.",
+      "Hi ha dies en què tens una ruta al cap i d’altres en què simplement et ve de gust sortir. De vegades tens temps el dissabte al matí; d’altres, et sorgeix una tarda lliure a última hora.\n\nNo cal organitzar una sortida multitudinària ni pertànyer a un grup tancat. La idea és senzilla: compartir els teus plans perquè altres ciclistes s’hi puguin sumar.",
     operateItems: [
       {
-        title: "Proposar una sortida",
-        quote: "Dissabte sortiré per Collserola. Unes tres hores, ritme tranquil i sortida a les 9:00. Qui s’apunta?",
-        body: "Publica el pla amb el dia, l’hora, la zona, la durada i el ritme. Si a altres ciclistes els encaixa, ja teniu sortida!",
+        title: "Proposa la teva sortida",
+        lead: "Tu poses el pla. D’altres s’hi poden apuntar.",
+        quote:
+          "Aquest dissabte vull fer una ruta per Collserola. Unes tres hores, ritme tranquil i sortida a les 9:00. Qui s’apunta?",
+        body: "Indica la zona, el dia, l’hora, la durada aproximada, el recorregut i el ritme que tens al cap. Així, altres ciclistes podran valorar si els encaixa.",
       },
       {
-        title: "Qui s’anima a rodar?",
-        quote: "Demà tinc el matí lliure. Algú s’anima a fer una volta en bici?",
-        body: "No cal tenir una ruta a punt ni organitzar-ho tot per endavant. De vegades n’hi ha prou amb dir quan tens lliure i què et ve de gust perquè sorgeixi un bon pla.",
+        title: "Llança la pregunta",
+        lead: "Tens una estona lliure? Explica-ho.",
+        quote: "Demà tinc el matí lliure i em ve de gust fer uns quilòmetres. Algú s’anima?",
+        body: "No cal tenir-ho tot organitzat. De vegades n’hi ha prou de compartir quan pots sortir i què et ve de gust fer perquè sorgeixi un bon pla.",
       },
-      {
-        title: "Bicis diferents. Un mateix pla.",
-        body: "Elèctrica o convencional, principiant o veterà. Aquí l’important és compartir les ganes de pedalar, descobrir nous camins i gaudir de la bicicleta sense prejudicis ni rivalitats.",
-      },
-    ],
-    operateClose: "Tu proposes el pla. La comunitat hi posa les ganes!",
-    offerKicker: "La nostra filosofia",
-    offerTitle: "Companys de ruta, no una competició de quilòmetres.",
-    offerLead:
-      "No som una app per acumular rutes, seguidors o reconeixements. Som una comunitat per trobar gent amb qui sortir en bicicleta, compartir experiències i gaudir del camí, tant si acabes de començar com si portes milers de quilòmetres.",
-    offerItems: [
       {
         title: "Troba la teva grupeta",
-        body: "Connecta amb ciclistes de la teva zona que comparteixin la teva modalitat, els teus interessos i un ritme compatible amb el teu. L’important no és qui arriba primer, sinó tenir ganes de sortir, pedalar i gaudir en companyia.",
-      },
-      {
-        title: "Una comunitat que suma",
-        body: "Aquí hi caben les bicicletes elèctriques i les convencionals, els principiants i els més experimentats. Volem que els ciclistes es coneguin, comparteixin coneixements i s’animin mutuament. Sense rànquings ni rivalitats: cada persona aporta alguna cosa al grup.",
-      },
-      {
-        title: "Accés amb revisió",
-        body: "Sol·licita l’accés a la comunitat. Un administrador revisarà la sol·licitud i et confirmarà per correu electrònic si ha estat aprovada. Un cop dins, podràs accedir a la intranet, conèixer altres membres i començar a organitzar les sortides.",
+        lead: "Ni tots tenim el mateix nivell ni tots busquem el mateix.",
+        body: "Hi ha qui gaudeix de les rutes llargues, qui prefereix una sortida curta entre setmana i qui vol descobrir nous camins.\n\nConnectar amb persones que comparteixen els teus interessos, la teva modalitat i un ritme compatible fa que sigui més fàcil organitzar sortides que gaudiu tots.",
       },
     ],
+    operateClose: "Menys temps buscant amb qui sortir. Més temps gaudint de la bici.",
+    offerKicker: "La nostra filosofia",
+    offerTitle: "Bicis diferents. Les mateixes ganes de rodar.",
+    offerLead:
+      "No som aquí per veure qui acumula més quilòmetres, qui puja més ràpid o qui porta la bicicleta més cara.\n\nSom aquí per gaudir de la bicicleta, descobrir nous camins i conèixer persones amb qui compartir aquesta passió.",
+    offerItems: [
+      {
+        title: "La bici no defineix la persona",
+        body: "Elèctrica o convencional, carretera, MTB o gravel. Cada modalitat té les seves particularitats i cada ciclista les seves preferències.\n\nL’important és trobar rutes, ritmes i companys compatibles, sense convertir les diferències en motius d’enfrontament.",
+      },
+      {
+        title: "Compartir també és avançar",
+        body: "Qui porta anys pedalant pot ajudar qui comença. I qui comença pot descobrir llocs, aportar idees noves i gaudir de l’experiència des d’una altra perspectiva.\n\nNo es tracta de demostrar qui en sap més, sinó de gaudir junts.",
+      },
+      {
+        title: "El respecte va al davant",
+        body: "Cada sortida s’ha d’adaptar a qui hi participa. El ritme, la dificultat i les condicions de la ruta es parlen abans de començar.\n\nNingú no ha de demostrar res ni quedar-se enrere per no estar a l’altura de les expectatives d’un altre.",
+      },
+    ],
+    offerClose: "Bicis diferents. Camins diferents. Una mateixa passió.",
     forWhomTitle: "Per a qui és",
     forWhom: [
       {
@@ -159,15 +165,20 @@ export const ca: Dictionary = {
     about: "Qui som",
     bridge:
       "El millor company de ruta no és qui porta la teva mateixa bici, sinó qui comparteix les ganes de sortir.",
+    giveTitle: "Tots tenim alguna cosa a aportar",
+    giveLead: "De vegades necessites que t’acompanyin. D’altres, et toca acompanyar.",
+    giveClose: "Avui pots acompanyar. Demà pots aprendre. Sempre pots compartir.",
     veteranKicker: "El veterà",
-    veteranTitle: "Portes quilòmetres i vols compartir-los",
+    veteranTitle: "Portes quilòmetres a l’esquena?",
+    veteranLead: "La teva experiència pot obrir camins a d’altres.",
     veteranBody:
-      "No cal palmarès. Calen quilòmetres a l’esquena i ganes d’obrir la grupeta a qui comença, igual quina bici.",
+      "Coneixes rutes, tens trucs per compartir i saps el que s’aprèn pedalant. Acompanyar algú que comença pot ser una manera estupenda de gaudir de la bicicleta des d’una altra perspectiva.\n\nI, és clar, també pots trobar nous companys del teu nivell i descobrir rutes diferents.",
     veteranLink: "Què és un veterà",
     beginnerKicker: "El principiant",
-    beginnerTitle: "Comences, o vols companyia al teu ritme",
+    beginnerTitle: "Estàs començant?",
+    beginnerLead: "Aprèn, agafa confiança i gaudeix al teu ritme.",
     beginnerBody:
-      "Qui acaba de començar, porta poc o vol rutes més llargues sense por de quedar-se enrere. Elèctrica o no. Carretera, MTB o gravel.",
+      "Potser portes poc temps amb la bici, vols provar una modalitat nova o t’agradaria atrevir-te amb rutes més llargues.\n\nTrobar algú amb experiència pot marcar la diferència. Comparteix els dubtes, descobreix nous recorreguts i gaudeix aprenent, sense pressions ni comparacions.",
     beginnerLink: "Què és un principiant",
     how: "Com funciona",
     manifestoKicker: "El manifest",
@@ -262,7 +273,7 @@ export const ca: Dictionary = {
     title1: "Com",
     title2: "funciona",
     lead: "Tres passos per trobar la teva grupeta. Tries si ets principiant o veterà i envies una sol·licitud d’alta. L’administrador la revisa i et confirma la plaça.",
-    codeTitle: "El codi de la grupeta",
+    codeTitle: "Aquí venim a rodar junts.",
     codeLead: "Regles simples perquè una sortida sigui de tothom, no de qui més corre.",
     inside: "Ja ets dins",
     goIntranet: "Anar a la intranet",
@@ -395,12 +406,16 @@ export const ca: Dictionary = {
     { title: "Passió per la bicicleta", body: "Ens uneix pedalar, descobrir llocs i la llibertat que dóna la bici. La resta és secundari." },
   ],
   code: [
-    { title: "El ritme el decideix el grup, no l’ego.", body: "Abans de sortir, un ritme realista i un recorregut adequat a qui participa." },
-    { title: "Ningú es queda enrere sense saber-ho.", body: "Es coneix el nivell d’exigència i què fer si algú necessita parar o abandonar." },
-    { title: "L’assistència elèctrica no és motiu de prejudici.", body: "Cadascú tria la seva bici. L’important és conèixer la ruta i les limitacions de l’equip." },
-    { title: "El veterà acompanya; el principiant participa.", body: "L’experiència ajuda, però la sortida és de tothom." },
-    { title: "La seguretat és cosa de tots.", body: "Normes, equipament i avisar del que importa abans i durant la ruta." },
-    { title: "El respecte va per davant dels quilòmetres.", body: "Ni burles ni menyspreu per bici, edat, nivell o experiència." },
+    { title: "Proposa plans clars. Com menys embolic, millor!", body: "" },
+    { title: "Si t’hi apuntes, que sigui amb ganes i compromís!", body: "" },
+    { title: "Arriba a l’hora acordada. La ruta no espera!", body: "" },
+    { title: "Si no pots venir, avisa. Que ningú no es quedi esperant!", body: "" },
+    { title: "Respecta el pla i qui s’ha currat organitzar-lo.", body: "" },
+    { title: "Adapta el ritme al grup. Aquí no venim a competir!", body: "" },
+    { title: "No deixis ningú enrere. Rodem en equip!", body: "" },
+    { title: "Tria la teva bici, elèctrica o convencional. Aquí hi cabem tots!", body: "" },
+    { title: "Posat el casc i fes servir el sentit comú. Millor gaudir sense ensurts!", body: "" },
+    { title: "Comparteix bon rotllo i ganes de pedalar. D’això va tot això!", body: "" },
   ],
   faqTitle: "Preguntes freqüents",
   faq: [

@@ -431,7 +431,6 @@ export function JoinForm({
         </summary>
         <div className="mt-4 space-y-2 text-sm leading-6 text-mist">
           <p>{t.forms.dataUse}</p>
-          <p>{t.forms.privacyController}</p>
           <p>{t.forms.privacyPurpose}</p>
           <p>{t.forms.privacyBasis}</p>
           <p>{t.forms.privacyRights}</p>
