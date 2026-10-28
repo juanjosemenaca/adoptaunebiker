@@ -49,6 +49,7 @@ export type LegalCopy = {
     terms: string;
     settings: string;
     backHome: string;
+    backForm: string;
   };
 };
 
@@ -359,6 +360,7 @@ export type Dictionary = {
     privacyRights: string;
     privacyFold: string;
     privacyPolicyLink: string;
+    acceptLegal: string;
   };
   intranet: {
     kicker: string;
@@ -478,6 +480,8 @@ export type Dictionary = {
     kind: string;
     kindMismatch: string;
     send: string;
+    legal: string;
+    robot: string;
     pendingExists: string;
     adoptSelf: string;
     bondExists: string;

@@ -2,12 +2,14 @@
 
 import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { joinCommunity } from "@/app/actions";
 import { analyticsEvents, trackEvent } from "@/lib/analytics";
 import type { Dictionary } from "@/i18n/types";
 import { COUNTRIES, OTHER_PLACE, countryById, countryLabel } from "@/lib/places";
 import { disciplines, practices } from "@/lib/labels";
-import { hrefs } from "@/lib/paths";
+import { joinPrivacyHref } from "@/lib/paths";
+import { JoinAltcha } from "@/components/join-altcha";
 
 type State = { error?: string; ok?: boolean };
 
@@ -113,8 +115,12 @@ export function JoinForm({
   locale: string;
   t: Pick<Dictionary, "forms" | "disciplines">;
 }) {
+  const pathname = usePathname();
+  const privacyHref = joinPrivacyHref(locale, pathname);
   const [draft, setDraft] = useState(emptyDraft);
+  const [draftReady, setDraftReady] = useState(false);
   const [started, setStarted] = useState(false);
+  const [startedAt, setStartedAt] = useState("");
   const completedRef = useRef(false);
   const [state, action, pending] = useActionState(
     async (_prev: State, formData: FormData): Promise<State> => {
@@ -134,7 +140,17 @@ export function JoinForm({
       return;
     }
     setDraft(readDraft());
+    setDraftReady(true);
   }, [state.ok]);
+
+  useEffect(() => {
+    if (!draftReady || state.ok) return;
+    sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+  }, [draft, draftReady, state.ok]);
+
+  useEffect(() => {
+    setStartedAt(String(Date.now()));
+  }, []);
 
   function markStarted() {
     if (started) return;
@@ -181,6 +197,11 @@ export function JoinForm({
       aria-describedby={state.error ? "join-form-error" : undefined}
     >
       <input type="hidden" name="locale" value={locale} />
+      <input type="hidden" name="startedAt" value={startedAt} />
+      <label className="public-join-hp" aria-hidden="true">
+        <span>Website</span>
+        <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+      </label>
       <div className="public-join-group">
       <label>
         <span>{t.forms.name}</span>
@@ -436,7 +457,7 @@ export function JoinForm({
           <p>{t.forms.privacyRights}</p>
           <p>
             <Link
-              href={hrefs(locale).privacidad}
+              href={privacyHref}
               className="underline underline-offset-4 hover:text-bone"
             >
               {t.forms.privacyPolicyLink}
@@ -444,6 +465,22 @@ export function JoinForm({
           </p>
         </div>
       </details>
+      <div className="public-join-checks public-join-wide">
+        <label>
+          <input type="checkbox" name="legal" value="1" required />
+          <span>
+            {t.forms.acceptLegal}{" "}
+            <Link
+              href={privacyHref}
+              className="underline underline-offset-4 hover:text-sodium"
+              onClick={(event) => event.stopPropagation()}
+            >
+              {t.forms.privacyPolicyLink}
+            </Link>
+          </span>
+        </label>
+        <JoinAltcha locale={locale} />
+      </div>
       <div className="public-join-actions">
         <button
           type="submit"

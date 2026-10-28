@@ -2,10 +2,10 @@ import type { LegalCopy } from "@/i18n/types";
 
 export const legalFr: LegalCopy = {
   reviewBanner:
-    "Brouillon pour relecture juridique et linguistique. Ce n’est pas la version définitive. Le nom, le NIF et le domicile fournis ont été ajoutés. Ce texte n’est pas un avis juridique ni une déclaration de conformité au RGPD ou à la LOPDGDD.",
+    "Brouillon pour relecture juridique et linguistique. Ce n’est pas la version définitive. Ce texte n’est pas un avis juridique ni une déclaration de conformité au RGPD ou à la LOPDGDD.",
   pendingLabel: "Élément en attente — information non définitive",
   updatedNote:
-    "État : brouillon mis à jour avec les données d’identification du titulaire. La relecture juridique des bases, durées et transferts reste à faire. Les délais de six mois sont un critère prévu, pas une suppression automatique déjà en place. Le courriel de contact opérationnel est hola@adoptaunebiker.com.",
+    "État : brouillon. La relecture juridique des bases, durées et transferts reste à faire. Les délais de six mois sont un critère prévu, pas une suppression automatique déjà en place. Le courriel de contact opérationnel est hola@adoptaunebiker.com.",
   nav: {
     menu: "Informations légales",
     notice: "Mentions légales",
@@ -14,6 +14,7 @@ export const legalFr: LegalCopy = {
     terms: "Conditions d’utilisation",
     settings: "Configurer les cookies",
     backHome: "Retour à l’accueil",
+    backForm: "Retour au formulaire",
   },
   consent: {
     title: "Cookies et confidentialité",
@@ -43,12 +44,9 @@ export const legalFr: LegalCopy = {
       {
         title: "Titulaire",
         paragraphs: [
-          "Le titulaire du site est une personne physique. Aucune raison sociale, inscription au registre ni téléphone n’est publié, car ils n’ont pas été fournis.",
+          "Le titulaire du site est une personne physique. Nom, NIF, domicile, raison sociale, inscription au registre et téléphone ne sont pas publiés.",
         ],
         items: [
-          "Nom et prénoms : JUAN JOSE MENA CASANOCA.",
-          "NIF : 46754258L.",
-          "Domicile : Bajada de Gomis número 1, 08023 Barcelona, Espagne.",
           "Courriel de contact : hola@adoptaunebiker.com.",
         ],
       },
@@ -101,8 +99,7 @@ export const legalFr: LegalCopy = {
       {
         title: "Responsable",
         paragraphs: [
-          "Le responsable du traitement est JUAN JOSE MENA CASANOCA, personne physique, NIF 46754258L.",
-          "Domicile : Bajada de Gomis número 1, 08023 Barcelona, Espagne.",
+          "Le responsable du traitement est une personne physique. Nom, NIF et domicile ne sont pas publiés.",
           "Contact : hola@adoptaunebiker.com.",
         ],
       },

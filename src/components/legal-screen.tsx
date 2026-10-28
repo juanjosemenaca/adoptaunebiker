@@ -38,12 +38,24 @@ export function legalPageMetadata(kind: LegalKind) {
   };
 }
 
-export async function LegalScreen({ locale, kind }: { locale: string; kind: LegalKind }) {
+export async function LegalScreen({
+  locale,
+  kind,
+  backHref,
+  backLabel,
+}: {
+  locale: string;
+  kind: LegalKind;
+  backHref?: string;
+  backLabel?: string;
+}) {
   const t = getDictionary(locale);
   const lang = isLocale(locale) ? locale : "es";
   const path = legalPathByKind[kind];
   const doc = t.legal[kind];
   const url = localePath(lang, path);
+  const href = backHref ?? hrefs(lang).home;
+  const label = backLabel ?? t.legal.nav.backHome;
 
   return (
     <div className="mx-auto max-w-7xl px-4 pt-10 pb-16 sm:px-6 sm:pt-16">
@@ -60,16 +72,16 @@ export async function LegalScreen({ locale, kind }: { locale: string; kind: Lega
       />
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-[11px] font-medium tracking-[0.16em] text-mist uppercase">{t.legal.nav.menu}</p>
-        <Link href={hrefs(lang).home} className={backHomeClass}>
-          {t.legal.nav.backHome}
+        <Link href={href} className={backHomeClass}>
+          {label}
         </Link>
       </div>
       <div className="mt-6">
         <LegalDocument copy={t.legal} doc={doc} />
       </div>
       <div className="mx-auto mt-12 max-w-3xl">
-        <Link href={hrefs(lang).home} className={backHomeClass}>
-          {t.legal.nav.backHome}
+        <Link href={href} className={backHomeClass}>
+          {label}
         </Link>
       </div>
     </div>

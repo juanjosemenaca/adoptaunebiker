@@ -49,6 +49,7 @@ import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 import type { Bond, BondStatus, MemberStatus, Role } from "@/lib/types";
 import { isSignupWorkflowStatus } from "@/lib/types";
+import { verifyAltchaPayload } from "@/lib/altcha";
 
 function localeFromForm(formData: FormData) {
   const value = String(formData.get("locale") ?? "");
@@ -101,6 +102,20 @@ export async function joinCommunity(formData: FormData) {
     .filter(isDiscipline);
   const locale = localeFromForm(formData);
   const t = getDictionary(locale);
+  const trap = String(formData.get("website") ?? "").trim();
+  const startedAt = Number(formData.get("startedAt"));
+  const tooFast = Number.isFinite(startedAt) && startedAt > 0 && Date.now() - startedAt < 2000;
+
+  if (trap || tooFast) {
+    return { ok: true as const };
+  }
+  if (formData.get("legal") !== "1") {
+    return { error: t.errors.legal };
+  }
+  const humanOk = await verifyAltchaPayload(String(formData.get("altcha") ?? ""));
+  if (!humanOk) {
+    return { error: t.errors.robot };
+  }
 
   if (name.length < 2) {
     return { error: t.errors.name };

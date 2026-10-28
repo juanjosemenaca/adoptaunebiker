@@ -7,11 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test src/lib/auth.test.ts src/lib/log.test.ts src/lib/session-resolve.test.ts src/lib/privacy.test.ts src/lib/analytics.test.ts src/lib/last-admin.test.ts src/lib/retention.test.ts src/lib/retention-http.test.ts"
+    "test": "node --experimental-strip-types --test src/lib/auth.test.ts src/lib/log.test.ts src/lib/session-resolve.test.ts src/lib/privacy.test.ts src/lib/analytics.test.ts src/lib/last-admin.test.ts src/lib/retention.test.ts src/lib/retention-http.test.ts src/lib/altcha.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.117.2",
+    "altcha": "^3.5.0",
+    "altcha-lib": "^2.8.0",
     "leaflet": "^1.9.4",
     "next": "16.3.7",
     "react": "19.2.8",

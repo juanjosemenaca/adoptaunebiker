@@ -476,7 +476,7 @@ export const en: Dictionary = {
     dataUse:
       "We use this information to review your request and, if you are accepted, to create your spot. We do not publish it on the public site.",
     privacyController:
-      "Controller: JUAN JOSE MENA CASANOCA (natural person), tax ID (NIF) 46754258L. Address: Bajada de Gomis número 1, 08023 Barcelona, Spain. Contact: hola@adoptaunebiker.com.",
+      "The controller is a natural person. Contact: hola@adoptaunebiker.com.",
     privacyPurpose:
       "Purpose: to review your application and, if accepted, create and manage your membership, including operational emails.",
     privacyBasis:
@@ -485,6 +485,7 @@ export const en: Dictionary = {
       "You may request access, rectification, erasure, objection, restriction and portability, where they apply, at hola@adoptaunebiker.com.",
     privacyFold: "Legal terms",
     privacyPolicyLink: "Read the privacy policy",
+    acceptLegal: "I have read the legal terms.",
   },
   intranet: {
     kicker: "Intranet",
@@ -611,6 +612,8 @@ export const en: Dictionary = {
     kind: "Choose whether you log in as administrator or as user.",
     kindMismatch: "That account does not match this user type.",
     send: "The request could not be sent. Try again.",
+    legal: "Tick that you have read the legal terms.",
+    robot: "Complete the anti-robot check.",
     pendingExists: "That email already has a request or a spot.",
     adoptSelf: "That adoption makes no sense.",
     bondExists: "There is already an open bond with this person.",

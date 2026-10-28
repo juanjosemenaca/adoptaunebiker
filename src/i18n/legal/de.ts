@@ -2,10 +2,10 @@ import type { LegalCopy } from "@/i18n/types";
 
 export const legalDe: LegalCopy = {
   reviewBanner:
-    "Entwurf zur rechtlichen und sprachlichen Prüfung. Keine endgültige Fassung. Name, Steuernummer und Anschrift wurden übernommen. Dieser Text ist kein Rechtsgutachten und keine Erklärung der Konformität mit der DSGVO oder der LOPDGDD.",
+    "Entwurf zur rechtlichen und sprachlichen Prüfung. Keine endgültige Fassung. Dieser Text ist kein Rechtsgutachten und keine Erklärung der Konformität mit der DSGVO oder der LOPDGDD.",
   pendingLabel: "Offener Punkt — keine endgültige Angabe",
   updatedNote:
-    "Status: Entwurf mit den Identitätsdaten der verantwortlichen Person aktualisiert. Die rechtliche Prüfung von Grundlagen, Fristen und Übermittlungen steht noch aus. Die Sechs-Monats-Fristen sind ein vorgesehenes Kriterium, keine bereits umgesetzte automatische Löschung. Die operative Kontaktadresse ist hola@adoptaunebiker.com.",
+    "Status: Entwurf. Die rechtliche Prüfung von Grundlagen, Fristen und Übermittlungen steht noch aus. Die Sechs-Monats-Fristen sind ein vorgesehenes Kriterium, keine bereits umgesetzte automatische Löschung. Die operative Kontaktadresse ist hola@adoptaunebiker.com.",
   nav: {
     menu: "Rechtliche Hinweise",
     notice: "Impressum",
@@ -14,6 +14,7 @@ export const legalDe: LegalCopy = {
     terms: "Nutzungsbedingungen",
     settings: "Cookies einstellen",
     backHome: "Zurück zur Startseite",
+    backForm: "Zurück zum Formular",
   },
   consent: {
     title: "Cookies und Datenschutz",
@@ -43,12 +44,9 @@ export const legalDe: LegalCopy = {
       {
         title: "Verantwortliche Person",
         paragraphs: [
-          "Verantwortlich für die Website ist eine natürliche Person. Es werden keine Firma, kein Registereintrag und keine Telefonnummer veröffentlicht, weil sie nicht mitgeteilt wurden.",
+          "Verantwortlich für die Website ist eine natürliche Person. Name, Steuernummer, Anschrift, Firma, Registereintrag und Telefonnummer werden nicht veröffentlicht.",
         ],
         items: [
-          "Vor- und Nachname: JUAN JOSE MENA CASANOCA.",
-          "NIF: 46754258L.",
-          "Anschrift: Bajada de Gomis número 1, 08023 Barcelona, Spanien.",
           "Kontakt-E-Mail: hola@adoptaunebiker.com.",
         ],
       },
@@ -101,8 +99,7 @@ export const legalDe: LegalCopy = {
       {
         title: "Verantwortliche Person",
         paragraphs: [
-          "Verantwortlich für die Verarbeitung ist JUAN JOSE MENA CASANOCA, natürliche Person, NIF 46754258L.",
-          "Anschrift: Bajada de Gomis número 1, 08023 Barcelona, Spanien.",
+          "Verantwortlich für die Verarbeitung ist eine natürliche Person. Name, Steuernummer und Anschrift werden nicht veröffentlicht.",
           "Kontakt: hola@adoptaunebiker.com.",
         ],
       },

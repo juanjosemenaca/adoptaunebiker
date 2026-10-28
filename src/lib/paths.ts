@@ -120,6 +120,51 @@ export function withLocale(locale: string, path: string) {
   return naked === "/" ? `/${lang}` : `/${lang}${naked}`;
 }
 
+export function joinFormHref(locale: string, pathname?: string | null) {
+  const links = hrefs(locale);
+  const path =
+    pathname && pathname.startsWith("/")
+      ? pathname.split("?")[0].split("#")[0]
+      : links.home;
+  const home = links.home;
+  if (path !== home && !path.startsWith(`${home}/`)) {
+    return landingSection(locale, "crear-plaza");
+  }
+  return `${path}?seccion=crear-plaza`;
+}
+
+export function joinPrivacyHref(locale: string, pathname?: string | null) {
+  const qs = new URLSearchParams({
+    desde: "alta",
+    volver: joinFormHref(locale, pathname),
+  });
+  return `${hrefs(locale).privacidad}?${qs.toString()}`;
+}
+
+export function safeJoinFormReturn(
+  locale: string,
+  raw?: string | string[] | null,
+) {
+  const fallback = joinFormHref(locale);
+  const value = Array.isArray(raw) ? raw[0] : raw;
+  if (!value) return fallback;
+  let decoded = value;
+  try {
+    decoded = decodeURIComponent(value);
+  } catch {
+    return fallback;
+  }
+  const lang = isLocale(locale) ? locale : defaultLocale;
+  const path = decoded.split("?")[0].split("#")[0];
+  const sameLocale = path === `/${lang}` || path.startsWith(`/${lang}/`);
+  const toForm =
+    decoded.includes("seccion=crear-plaza") || decoded.includes("#crear-plaza");
+  if (!sameLocale || !toForm || decoded.includes("://")) {
+    return fallback;
+  }
+  return decoded;
+}
+
 export function loginHref(locale: string, next?: string | null) {
   const links = hrefs(locale);
   if (!next) return links.entrar;

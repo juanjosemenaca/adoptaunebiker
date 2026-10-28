@@ -2,10 +2,10 @@ import type { LegalCopy } from "@/i18n/types";
 
 export const legalEn: LegalCopy = {
   reviewBanner:
-    "Draft for legal and language review. Not the final version. The name, tax ID and address provided have been added. This is not a legal opinion and does not claim GDPR or Spanish data-protection compliance.",
+    "Draft for legal and language review. Not the final version. This is not a legal opinion and does not claim GDPR or Spanish data-protection compliance.",
   pendingLabel: "Pending item — not definitive information",
   updatedNote:
-    "Status: draft updated with the controller’s identifying details. Legal review of bases, retention periods and transfers is still pending. The six-month periods are an intended criterion, not an automatic deletion already in place. The operational contact email is hola@adoptaunebiker.com.",
+    "Status: draft. Legal review of bases, retention periods and transfers is still pending. The six-month periods are an intended criterion, not an automatic deletion already in place. The operational contact email is hola@adoptaunebiker.com.",
   nav: {
     menu: "Legal information",
     notice: "Legal notice",
@@ -14,6 +14,7 @@ export const legalEn: LegalCopy = {
     terms: "Terms of use",
     settings: "Cookie settings",
     backHome: "Back to home",
+    backForm: "Back to the form",
   },
   consent: {
     title: "Cookies and privacy",
@@ -41,12 +42,9 @@ export const legalEn: LegalCopy = {
       {
         title: "Controller",
         paragraphs: [
-          "The controller of the site is a natural person. No company name, register entry or telephone number is published because they have not been provided.",
+          "The controller of the site is a natural person. Name, tax ID, address, company name, register entry and telephone number are not published.",
         ],
         items: [
-          "Full name: JUAN JOSE MENA CASANOCA.",
-          "Tax ID (NIF): 46754258L.",
-          "Address: Bajada de Gomis número 1, 08023 Barcelona, Spain.",
           "Contact email: hola@adoptaunebiker.com.",
         ],
       },
@@ -99,8 +97,7 @@ export const legalEn: LegalCopy = {
       {
         title: "Controller",
         paragraphs: [
-          "The controller is JUAN JOSE MENA CASANOCA, a natural person, tax ID (NIF) 46754258L.",
-          "Address: Bajada de Gomis número 1, 08023 Barcelona, Spain.",
+          "The controller is a natural person. Name, tax ID and address are not published.",
           "Contact: hola@adoptaunebiker.com.",
         ],
       },

@@ -2,10 +2,10 @@ import type { LegalCopy } from "@/i18n/types";
 
 export const legalEs: LegalCopy = {
   reviewBanner:
-    "Borrador para revisión jurídica y lingüística. No es la versión definitiva. Se han incorporado el nombre, el NIF y el domicilio facilitados. Este texto no constituye un dictamen ni una declaración de conformidad con el RGPD o la LOPDGDD.",
+    "Borrador para revisión jurídica y lingüística. No es la versión definitiva. Este texto no constituye un dictamen ni una declaración de conformidad con el RGPD o la LOPDGDD.",
   pendingLabel: "Dato o cláusula pendiente — no es información definitiva",
   updatedNote:
-    "Estado: borrador actualizado con los datos identificativos del titular. Sigue pendiente la revisión jurídica de bases, plazos y transferencias. Los plazos de seis meses son un criterio previsto, no un borrado automático ya implementado. El correo de contacto operativo es hola@adoptaunebiker.com.",
+    "Estado: borrador. Sigue pendiente la revisión jurídica de bases, plazos y transferencias. Los plazos de seis meses son un criterio previsto, no un borrado automático ya implementado. El correo de contacto operativo es hola@adoptaunebiker.com.",
   nav: {
     menu: "Información legal",
     notice: "Aviso legal",
@@ -14,6 +14,7 @@ export const legalEs: LegalCopy = {
     terms: "Condiciones de uso",
     settings: "Configurar cookies",
     backHome: "Volver al inicio",
+    backForm: "Volver al formulario",
   },
   consent: {
     title: "Cookies y privacidad",
@@ -43,12 +44,9 @@ export const legalEs: LegalCopy = {
       {
         title: "Titular",
         paragraphs: [
-          "El titular del sitio es una persona física. No se publica razón social, inscripción registral ni teléfono porque no se han facilitado.",
+          "El titular del sitio es una persona física. No se publican nombre, NIF, domicilio, razón social, inscripción registral ni teléfono.",
         ],
         items: [
-          "Nombre y apellidos: JUAN JOSE MENA CASANOCA.",
-          "NIF: 46754258L.",
-          "Domicilio: Bajada de Gomis número 1, 08023 Barcelona, España.",
           "Correo de contacto: hola@adoptaunebiker.com.",
         ],
       },
@@ -101,8 +99,7 @@ export const legalEs: LegalCopy = {
       {
         title: "Responsable",
         paragraphs: [
-          "El responsable del tratamiento es JUAN JOSE MENA CASANOCA, persona física, NIF 46754258L.",
-          "Domicilio: Bajada de Gomis número 1, 08023 Barcelona, España.",
+          "El responsable del tratamiento es una persona física. No se publican nombre, NIF ni domicilio.",
           "Contacto: hola@adoptaunebiker.com.",
         ],
       },

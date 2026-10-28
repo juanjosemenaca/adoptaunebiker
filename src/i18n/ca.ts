@@ -476,7 +476,7 @@ export const ca: Dictionary = {
     dataUse:
       "Fem servir aquestes dades per revisar la sol·licitud i, si t’accepten, crear la teva plaça. No les publiquem a la web oberta.",
     privacyController:
-      "Responsable: JUAN JOSE MENA CASANOCA (persona física), NIF 46754258L. Domicili: Bajada de Gomis número 1, 08023 Barcelona, Espanya. Contacte: hola@adoptaunebiker.com.",
+      "El responsable és una persona física. Contacte: hola@adoptaunebiker.com.",
     privacyPurpose:
       "Finalitat: tramitar la sol·licitud d’alta i, si s’accepta, crear i gestionar la plaça, amb comunicacions operatives per correu.",
     privacyBasis:
@@ -485,6 +485,7 @@ export const ca: Dictionary = {
       "Pots exercir accés, rectificació, supressió, oposició, limitació i portabilitat, si escau, a hola@adoptaunebiker.com.",
     privacyFold: "Condicions legals",
     privacyPolicyLink: "Llegeix la política de privadesa",
+    acceptLegal: "He llegit les condicions legals.",
   },
   intranet: {
     kicker: "Intranet",
@@ -611,6 +612,8 @@ export const ca: Dictionary = {
     kind: "Tria si entres com a administrador o com a usuari.",
     kindMismatch: "Aquest compte no correspon a aquest tipus d’usuari.",
     send: "No s’ha pogut enviar la sol·licitud. Torna-ho a provar.",
+    legal: "Marca que has llegit les condicions legals.",
+    robot: "Completa la verificació anti-robot.",
     pendingExists: "Aquest correu ja té una sol·licitud o una plaça.",
     adoptSelf: "Aquesta adopció no té sentit.",
     bondExists: "Ja hi ha un vincle obert amb aquesta persona.",
