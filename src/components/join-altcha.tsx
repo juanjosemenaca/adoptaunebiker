@@ -39,7 +39,14 @@ export function JoinAltcha({ locale }: { locale: string }) {
       widget.setAttribute("name", "altcha");
       widget.setAttribute("type", "checkbox");
       hostRef.current.replaceChildren(widget);
-      void widget.configure({ hideFooter: true, hideLogo: true });
+      try {
+        const configurable = widget as HTMLElement & {
+          configure?: (options: { hideFooter: boolean; hideLogo: boolean }) => unknown;
+        };
+        await configurable.configure?.({ hideFooter: true, hideLogo: true });
+      } catch {
+        // hideFooter/hideLogo already come from the configuration attribute
+      }
     })();
 
     return () => {

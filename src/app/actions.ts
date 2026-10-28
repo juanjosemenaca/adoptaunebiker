@@ -104,15 +104,16 @@ export async function joinCommunity(formData: FormData) {
   const t = getDictionary(locale);
   const trap = String(formData.get("website") ?? "").trim();
   const startedAt = Number(formData.get("startedAt"));
+  const altcha = String(formData.get("altcha") ?? "");
   const tooFast = Number.isFinite(startedAt) && startedAt > 0 && Date.now() - startedAt < 2000;
 
-  if (trap || tooFast) {
+  if (trap || (tooFast && !altcha.trim())) {
     return { ok: true as const };
   }
   if (formData.get("legal") !== "1") {
     return { error: t.errors.legal };
   }
-  const humanOk = await verifyAltchaPayload(String(formData.get("altcha") ?? ""));
+  const humanOk = await verifyAltchaPayload(altcha);
   if (!humanOk) {
     return { error: t.errors.robot };
   }

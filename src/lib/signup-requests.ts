@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { hasSupabaseEnv, supabasePublishableKey, supabaseUrl } from "@/lib/supabase/env";
+import { supabaseServiceRoleKey } from "@/lib/supabase/service";
 import { getAuthContext } from "@/lib/supabase/auth-context";
 import { disciplineLabel, isDiscipline, isPractice } from "@/lib/labels";
 import { decodeSignupMeta, hydrateSignupLevels } from "@/lib/signup-meta";
@@ -331,11 +332,12 @@ export async function saveSignupRequest(request: {
   locale: string;
 }) {
   if (hasSupabaseEnv()) {
+    const key = supabaseServiceRoleKey() || supabasePublishableKey();
     const response = await fetch(`${supabaseUrl()}/rest/v1/signup_requests`, {
       method: "POST",
       headers: {
-        apikey: supabasePublishableKey(),
-        Authorization: `Bearer ${supabasePublishableKey()}`,
+        apikey: key,
+        Authorization: `Bearer ${key}`,
         "Content-Type": "application/json",
         Prefer: "return=minimal",
       },

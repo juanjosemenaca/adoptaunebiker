@@ -30,6 +30,7 @@ type Draft = {
 };
 
 const DRAFT_KEY = "adopta.join-form";
+const STARTED_KEY = "adopta.join-started";
 
 function emptyDraft(): Draft {
   return {
@@ -133,6 +134,7 @@ export function JoinForm({
   useEffect(() => {
     if (state.ok) {
       sessionStorage.removeItem(DRAFT_KEY);
+      sessionStorage.removeItem(STARTED_KEY);
       if (!completedRef.current) {
         completedRef.current = true;
         trackEvent(analyticsEvents.registrationComplete);
@@ -149,7 +151,18 @@ export function JoinForm({
   }, [draft, draftReady, state.ok]);
 
   useEffect(() => {
-    setStartedAt(String(Date.now()));
+    try {
+      const stored = sessionStorage.getItem(STARTED_KEY);
+      if (stored && Number(stored) > 0) {
+        setStartedAt(stored);
+        return;
+      }
+      const now = String(Date.now());
+      sessionStorage.setItem(STARTED_KEY, now);
+      setStartedAt(now);
+    } catch {
+      setStartedAt(String(Date.now()));
+    }
   }, []);
 
   function markStarted() {
