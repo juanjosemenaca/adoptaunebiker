@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { locales, type Locale } from "@/i18n/config";
-import { getPublishedArticles } from "@/lib/blog";
+import { getPublicArticles } from "@/lib/blog";
 import { languageAlternates, localePath } from "@/lib/site";
 
 const publicPages = [
@@ -31,12 +31,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       alternates: { languages: languagesFor(page.path) },
     })),
   );
-  const articles = await getPublishedArticles();
+  const articles = await getPublicArticles();
   const articlePages = articles.flatMap((article) => {
     const path = `/blog/${article.slug}`;
     return locales.map((locale: Locale) => ({
       url: localePath(locale, path),
-      lastModified: article.updated_at || lastModified,
+      lastModified: article.updatedAt || lastModified,
       changeFrequency: "weekly" as const,
       priority: 0.6,
       alternates: { languages: languagesFor(path) },

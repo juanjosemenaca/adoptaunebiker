@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { slugify } from "babylovegrowth-next-js-blog";
 import { ArticleCard } from "@/components/blog/article-card";
 import { BlogPagination } from "@/components/blog/pagination";
 import { PublicJsonLd } from "@/components/public-json-ld";
 import { isLocale } from "@/i18n/config";
 import { fill, getDictionary } from "@/i18n/get-dictionary";
-import { articlesForLocale, getArticlesByTag, paginate, parsePage } from "@/lib/blog";
+import { getPublicArticles, paginate, parsePage, publicArticlesForLocale } from "@/lib/blog";
 import { hrefs } from "@/lib/paths";
 import { publicMetadata } from "@/lib/seo";
 import { localePath } from "@/lib/site";
@@ -41,10 +42,12 @@ export default async function TagPage({
   const { page } = await searchParams;
   const t = getDictionary(locale);
   const lang = isLocale(locale) ? locale : "es";
-  const articles = articlesForLocale(await getArticlesByTag(slug), lang);
-  if (articles.length === 0) notFound();
+  const tagged = publicArticlesForLocale(await getPublicArticles(), lang).filter((article) =>
+    article.keywords.some((keyword) => slugify(keyword) === slug),
+  );
+  if (tagged.length === 0) notFound();
 
-  const { items, info } = paginate(articles, parsePage(page));
+  const { items, info } = paginate(tagged, parsePage(page));
   const links = hrefs(lang);
   const path = `/blog/tag/${slug}`;
   const url = localePath(lang, path);
@@ -71,7 +74,7 @@ export default async function TagPage({
         {t.blog.back}
       </Link>
       <h1 className="display mt-4 max-w-4xl text-4xl text-bone sm:text-6xl">{title}</h1>
-      <p className="mt-4 text-sm text-mist">{fill(t.blog.articlesCount, { count: articles.length })}</p>
+      <p className="mt-4 text-sm text-mist">{fill(t.blog.articlesCount, { count: tagged.length })}</p>
 
       <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((article) => (

@@ -5,7 +5,7 @@ import { ArticleJsonLd } from "@/components/blog/article-json-ld";
 import { TagList } from "@/components/blog/tag-list";
 import { dateLocale, isLocale, locales, ogLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { formatBlogDate, getPublishedArticle } from "@/lib/blog";
+import { formatBlogDate, getPublicArticle } from "@/lib/blog";
 import { hrefs } from "@/lib/paths";
 import { resolveLocale } from "@/lib/seo";
 import { languageAlternates, localePath } from "@/lib/site";
@@ -19,19 +19,19 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const article = await getPublishedArticle(slug);
+  const article = await getPublicArticle(slug);
   if (!article) return {};
 
   const lang = resolveLocale(locale);
   const path = `/blog/${article.slug}`;
   const url = localePath(lang, path);
-  const images = article.hero_image_url
-    ? [{ url: article.hero_image_url }]
+  const images = article.coverUrl
+    ? [{ url: article.coverUrl }]
     : [{ url: "/logo.png", width: 1000, height: 350, alt: "Adopta un eBiker" }];
 
   return {
     title: { absolute: `${article.title} · Adopta un eBiker` },
-    description: article.meta_description,
+    description: article.excerpt,
     alternates: {
       canonical: url,
       languages: languageAlternates(path),
@@ -43,16 +43,16 @@ export async function generateMetadata({
       url,
       siteName: "Adopta un eBiker",
       title: article.title,
-      description: article.meta_description,
+      description: article.excerpt,
       images,
-      publishedTime: article.published_at,
-      modifiedTime: article.updated_at,
+      publishedTime: article.publishedAt,
+      modifiedTime: article.updatedAt,
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
-      description: article.meta_description,
-      images: article.hero_image_url ? [article.hero_image_url] : ["/logo.png"],
+      description: article.excerpt,
+      images: article.coverUrl ? [article.coverUrl] : ["/logo.png"],
     },
   };
 }
@@ -63,12 +63,13 @@ export default async function ArticlePage({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
-  const article = await getPublishedArticle(slug);
+  const article = await getPublicArticle(slug);
   if (!article) notFound();
 
   const t = getDictionary(locale);
   const lang = isLocale(locale) ? locale : "es";
   const links = hrefs(lang);
+  const files = article.attachments.filter((asset) => asset.kind === "file");
 
   return (
     <div className="mx-auto max-w-3xl px-4 pt-10 pb-16 sm:px-6 sm:pt-16">
@@ -85,15 +86,35 @@ export default async function ArticlePage({
       <article className="mt-6">
         <header className="mb-8">
           <h1 className="display text-4xl text-bone sm:text-5xl">{article.title}</h1>
-          <time dateTime={article.published_at} className="mt-4 block text-sm text-mist">
-            {formatBlogDate(article.published_at, dateLocale[lang])}
+          {article.subtitle ? <p className="mt-4 text-lg leading-8 text-mist">{article.subtitle}</p> : null}
+          <time dateTime={article.publishedAt} className="mt-4 block text-sm text-mist">
+            {formatBlogDate(article.publishedAt, dateLocale[lang])}
           </time>
         </header>
 
-        <div className="blog-content" dangerouslySetInnerHTML={{ __html: article.content_html }} />
+        <div className="blog-content" dangerouslySetInnerHTML={{ __html: article.html }} />
+
+        {files.length > 0 ? (
+          <aside className="mt-10 border-t border-line pt-6">
+            <p className="text-[11px] font-medium tracking-[0.16em] text-mist uppercase">{t.blog.files}</p>
+            <ul className="mt-3 space-y-2">
+              {files.map((file) => (
+                <li key={file.id}>
+                  <a
+                    href={file.url}
+                    className="text-sm text-bone underline underline-offset-4 hover:text-mist"
+                    rel="noopener noreferrer"
+                  >
+                    {file.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        ) : null}
 
         <footer className="mt-12 border-t border-line pt-6">
-          <TagList keywords={[article.seedKeyword ?? "", ...article.keywords]} locale={lang} />
+          <TagList keywords={article.keywords} locale={lang} />
         </footer>
       </article>
     </div>

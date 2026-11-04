@@ -37,6 +37,12 @@ export default async function AdminPanelPage({
       count: 0,
       lead: t.admin.meetupsLead,
     },
+    {
+      href: links.adminBlog,
+      label: t.nav.blog,
+      count: null,
+      lead: t.admin.blogLead,
+    },
   ];
 
   return (
@@ -45,7 +51,7 @@ export default async function AdminPanelPage({
       <h1 className="display mt-3 text-6xl sm:text-7xl">{t.admin.panelTitle}</h1>
       <p className="mt-4 max-w-xl text-mist">{t.admin.panelLead}</p>
 
-      <ul className="mt-12 grid gap-4 sm:grid-cols-3">
+      <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((card) => (
           <li key={card.href}>
             <Link
@@ -53,7 +59,7 @@ export default async function AdminPanelPage({
               className="flex h-full flex-col border border-line bg-rubber p-5 transition-colors hover:border-sodium"
             >
               <p className="text-[10px] uppercase tracking-[0.2em] text-mist">{card.label}</p>
-              <p className="display mt-3 text-5xl">{card.count}</p>
+              {card.count !== null ? <p className="display mt-3 text-5xl">{card.count}</p> : null}
               <p className="mt-3 flex-1 text-sm leading-6 text-mist">{card.lead}</p>
               <span className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-sodium">
                 {t.admin.open}

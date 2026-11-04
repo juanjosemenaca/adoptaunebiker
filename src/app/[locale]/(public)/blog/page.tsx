@@ -4,7 +4,7 @@ import { BlogPagination } from "@/components/blog/pagination";
 import { PublicJsonLd } from "@/components/public-json-ld";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { articlesForLocale, getPublishedArticles, paginate, parsePage } from "@/lib/blog";
+import { getPublicArticles, paginate, parsePage, publicArticlesForLocale } from "@/lib/blog";
 import { hrefs } from "@/lib/paths";
 import { publicMetadata } from "@/lib/seo";
 import { localePath } from "@/lib/site";
@@ -39,7 +39,7 @@ export default async function BlogIndexPage({
   const t = getDictionary(locale);
   const lang = isLocale(locale) ? locale : "es";
   const url = localePath(lang, "/blog");
-  const articles = articlesForLocale(await getPublishedArticles(), lang);
+  const articles = publicArticlesForLocale(await getPublicArticles(), lang);
   const { items, info } = paginate(articles, parsePage(page));
 
   return (

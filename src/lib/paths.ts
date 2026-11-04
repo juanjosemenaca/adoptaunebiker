@@ -16,6 +16,7 @@ export const paths = {
   admin: "/admin",
   adminMembers: "/admin/miembros",
   adminMeetups: "/admin/quedadas",
+  adminBlog: "/admin/blog",
   adminMember: (id: string) => `/admin/miembros/${id}`,
   adminRequest: (id: string) => `/admin/solicitudes?ver=${id}`,
   explorar: "/intranet/explorar",
@@ -52,6 +53,9 @@ export function hrefs(locale: string) {
     adminMembers: `${base}/admin/miembros`,
     adminMember: (id: string) => `${base}/admin/miembros/${id}`,
     adminMeetups: `${base}/admin/quedadas`,
+    adminBlog: `${base}/admin/blog`,
+    adminBlogNew: `${base}/admin/blog/nuevo`,
+    adminBlogPost: (id: string) => `${base}/admin/blog/${id}`,
     adminRequests: `${base}/admin/solicitudes`,
     adminRequest: (id: string) => `${base}/admin/solicitudes?ver=${id}`,
     explorar: `${base}/intranet/explorar`,
@@ -67,6 +71,7 @@ export function adminNav(locale: string) {
     { href: links.adminRequests, key: "requests" as const },
     { href: links.adminMembers, key: "members" as const },
     { href: links.adminMeetups, key: "meetups" as const },
+    { href: links.adminBlog, key: "blog" as const },
   ];
 }
 

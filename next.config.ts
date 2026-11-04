@@ -4,6 +4,11 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [{ protocol: "https", hostname: "*" }],
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "52mb",
+    },
+  },
   async redirects() {
     return [
       {

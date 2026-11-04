@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { DEMO_PASSWORD, demoSessionFromLogin, isEmail, normalizeEmail } from "@/lib/auth";
 import { logServerError } from "@/lib/log";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -44,6 +45,13 @@ import {
   getSession,
   isAdmin,
 } from "@/lib/session";
+import {
+  createBlogPost,
+  deleteBlogAsset,
+  deleteBlogPost,
+  updateBlogPost,
+  uploadBlogAsset,
+} from "@/lib/blog-admin";
 import { disconnectStrava, stravaConnectHref, syncStravaActivities } from "@/lib/strava";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
@@ -645,4 +653,107 @@ export async function disconnectStravaAction(formData: FormData) {
 
   revalidateStrava(locale, session.slug);
   redirect(`${hrefs(locale).cuenta}?strava=off`);
+}
+
+function revalidateBlog(locale: string, slug?: string) {
+  const lang = isLocale(locale) ? locale : defaultLocale;
+  revalidatePath(`/${lang}/admin`);
+  revalidatePath(`/${lang}/admin/blog`);
+  revalidatePath(`/${lang}/blog`);
+  if (slug) revalidatePath(`/${lang}/blog/${slug}`);
+  revalidatePath("/sitemap.xml");
+  revalidatePath("/blog/sitemap.xml");
+}
+
+function blogInput(formData: FormData) {
+  return {
+    title: String(formData.get("title") ?? ""),
+    subtitle: String(formData.get("subtitle") ?? ""),
+    body: String(formData.get("body") ?? ""),
+    locale: String(formData.get("postLocale") ?? formData.get("locale") ?? ""),
+    published: formData.get("published") === "1",
+    publishedAt: String(formData.get("publishedAt") ?? ""),
+  };
+}
+
+function blogError(locale: string, error: unknown) {
+  const t = getDictionary(locale);
+  const message = error instanceof Error ? error.message : "";
+  if (message === "not_admin" || message === "no_supabase") return t.errors.blog;
+  if (message === "title") return t.errors.name;
+  if (message === "file" || message === "file_type" || message === "file_size") return t.errors.blogUpload;
+  return t.errors.blog;
+}
+
+export async function saveBlogPostAction(formData: FormData) {
+  const locale = localeFromForm(formData);
+  const session = await getSession();
+  if (!session || !isAdmin(session)) {
+    redirect(loginHref(locale, hrefs(locale).adminBlog));
+  }
+  const id = String(formData.get("id") ?? "");
+  try {
+    const post = id
+      ? await updateBlogPost(id, blogInput(formData))
+      : await createBlogPost(blogInput(formData));
+    revalidateBlog(locale, post.slug);
+    redirect(`${hrefs(locale).adminBlogPost(post.id)}?ok=1`);
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    logServerError("[saveBlogPostAction]", error);
+    return { error: blogError(locale, error) };
+  }
+}
+
+export async function deleteBlogPostAction(formData: FormData) {
+  const locale = localeFromForm(formData);
+  const session = await getSession();
+  if (!session || !isAdmin(session)) {
+    redirect(loginHref(locale, hrefs(locale).adminBlog));
+  }
+  try {
+    await deleteBlogPost(String(formData.get("id") ?? ""));
+  } catch (error) {
+    logServerError("[deleteBlogPostAction]", error);
+    return { error: blogError(locale, error) };
+  }
+  revalidateBlog(locale);
+  redirect(hrefs(locale).adminBlog);
+}
+
+export async function uploadBlogAssetAction(formData: FormData) {
+  const locale = localeFromForm(formData);
+  const session = await getSession();
+  if (!session || !isAdmin(session)) {
+    return { error: getDictionary(locale).errors.blog };
+  }
+  const id = String(formData.get("id") ?? "");
+  const file = formData.get("file");
+  if (!(file instanceof File)) {
+    return { error: getDictionary(locale).errors.blogUpload };
+  }
+  try {
+    const asset = await uploadBlogAsset(id, file, formData.get("asCover") === "1");
+    revalidateBlog(locale);
+    return { ok: true as const, url: asset.url, kind: asset.kind, name: asset.name };
+  } catch (error) {
+    logServerError("[uploadBlogAssetAction]", error);
+    return { error: blogError(locale, error) };
+  }
+}
+
+export async function deleteBlogAssetAction(formData: FormData) {
+  const locale = localeFromForm(formData);
+  const session = await getSession();
+  if (!session || !isAdmin(session)) {
+    return { error: getDictionary(locale).errors.blog };
+  }
+  try {
+    await deleteBlogAsset(String(formData.get("id") ?? ""), String(formData.get("assetId") ?? ""));
+    revalidateBlog(locale);
+    return { ok: true as const };
+  } catch (error) {
+    logServerError("[deleteBlogAssetAction]", error);
+    return { error: blogError(locale, error) };
+  }
 }

@@ -241,6 +241,7 @@ export type Dictionary = {
     pageOf: string;
     articlesCount: string;
     tagged: string;
+    files: string;
   };
   admin: {
     kicker: string;
@@ -250,6 +251,30 @@ export type Dictionary = {
     membersLead: string;
     meetupsTitle: string;
     meetupsLead: string;
+    blogTitle: string;
+    blogLead: string;
+    blogEmpty: string;
+    blogNew: string;
+    blogEdit: string;
+    blogSave: string;
+    blogSaving: string;
+    blogSaved: string;
+    blogSaveFirst: string;
+    blogDraft: string;
+    blogPublished: string;
+    blogTitleField: string;
+    blogSubtitle: string;
+    blogDate: string;
+    blogBody: string;
+    blogBodyHint: string;
+    blogCover: string;
+    blogMedia: string;
+    blogUpload: string;
+    blogAddImage: string;
+    blogAddVideo: string;
+    blogAddFile: string;
+    blogView: string;
+    blogDeleteConfirm: string;
     title: string;
     lead: string;
     empty: string;
@@ -505,5 +530,7 @@ export type Dictionary = {
     looking: string;
     strava: string;
     stravaSync: string;
+    blog: string;
+    blogUpload: string;
   };
 };

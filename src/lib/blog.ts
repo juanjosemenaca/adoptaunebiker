@@ -1,5 +1,13 @@
-import { BlogClient, deriveTags, slugify, type BlogArticleSummary } from "babylovegrowth-next-js-blog";
+import {
+  BlogClient,
+  deriveTags,
+  slugify,
+  type BlogArticle,
+  type BlogArticleSummary,
+} from "babylovegrowth-next-js-blog";
 import type { Locale } from "@/i18n/config";
+import type { BlogAsset, BlogPost } from "./blog-admin.ts";
+import { excerptFrom, markdownToHtml } from "./blog-markdown.ts";
 
 export const BLOG_PATH = "/blog";
 export const PAGE_SIZE = 12;
@@ -105,12 +113,99 @@ export async function getArticlesByTag(tagSlug: string) {
 }
 
 export async function getBlogSitemapEntries() {
-  const articles = await getPublishedArticles();
+  const articles = await getPublicArticles();
   return articles.map((article) => ({
     slug: article.slug,
-    created_at: article.created_at,
-    updated_at: article.updated_at,
-    published_at: article.published_at,
-    languageCode: article.languageCode,
+    created_at: article.publishedAt,
+    updated_at: article.updatedAt,
+    published_at: article.publishedAt,
+    languageCode: article.locale,
   }));
+}
+
+export type PublicArticle = {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string;
+  excerpt: string;
+  coverUrl: string;
+  publishedAt: string;
+  updatedAt: string;
+  locale: string;
+  html: string;
+  attachments: BlogAsset[];
+  keywords: string[];
+  jsonLd: Record<string, unknown> | null;
+  faqJsonLd: Record<string, unknown> | null;
+};
+
+function isFullArticle(article: BlogArticleSummary | BlogArticle): article is BlogArticle {
+  return "content_html" in article;
+}
+
+function fromLocal(post: BlogPost): PublicArticle {
+  return {
+    id: `local-${post.id}`,
+    slug: post.slug,
+    title: post.title,
+    subtitle: post.subtitle,
+    excerpt: excerptFrom(post.subtitle, post.body),
+    coverUrl: post.coverUrl,
+    publishedAt: post.publishedAt,
+    updatedAt: post.updatedAt,
+    locale: post.locale,
+    html: markdownToHtml(post.body),
+    attachments: post.assets,
+    keywords: [],
+    jsonLd: null,
+    faqJsonLd: null,
+  };
+}
+
+function fromRemote(article: BlogArticleSummary | BlogArticle): PublicArticle {
+  const full = isFullArticle(article) ? article : null;
+  return {
+    id: `blg-${article.id}`,
+    slug: article.slug,
+    title: article.title,
+    subtitle: "",
+    excerpt: article.meta_description || article.excerpt,
+    coverUrl: article.hero_image_url,
+    publishedAt: article.published_at,
+    updatedAt: article.updated_at,
+    locale: article.languageCode,
+    html: full?.content_html ?? "",
+    attachments: [],
+    keywords: [article.seedKeyword ?? "", ...article.keywords].filter(Boolean),
+    jsonLd: full?.jsonLd ?? null,
+    faqJsonLd: full?.faqJsonLd ?? null,
+  };
+}
+
+export async function getPublicArticles(): Promise<PublicArticle[]> {
+  const { listPublishedLocalPosts } = await import("./blog-admin.ts");
+  const [local, remote] = await Promise.all([listPublishedLocalPosts(), getPublishedArticles()]);
+  const localSlugs = new Set(local.map((post) => post.slug));
+  const merged = [
+    ...local.map(fromLocal),
+    ...remote.filter((article) => !localSlugs.has(article.slug)).map((article) => fromRemote(article)),
+  ];
+  return merged.sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
+}
+
+export function publicArticlesForLocale(articles: PublicArticle[], locale: Locale) {
+  const matching = articles.filter((article) => {
+    const lang = (article.locale || "").toLowerCase().split(/[-_]/)[0];
+    return lang === locale;
+  });
+  return matching.length > 0 ? matching : articles;
+}
+
+export async function getPublicArticle(slug: string): Promise<PublicArticle | null> {
+  const { getPublishedLocalPost } = await import("./blog-admin.ts");
+  const local = await getPublishedLocalPost(slug);
+  if (local) return fromLocal(local);
+  const remote = await getPublishedArticle(slug);
+  return remote ? fromRemote(remote) : null;
 }
