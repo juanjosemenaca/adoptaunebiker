@@ -6,23 +6,12 @@ import { BlogPagination } from "@/components/blog/pagination";
 import { PublicJsonLd } from "@/components/public-json-ld";
 import { isLocale } from "@/i18n/config";
 import { fill, getDictionary } from "@/i18n/get-dictionary";
-import {
-  articlesForLocale,
-  getArticlesByTag,
-  getBlogTags,
-  paginate,
-  parsePage,
-} from "@/lib/blog";
+import { articlesForLocale, getArticlesByTag, paginate, parsePage } from "@/lib/blog";
 import { hrefs } from "@/lib/paths";
 import { publicMetadata } from "@/lib/seo";
 import { localePath } from "@/lib/site";
 
 export const revalidate = 86400;
-
-export async function generateStaticParams() {
-  const tags = await getBlogTags();
-  return tags.map((tag) => ({ slug: tag.slug }));
-}
 
 export async function generateMetadata({
   params,

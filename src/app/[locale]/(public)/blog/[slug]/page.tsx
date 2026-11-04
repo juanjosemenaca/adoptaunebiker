@@ -5,18 +5,13 @@ import { ArticleJsonLd } from "@/components/blog/article-json-ld";
 import { TagList } from "@/components/blog/tag-list";
 import { dateLocale, isLocale, locales, ogLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { formatBlogDate, getPublishedArticle, getPublishedArticles } from "@/lib/blog";
+import { formatBlogDate, getPublishedArticle } from "@/lib/blog";
 import { hrefs } from "@/lib/paths";
 import { resolveLocale } from "@/lib/seo";
 import { languageAlternates, localePath } from "@/lib/site";
 import "../blog-content.css";
 
 export const revalidate = 86400;
-
-export async function generateStaticParams() {
-  const articles = await getPublishedArticles();
-  return articles.map((article) => ({ slug: article.slug }));
-}
 
 export async function generateMetadata({
   params,

@@ -1,4 +1,4 @@
-import { BlogClient, type BlogArticleSummary } from "babylovegrowth-next-js-blog";
+import { BlogClient, deriveTags, slugify, type BlogArticleSummary } from "babylovegrowth-next-js-blog";
 import type { Locale } from "@/i18n/config";
 
 export const BLOG_PATH = "/blog";
@@ -74,8 +74,11 @@ async function withBlog<T>(fallback: T, run: () => Promise<T>) {
   }
 }
 
+let publishedArticles: Promise<BlogArticleSummary[]> | null = null;
+
 export function getPublishedArticles() {
-  return withBlog([], () => blog.getAllArticles());
+  publishedArticles ??= withBlog([], () => blog.getAllArticles());
+  return publishedArticles;
 }
 
 export function getPublishedArticle(slug: string) {
@@ -86,14 +89,28 @@ export function getPublishedArticle(slug: string) {
   });
 }
 
-export function getBlogTags() {
-  return withBlog([], () => blog.getTags());
+export async function getBlogTags() {
+  return deriveTags(await getPublishedArticles());
 }
 
-export function getArticlesByTag(tagSlug: string) {
-  return withBlog([], () => blog.getArticlesByTag(tagSlug));
+export async function getArticlesByTag(tagSlug: string) {
+  const normalized = slugify(tagSlug);
+  const articles = await getPublishedArticles();
+  return articles.filter((article) => {
+    const candidates = [article.seedKeyword, ...article.keywords].filter(
+      (keyword): keyword is string => Boolean(keyword),
+    );
+    return candidates.some((keyword) => slugify(keyword) === normalized);
+  });
 }
 
-export function getBlogSitemapEntries() {
-  return withBlog([], () => blog.getSitemapEntries());
+export async function getBlogSitemapEntries() {
+  const articles = await getPublishedArticles();
+  return articles.map((article) => ({
+    slug: article.slug,
+    created_at: article.created_at,
+    updated_at: article.updated_at,
+    published_at: article.published_at,
+    languageCode: article.languageCode,
+  }));
 }
