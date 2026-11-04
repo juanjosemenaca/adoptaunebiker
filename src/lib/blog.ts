@@ -127,6 +127,7 @@ export type PublicArticle = {
   id: string;
   slug: string;
   title: string;
+  seoTitle: string;
   subtitle: string;
   excerpt: string;
   coverUrl: string;
@@ -149,8 +150,9 @@ function fromLocal(post: BlogPost): PublicArticle {
     id: `local-${post.id}`,
     slug: post.slug,
     title: post.title,
+    seoTitle: post.seoTitle.trim(),
     subtitle: post.subtitle,
-    excerpt: excerptFrom(post.subtitle, post.body),
+    excerpt: excerptFrom(post.metaDescription || post.subtitle, post.body),
     coverUrl: post.coverUrl,
     publishedAt: post.publishedAt,
     updatedAt: post.updatedAt,
@@ -169,6 +171,7 @@ function fromRemote(article: BlogArticleSummary | BlogArticle): PublicArticle {
     id: `blg-${article.id}`,
     slug: article.slug,
     title: article.title,
+    seoTitle: article.title,
     subtitle: "",
     excerpt: article.meta_description || article.excerpt,
     coverUrl: article.hero_image_url,

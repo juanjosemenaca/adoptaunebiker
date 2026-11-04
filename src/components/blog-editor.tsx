@@ -11,6 +11,7 @@ import {
 import type { Dictionary } from "@/i18n/types";
 import { locales, localeName, type Locale } from "@/i18n/config";
 import type { BlogPost } from "@/lib/blog-admin";
+import { recommendedBlogPath, slugFromUrl } from "@/lib/blog-slug";
 import { hrefs } from "@/lib/paths";
 
 const fieldClass = "mt-2 min-h-11 w-full border border-line bg-asphalt px-3 py-2 text-sm text-bone";
@@ -33,6 +34,10 @@ export function BlogEditor({
   const [ok, setOk] = useState(false);
   const [title, setTitle] = useState(post?.title ?? "");
   const [subtitle, setSubtitle] = useState(post?.subtitle ?? "");
+  const [seoTitle, setSeoTitle] = useState(post?.seoTitle ?? "");
+  const [metaDescription, setMetaDescription] = useState(post?.metaDescription ?? "");
+  const [slug, setSlug] = useState(post?.slug ?? "");
+  const [slugTouched, setSlugTouched] = useState(Boolean(post?.slug));
   const [body, setBody] = useState(post?.body ?? "");
   const [published, setPublished] = useState(post?.published ?? false);
   const [postLocale, setPostLocale] = useState<Locale>(post?.locale ?? locale);
@@ -63,6 +68,9 @@ export function BlogEditor({
     data.set("postLocale", postLocale);
     data.set("title", title);
     data.set("subtitle", subtitle);
+    data.set("seoTitle", seoTitle);
+    data.set("metaDescription", metaDescription);
+    data.set("slug", slug);
     data.set("body", body);
     data.set("publishedAt", dateValue);
     if (published) data.set("published", "1");
@@ -128,12 +136,73 @@ export function BlogEditor({
 
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
         {t.admin.blogTitleField}
-        <input value={title} onChange={(event) => setTitle(event.target.value)} className={fieldClass} required />
+        <input
+          value={title}
+          onChange={(event) => {
+            const next = event.target.value;
+            setTitle(next);
+            if (!slugTouched) setSlug(slugFromUrl(next));
+          }}
+          className={fieldClass}
+          required
+        />
       </label>
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
         {t.admin.blogSubtitle}
         <input value={subtitle} onChange={(event) => setSubtitle(event.target.value)} className={fieldClass} />
       </label>
+
+      <div className="space-y-5 border border-line bg-rubber px-4 py-5">
+        <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
+          {t.admin.blogSeoTitle}
+          <input
+            value={seoTitle}
+            onChange={(event) => setSeoTitle(event.target.value)}
+            placeholder={title ? `${title} · Adopta un eBiker` : ""}
+            className={fieldClass}
+          />
+          <span className="mt-2 flex items-center justify-between gap-3 text-[11px] normal-case tracking-normal text-mist">
+            <span>{t.admin.blogSeoTitleHint}</span>
+            <span>{seoTitle.length}/60</span>
+          </span>
+          <CopyField value={seoTitle.trim() || `${title} · Adopta un eBiker`} copy={t.admin.blogCopy} copied={t.admin.blogCopied} />
+        </label>
+        <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
+          {t.admin.blogMetaDescription}
+          <textarea
+            value={metaDescription}
+            onChange={(event) => setMetaDescription(event.target.value)}
+            rows={3}
+            placeholder={subtitle}
+            className={`${fieldClass} min-h-24`}
+          />
+          <span className="mt-2 flex items-center justify-between gap-3 text-[11px] normal-case tracking-normal text-mist">
+            <span>{t.admin.blogMetaHint}</span>
+            <span>{metaDescription.length}/160</span>
+          </span>
+          <CopyField
+            value={metaDescription.trim() || subtitle}
+            copy={t.admin.blogCopy}
+            copied={t.admin.blogCopied}
+          />
+        </label>
+        <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
+          {t.admin.blogUrl}
+          <span className={`${fieldClass} flex items-center gap-0`}>
+            <span className="shrink-0 text-mist">/blog/</span>
+            <input
+              value={slug}
+              onChange={(event) => {
+                setSlugTouched(true);
+                setSlug(event.target.value.replace(/^\/+/, "").replace(/^blog\/+/i, ""));
+              }}
+              onBlur={() => setSlug(slugFromUrl(slug, title))}
+              className="min-h-11 w-full bg-transparent px-1 py-2 text-sm text-bone outline-none"
+            />
+          </span>
+          <CopyField value={recommendedBlogPath(slug || title)} copy={t.admin.blogCopy} copied={t.admin.blogCopied} />
+        </label>
+      </div>
       <div className="grid gap-4 sm:grid-cols-3">
         <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
           {t.admin.blogDate}
@@ -295,6 +364,28 @@ export function BlogEditor({
         ) : null}
       </div>
     </div>
+  );
+}
+
+function CopyField({ value, copy, copied }: { value: string; copy: string; copied: string }) {
+  const [done, setDone] = useState(false);
+  return (
+    <button
+      type="button"
+      className={`${btnClass} mt-2 w-full border border-line bg-asphalt text-mist`}
+      onClick={async () => {
+        if (!value.trim()) return;
+        try {
+          await navigator.clipboard.writeText(value);
+          setDone(true);
+          window.setTimeout(() => setDone(false), 1600);
+        } catch {
+          /* ignore */
+        }
+      }}
+    >
+      {done ? copied : copy}
+    </button>
   );
 }
 

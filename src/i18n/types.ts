@@ -264,6 +264,13 @@ export type Dictionary = {
     blogPublished: string;
     blogTitleField: string;
     blogSubtitle: string;
+    blogSeoTitle: string;
+    blogSeoTitleHint: string;
+    blogMetaDescription: string;
+    blogMetaHint: string;
+    blogUrl: string;
+    blogCopy: string;
+    blogCopied: string;
     blogDate: string;
     blogBody: string;
     blogBodyHint: string;

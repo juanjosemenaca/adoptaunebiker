@@ -1,6 +1,6 @@
-import { slugify } from "babylovegrowth-next-js-blog";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import { getSession, isAdmin } from "@/lib/session";
+import { slugFromUrl } from "@/lib/blog-slug";
 import { getAuthContext } from "@/lib/supabase/auth-context";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
@@ -25,6 +25,8 @@ export type BlogPost = {
   locale: Locale;
   title: string;
   subtitle: string;
+  seoTitle: string;
+  metaDescription: string;
   body: string;
   coverUrl: string;
   coverPath: string;
@@ -38,6 +40,9 @@ export type BlogPost = {
 export type BlogPostInput = {
   title: string;
   subtitle: string;
+  seoTitle: string;
+  metaDescription: string;
+  slug: string;
   body: string;
   locale: string;
   published: boolean;
@@ -61,12 +66,17 @@ const LIMITS: Record<BlogAssetKind, number> = {
   file: 15 * 1024 * 1024,
 };
 
+const POST_COLUMNS =
+  "id, slug, locale, title, subtitle, seo_title, meta_description, body, cover_url, cover_path, published, published_at, created_at, updated_at";
+
 type PostRow = {
   id: string;
   slug: string;
   locale: string;
   title: string;
   subtitle: string | null;
+  seo_title?: string | null;
+  meta_description?: string | null;
   body: string | null;
   cover_url: string | null;
   cover_path: string | null;
@@ -113,6 +123,8 @@ function toPost(row: PostRow, assets: BlogAsset[] = []): BlogPost {
     locale: isLocale(row.locale) ? row.locale : defaultLocale,
     title: row.title,
     subtitle: row.subtitle ?? "",
+    seoTitle: row.seo_title ?? "",
+    metaDescription: row.meta_description ?? "",
     body: row.body ?? "",
     coverUrl: row.cover_url ?? "",
     coverPath: row.cover_path ?? "",
@@ -162,9 +174,7 @@ export async function listAdminBlogPosts(): Promise<BlogPost[]> {
   const { supabase } = await adminClient();
   const { data, error } = await supabase
     .from("blog_posts")
-    .select(
-      "id, slug, locale, title, subtitle, body, cover_url, cover_path, published, published_at, created_at, updated_at",
-    )
+    .select(POST_COLUMNS)
     .order("updated_at", { ascending: false });
   if (error) fail(error.message);
   const rows = (data ?? []) as PostRow[];
@@ -176,9 +186,7 @@ export async function getAdminBlogPost(id: string): Promise<BlogPost | null> {
   const { supabase } = await adminClient();
   const { data, error } = await supabase
     .from("blog_posts")
-    .select(
-      "id, slug, locale, title, subtitle, body, cover_url, cover_path, published, published_at, created_at, updated_at",
-    )
+    .select(POST_COLUMNS)
     .eq("id", id)
     .maybeSingle();
   if (error || !data) return null;
@@ -191,9 +199,7 @@ export async function listPublishedLocalPosts(): Promise<BlogPost[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
     .from("blog_posts")
-    .select(
-      "id, slug, locale, title, subtitle, body, cover_url, cover_path, published, published_at, created_at, updated_at",
-    )
+    .select(POST_COLUMNS)
     .eq("published", true)
     .order("published_at", { ascending: false });
   if (error || !data) return [];
@@ -207,9 +213,7 @@ export async function getPublishedLocalPost(slug: string): Promise<BlogPost | nu
   if (!supabase) return null;
   const { data, error } = await supabase
     .from("blog_posts")
-    .select(
-      "id, slug, locale, title, subtitle, body, cover_url, cover_path, published, published_at, created_at, updated_at",
-    )
+    .select(POST_COLUMNS)
     .eq("slug", slug)
     .eq("published", true)
     .maybeSingle();
@@ -218,8 +222,8 @@ export async function getPublishedLocalPost(slug: string): Promise<BlogPost | nu
   return toPost(data as PostRow, assets.get(data.id) ?? []);
 }
 
-async function uniqueSlug(supabase: SupabaseClient, title: string, currentId?: string) {
-  const base = slugify(title) || `articulo-${Date.now().toString(36)}`;
+async function uniqueSlug(supabase: SupabaseClient, raw: string, fallbackTitle: string, currentId?: string) {
+  const base = slugFromUrl(raw, fallbackTitle) || `articulo-${Date.now().toString(36)}`;
   let slug = base;
   let n = 2;
   while (true) {
@@ -243,7 +247,7 @@ export async function createBlogPost(input: BlogPostInput) {
   const title = input.title.trim();
   if (title.length < 2) fail("title");
   const { supabase, userId } = await adminClient();
-  const slug = await uniqueSlug(supabase, title);
+  const slug = await uniqueSlug(supabase, input.slug, title);
   const { data, error } = await supabase
     .from("blog_posts")
     .insert({
@@ -251,14 +255,14 @@ export async function createBlogPost(input: BlogPostInput) {
       locale: isLocale(input.locale) ? input.locale : defaultLocale,
       title,
       subtitle: input.subtitle.trim(),
+      seo_title: input.seoTitle.trim(),
+      meta_description: input.metaDescription.trim(),
       body: input.body,
       published: input.published,
       published_at: publishedAtValue(input),
       created_by: userId,
     })
-    .select(
-      "id, slug, locale, title, subtitle, body, cover_url, cover_path, published, published_at, created_at, updated_at",
-    )
+    .select(POST_COLUMNS)
     .single();
   if (error || !data) fail(error?.message || "save");
   return toPost(data as PostRow);
@@ -268,7 +272,7 @@ export async function updateBlogPost(id: string, input: BlogPostInput) {
   const title = input.title.trim();
   if (title.length < 2) fail("title");
   const { supabase } = await adminClient();
-  const slug = await uniqueSlug(supabase, title, id);
+  const slug = await uniqueSlug(supabase, input.slug, title, id);
   const { data, error } = await supabase
     .from("blog_posts")
     .update({
@@ -276,14 +280,14 @@ export async function updateBlogPost(id: string, input: BlogPostInput) {
       locale: isLocale(input.locale) ? input.locale : defaultLocale,
       title,
       subtitle: input.subtitle.trim(),
+      seo_title: input.seoTitle.trim(),
+      meta_description: input.metaDescription.trim(),
       body: input.body,
       published: input.published,
       published_at: publishedAtValue(input),
     })
     .eq("id", id)
-    .select(
-      "id, slug, locale, title, subtitle, body, cover_url, cover_path, published, published_at, created_at, updated_at",
-    )
+    .select(POST_COLUMNS)
     .single();
   if (error || !data) fail(error?.message || "save");
   const assets = await assetsFor(supabase, [id]);

@@ -25,12 +25,13 @@ export async function generateMetadata({
   const lang = resolveLocale(locale);
   const path = `/blog/${article.slug}`;
   const url = localePath(lang, path);
+  const pageTitle = article.seoTitle.trim() || `${article.title} · Adopta un eBiker`;
   const images = article.coverUrl
     ? [{ url: article.coverUrl }]
     : [{ url: "/logo.png", width: 1000, height: 350, alt: "Adopta un eBiker" }];
 
   return {
-    title: { absolute: `${article.title} · Adopta un eBiker` },
+    title: { absolute: pageTitle },
     description: article.excerpt,
     alternates: {
       canonical: url,
@@ -42,7 +43,7 @@ export async function generateMetadata({
       alternateLocale: locales.filter((item) => item !== lang).map((item) => ogLocale[item]),
       url,
       siteName: "Adopta un eBiker",
-      title: article.title,
+      title: pageTitle,
       description: article.excerpt,
       images,
       publishedTime: article.publishedAt,
@@ -50,7 +51,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: article.title,
+      title: pageTitle,
       description: article.excerpt,
       images: article.coverUrl ? [article.coverUrl] : ["/logo.png"],
     },

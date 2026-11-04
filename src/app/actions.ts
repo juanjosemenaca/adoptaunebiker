@@ -669,6 +669,9 @@ function blogInput(formData: FormData) {
   return {
     title: String(formData.get("title") ?? ""),
     subtitle: String(formData.get("subtitle") ?? ""),
+    seoTitle: String(formData.get("seoTitle") ?? ""),
+    metaDescription: String(formData.get("metaDescription") ?? ""),
+    slug: String(formData.get("slug") ?? ""),
     body: String(formData.get("body") ?? ""),
     locale: String(formData.get("postLocale") ?? formData.get("locale") ?? ""),
     published: formData.get("published") === "1",
