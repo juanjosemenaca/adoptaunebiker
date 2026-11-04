@@ -33,6 +33,7 @@ export const fr: Dictionary = {
     collapseMenu: "Replier le menu",
     barcelona: "Barcelone",
     contact: "Contact",
+    blog: "Blog",
   },
   kickers: {
     idea: "L’idée",
@@ -309,6 +310,20 @@ export const fr: Dictionary = {
     empty:
       "Demande une place quand même. On n’invente ni groupes ni sorties. Quand quelqu’un de compatible arrive, l’inscription relue sert justement à faire cette mise en relation avec calme.",
     start: "Demander une place à Barcelone",
+  },
+  blog: {
+    metaTitle: "Blog | Adopta un eBiker",
+    metaDescription:
+      "Articles sur le vélo, la communauté et les sorties : électrique, VTT, route ou gravel.",
+    title: "Blog",
+    lead: "Notes sur le vélo, avec ou sans moteur, et sur la construction de cette communauté.",
+    empty: "Aucun article n’a encore été publié.",
+    back: "Tous les articles",
+    prev: "Précédents",
+    next: "Suivants",
+    pageOf: "Page {page} sur {total}",
+    articlesCount: "{count} articles",
+    tagged: "#{tag}",
   },
   admin: {
     kicker: "Administration",

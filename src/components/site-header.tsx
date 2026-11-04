@@ -25,6 +25,7 @@ export function SiteHeader({
     { href: `${links.home}${jump.operate}`, label: t.home.operateKicker },
     { href: `${links.home}${jump.offer}`, label: t.home.offerKicker },
     { href: `${links.home}${jump.how}`, label: t.nav.how },
+    { href: links.blog, label: t.nav.blog },
     { href: `${links.home}${jump.join}`, label: t.enter.fresh },
     session
       ? { href: links.intranet, label: t.nav.intranet }

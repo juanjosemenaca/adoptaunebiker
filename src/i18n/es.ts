@@ -33,6 +33,7 @@ export const es: Dictionary = {
     collapseMenu: "Recoger menú",
     barcelona: "Barcelona",
     contact: "Contacto",
+    blog: "Blog",
   },
   kickers: {
     idea: "La idea",
@@ -309,6 +310,20 @@ export const es: Dictionary = {
     empty:
       "Pide plaza igual. No inventamos grupos ni salidas. Cuando haya alguien compatible, el alta revisada sirve precisamente para hacer ese cruce con calma.",
     start: "Pedir plaza en Barcelona",
+  },
+  blog: {
+    metaTitle: "Blog | Adopta un eBiker",
+    metaDescription:
+      "Artículos sobre salir en bici, comunidad y rutas: eléctrica, MTB, carretera o gravel.",
+    title: "Blog",
+    lead: "Notas sobre salir en bici, con o sin motor, y sobre cómo se construye esta comunidad.",
+    empty: "Aún no hay artículos publicados.",
+    back: "Todos los artículos",
+    prev: "Anteriores",
+    next: "Siguientes",
+    pageOf: "Página {page} de {total}",
+    articlesCount: "{count} artículos",
+    tagged: "#{tag}",
   },
   admin: {
     kicker: "Administración",

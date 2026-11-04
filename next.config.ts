@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "*" }],
+  },
   async redirects() {
     return [
       {
@@ -35,6 +38,15 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/robots.txt",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, s-maxage=3600",
+          },
+        ],
+      },
+      {
+        source: "/blog/sitemap.xml",
         headers: [
           {
             key: "Cache-Control",

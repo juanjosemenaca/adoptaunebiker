@@ -33,6 +33,7 @@ export const de: Dictionary = {
     collapseMenu: "Menü einklappen",
     barcelona: "Barcelona",
     contact: "Kontakt",
+    blog: "Blog",
   },
   kickers: {
     idea: "Die Idee",
@@ -308,6 +309,20 @@ export const de: Dictionary = {
     empty:
       "Frag trotzdem einen Platz an. Wir erfinden keine Gruppen und keine Ausfahrten. Wenn jemand Passendes kommt, dient die geprüfte Aufnahme genau dazu, euch ruhig zusammenzubringen.",
     start: "Platz in Barcelona anfragen",
+  },
+  blog: {
+    metaTitle: "Blog | Adopta un eBiker",
+    metaDescription:
+      "Artikel über gemeinsames Radfahren, Community und Touren: E-Bike, MTB, Straße oder Gravel.",
+    title: "Blog",
+    lead: "Notizen zum Radfahren, mit oder ohne Motor, und dazu, wie diese Community entsteht.",
+    empty: "Es sind noch keine Artikel veröffentlicht.",
+    back: "Alle Artikel",
+    prev: "Zurück",
+    next: "Weiter",
+    pageOf: "Seite {page} von {total}",
+    articlesCount: "{count} Artikel",
+    tagged: "#{tag}",
   },
   admin: {
     kicker: "Verwaltung",

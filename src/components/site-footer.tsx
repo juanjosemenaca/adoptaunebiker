@@ -44,6 +44,9 @@ export function SiteFooter({
               : "flex flex-col gap-1 text-xs uppercase tracking-[0.2em] text-mist sm:items-end"
           }
         >
+          <Link href={links.blog} className={publicFooter ? publicLinkClass : linkClass}>
+            {t.nav.blog}
+          </Link>
           <Link href={links.avisoLegal} className={publicFooter ? publicLinkClass : linkClass}>
             {t.legal.nav.notice}
           </Link>

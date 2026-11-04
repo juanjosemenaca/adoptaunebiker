@@ -36,6 +36,14 @@ export const ogLocale: Record<Locale, string> = {
   de: "de_DE",
 };
 
+export const dateLocale: Record<Locale, string> = {
+  es: "es-ES",
+  ca: "ca-ES",
+  en: "en-GB",
+  fr: "fr-FR",
+  de: "de-DE",
+};
+
 export function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value);
 }

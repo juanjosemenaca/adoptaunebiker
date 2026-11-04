@@ -1,0 +1,140 @@
+.blog-content {
+  color: var(--bone);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+.blog-content > :first-child {
+  margin-top: 0;
+}
+
+.blog-content h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: var(--bone);
+}
+
+.blog-content h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--bone);
+}
+
+.blog-content h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--bone);
+}
+
+.blog-content p {
+  margin: 1.25rem 0;
+}
+
+.blog-content a {
+  color: var(--volt);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.blog-content a:hover {
+  text-decoration: none;
+}
+
+.blog-content ul,
+.blog-content ol {
+  margin: 1.25rem 0;
+  padding-left: 1.5rem;
+}
+
+.blog-content ul {
+  list-style: disc;
+}
+
+.blog-content ol {
+  list-style: decimal;
+}
+
+.blog-content li {
+  margin: 0.5rem 0;
+}
+
+.blog-content blockquote {
+  margin: 1.5rem 0;
+  padding-left: 1rem;
+  border-left: 4px solid var(--line);
+  color: var(--mist);
+  font-style: italic;
+}
+
+.blog-content img {
+  margin: 1.5rem 0;
+  border-radius: 0.25rem;
+  max-width: 100%;
+  height: auto;
+}
+
+.blog-content figure {
+  margin: 1.5rem 0;
+}
+
+.blog-content figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--mist);
+  text-align: center;
+}
+
+.blog-content pre {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  background: var(--graphite);
+  color: var(--asphalt);
+  overflow-x: auto;
+  font-size: 0.875rem;
+}
+
+.blog-content code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+}
+
+.blog-content :not(pre) > code {
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+  background: var(--panel);
+  color: var(--bone);
+}
+
+.blog-content table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.blog-content th,
+.blog-content td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+}
+
+.blog-content th {
+  background: var(--panel);
+  font-weight: 600;
+}
+
+.blog-content hr {
+  margin: 2.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}

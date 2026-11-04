@@ -81,6 +81,7 @@ export type Dictionary = {
     collapseMenu: string;
     barcelona: string;
     contact: string;
+    blog: string;
   };
   kickers: { idea: string; about: string; starts: string; shares: string; spot: string };
   footer: { alone: string; blurb: string; contact: string };
@@ -227,6 +228,19 @@ export type Dictionary = {
     emptyTitle: string;
     empty: string;
     start: string;
+  };
+  blog: {
+    metaTitle: string;
+    metaDescription: string;
+    title: string;
+    lead: string;
+    empty: string;
+    back: string;
+    prev: string;
+    next: string;
+    pageOf: string;
+    articlesCount: string;
+    tagged: string;
   };
   admin: {
     kicker: string;

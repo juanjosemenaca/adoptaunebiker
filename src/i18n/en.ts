@@ -33,6 +33,7 @@ export const en: Dictionary = {
     collapseMenu: "Collapse menu",
     barcelona: "Barcelona",
     contact: "Contact",
+    blog: "Blog",
   },
   kickers: {
     idea: "The idea",
@@ -309,6 +310,20 @@ export const en: Dictionary = {
     empty:
       "Ask for a spot anyway. We do not invent groups or rides. When someone compatible shows up, the reviewed signup is there to make that introduction calmly.",
     start: "Ask for a spot in Barcelona",
+  },
+  blog: {
+    metaTitle: "Blog | Adopta un eBiker",
+    metaDescription:
+      "Articles about riding together, community and routes: e-bike, MTB, road or gravel.",
+    title: "Blog",
+    lead: "Notes on riding, with or without a motor, and on how this community is being built.",
+    empty: "No articles have been published yet.",
+    back: "All articles",
+    prev: "Previous",
+    next: "Next",
+    pageOf: "Page {page} of {total}",
+    articlesCount: "{count} articles",
+    tagged: "#{tag}",
   },
   admin: {
     kicker: "Admin",
