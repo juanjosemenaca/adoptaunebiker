@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { fill } from "@/i18n/get-dictionary";
 import type { Dictionary } from "@/i18n/types";
-import { durationLabel, isRideFull, rideStamp } from "@/lib/ride-helpers";
-import type { GroupRide } from "@/lib/types";
+import { durationLabel, isRideFull, isRidePast, rideStamp } from "@/lib/ride-helpers";
+import type { GroupRide, RideMark } from "@/lib/types";
 import { dateLocale } from "@/i18n/config";
 
 export function GroupRideCard({
@@ -10,19 +10,32 @@ export function GroupRideCard({
   href,
   locale,
   t,
+  mark,
 }: {
   ride: GroupRide;
   href?: string;
   locale: string;
   t: Dictionary;
+  mark?: RideMark;
 }) {
   const lang = dateLocale[locale as keyof typeof dateLocale] ?? locale;
   const full = isRideFull(ride.acceptedCount, ride.maxRiders);
   const className = `flex h-full flex-col border border-line bg-rubber p-5 ${
     href ? "transition-colors hover:border-sodium" : ""
   }`;
+  const markLabel =
+    mark === "hosted"
+      ? t.intranet.groupRides.markHosted
+      : mark === "joined"
+        ? t.intranet.groupRides.markJoined
+        : "";
   const inner = (
     <>
+      {markLabel ? (
+        <p className={`text-[10px] uppercase tracking-[0.18em] ${mark === "hosted" ? "text-volt" : "text-sodium"}`}>
+          {markLabel}
+        </p>
+      ) : null}
       {ride.photoUrls[0] ? (
         <img src={ride.photoUrls[0]} alt="" className="mb-3 h-36 w-full object-cover" />
       ) : null}
@@ -47,9 +60,11 @@ export function GroupRideCard({
         {" · "}
         {ride.status === "cancelled"
           ? t.intranet.groupRides.cancelled
-          : full
-            ? t.intranet.groupRides.full
-            : fill(t.intranet.groupRides.spots, { n: ride.acceptedCount + 1 })}
+          : isRidePast(ride.startsAt)
+            ? t.intranet.groupRides.done
+            : full
+              ? t.intranet.groupRides.full
+              : fill(t.intranet.groupRides.spots, { n: ride.acceptedCount + 1 })}
       </p>
     </>
   );

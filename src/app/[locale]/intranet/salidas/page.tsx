@@ -4,10 +4,11 @@ import { GroupRideCard } from "@/components/group-ride-card";
 import { getDictionary } from "@/i18n/get-dictionary";
 import type { Dictionary } from "@/i18n/types";
 import { hrefs } from "@/lib/paths";
-import { splitUpcomingPast } from "@/lib/ride-helpers";
-import { listHostedRides } from "@/lib/rides";
+import { listRideHides } from "@/lib/ride-dismissals";
+import { partitionMyRides } from "@/lib/ride-helpers";
+import { listHostedRides, listMyJoinRequests } from "@/lib/rides";
 import { getSession } from "@/lib/session";
-import type { GroupRide } from "@/lib/types";
+import type { GroupRide, RideMark } from "@/lib/types";
 
 export async function generateMetadata({
   params,
@@ -23,7 +24,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function HostedRidesPage({
+export default async function MyRidesPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -33,40 +34,94 @@ export default async function HostedRidesPage({
   if (!session) return null;
   const t = getDictionary(locale);
   const links = hrefs(locale);
-  const hosted = await listHostedRides(session.id);
-  const { upcoming, past } = splitUpcomingPast(hosted);
+  const [hosted, mine, hides] = await Promise.all([
+    listHostedRides(session.id),
+    listMyJoinRequests(session.id),
+    listRideHides(),
+  ]);
+  const { hostedUpcoming, going, pending, done, removed } = partitionMyRides(
+    hosted,
+    mine,
+    undefined,
+    hides,
+  );
+  const empty =
+    hostedUpcoming.length + going.length + pending.length + done.length + removed.length === 0;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
       <p className="text-[11px] uppercase tracking-[0.28em] text-sodium">{t.intranet.kicker}</p>
-      <h1 className="display mt-3 text-6xl sm:text-7xl">{t.intranet.hostedTitle}</h1>
-      <p className="mt-4 max-w-xl text-mist">{t.intranet.hostedLead}</p>
+      <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="display text-6xl sm:text-7xl">{t.intranet.hostedTitle}</h1>
+          <p className="mt-4 max-w-xl text-mist">{t.intranet.hostedLead}</p>
+        </div>
+        <Link
+          href={links.rideNew}
+          className="inline-flex min-h-11 items-center bg-sodium px-4 text-[11px] font-semibold tracking-[0.16em] uppercase text-bone"
+        >
+          {t.intranet.proposeRide}
+        </Link>
+      </div>
 
-      {hosted.length === 0 ? (
+      {empty ? (
         <p className="mt-10 text-mist">
           {t.intranet.hostedEmpty}{" "}
-          <Link href={links.rideNew} className="text-sodium">
-            {t.intranet.proposeRide}
+          <Link href={links.intranet} className="text-sodium">
+            {t.intranet.seeRides}
           </Link>
         </p>
       ) : (
         <>
           <RideSection
-            title={t.intranet.groupRides.upcomingSection}
+            title={t.intranet.groupRides.hostedUpcomingSection}
             empty={t.intranet.groupRides.emptyUpcoming}
-            rides={upcoming}
+            rides={hostedUpcoming}
+            mark="hosted"
             locale={locale}
             t={t}
             hrefFor={links.ride}
           />
           <RideSection
-            title={t.intranet.groupRides.pastSection}
-            empty={t.intranet.groupRides.emptyPast}
-            rides={past}
+            title={t.intranet.groupRides.goingSection}
+            empty={t.intranet.groupRides.emptyAccepted}
+            rides={going}
+            mark="joined"
             locale={locale}
             t={t}
             hrefFor={links.ride}
           />
+          {pending.length > 0 ? (
+            <RideSection
+              title={t.intranet.groupRides.pendingSection}
+              empty={t.intranet.groupRides.emptyPending}
+              rides={pending}
+              mark="joined"
+              locale={locale}
+              t={t}
+              hrefFor={links.ride}
+            />
+          ) : null}
+          <RideSection
+            title={t.intranet.groupRides.doneSection}
+            empty={t.intranet.groupRides.emptyPast}
+            rides={done}
+            markFor={(ride) => (ride.hostId === session.id ? "hosted" : "joined")}
+            locale={locale}
+            t={t}
+            hrefFor={links.ride}
+          />
+          {removed.length > 0 ? (
+            <RideSection
+              title={t.intranet.groupRides.removedSection}
+              empty={t.intranet.groupRides.emptyRemoved}
+              rides={removed}
+              markFor={(ride) => (ride.hostId === session.id ? "hosted" : "joined")}
+              locale={locale}
+              t={t}
+              hrefFor={links.ride}
+            />
+          ) : null}
         </>
       )}
     </div>
@@ -80,6 +135,8 @@ function RideSection({
   locale,
   t,
   hrefFor,
+  mark,
+  markFor,
 }: {
   title: string;
   empty: string;
@@ -87,6 +144,8 @@ function RideSection({
   locale: string;
   t: Dictionary;
   hrefFor: (id: string) => string;
+  mark?: RideMark;
+  markFor?: (ride: GroupRide) => RideMark;
 }) {
   return (
     <section className="mt-12">
@@ -102,6 +161,7 @@ function RideSection({
               href={hrefFor(ride.id)}
               locale={locale}
               t={t}
+              mark={markFor ? markFor(ride) : mark}
             />
           ))}
         </div>

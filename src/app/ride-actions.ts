@@ -7,10 +7,16 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { defaultLocale, isLocale } from "@/i18n/config";
 import { hrefs, loginHref } from "@/lib/paths";
 import {
+  canAddRideAlbum,
+  canArchiveRide,
+  canCancelHostedRide,
+  canCommentOnRide,
+  canHardDeleteRide,
   canManageHostedRide,
   canRequestRideSpot,
   canSeeRideChat,
   cancelRideRecord,
+  isRidePast,
   getMyRideRequest,
   getRide,
   insertJoinRequest,
@@ -19,10 +25,13 @@ import {
   isRideFull,
   listRideJoinRequests,
   parseRideDraft,
+  parseRideLink,
   saveRidePhotos,
   updateJoinRequestStatus,
   updateRideRecord,
 } from "@/lib/rides";
+import { deleteRideRecord, saveRideDismissal } from "@/lib/ride-dismissals";
+import { saveRideKeeps } from "@/lib/ride-keeps";
 import { notifyRideMembers } from "@/lib/admin-inbox";
 import { appendMemberBike } from "@/lib/members";
 import { getSession, isAdmin } from "@/lib/session";
@@ -51,6 +60,11 @@ function rideError(locale: string, key: string) {
   if (key === "rideClosed") return t.errors.rideClosed;
   if (key === "rideExists") return t.errors.rideExists;
   if (key === "rideChat") return t.errors.rideChat;
+  if (key === "rideAlbum") return t.errors.rideAlbum;
+  if (key === "rideTrack") return t.errors.rideTrack;
+  if (key === "rideKeepEmpty") return t.errors.rideKeepEmpty;
+  if (key === "photoType") return t.errors.photoType;
+  if (key === "photoSize") return t.errors.photoSize;
   return t.errors.ride;
 }
 
@@ -149,10 +163,64 @@ export async function cancelRideAction(formData: FormData): Promise<void> {
   const session = await memberSession(locale);
   const rideId = String(formData.get("rideId") ?? "");
   const ride = await getRide(rideId);
-  if (!ride || !canManageHostedRide(session.id, ride)) return;
+  if (!ride || !canCancelHostedRide(session.id, ride)) return;
   try {
     await cancelRideRecord(rideId, session.id);
     await notifyRideMembers(rideId, "cancelled");
+  } catch {
+    return;
+  }
+  revalidateRides(locale, rideId);
+  redirect(hrefs(locale).rides);
+}
+
+export async function archiveRideAction(formData: FormData): Promise<void> {
+  const locale = localeFromForm(formData);
+  const session = await memberSession(locale);
+  const rideId = String(formData.get("rideId") ?? "");
+  const ride = await getRide(rideId);
+  if (!ride) return;
+  const mine = await getMyRideRequest(rideId, session.id);
+  if (
+    !canArchiveRide({
+      userId: session.id,
+      hostId: ride.hostId,
+      status: ride.status,
+      joinStatus: mine?.status ?? null,
+      startsAt: ride.startsAt,
+    })
+  ) {
+    return;
+  }
+  try {
+    if (canCancelHostedRide(session.id, ride)) {
+      await cancelRideRecord(rideId, session.id);
+      await notifyRideMembers(rideId, "cancelled");
+    } else {
+      await saveRideDismissal(rideId, false);
+    }
+  } catch {
+    return;
+  }
+  revalidateRides(locale, rideId);
+  redirect(hrefs(locale).rides);
+}
+
+export async function purgeRideAction(formData: FormData): Promise<void> {
+  const locale = localeFromForm(formData);
+  const session = await memberSession(locale);
+  const rideId = String(formData.get("rideId") ?? "");
+  const ride = await getRide(rideId);
+  if (!ride) return;
+  const mine = await getMyRideRequest(rideId, session.id);
+  const inGroup = canSeeRideChat(session.id, ride.hostId, mine?.status ?? null);
+  if (!inGroup) return;
+  try {
+    if (canHardDeleteRide(session.id, ride)) {
+      await deleteRideRecord(rideId, session.id);
+    } else if (ride.status === "cancelled" || isRidePast(ride.startsAt)) {
+      await saveRideDismissal(rideId, true);
+    }
   } catch {
     return;
   }
@@ -176,6 +244,7 @@ export async function requestRideSpotAction(formData: FormData) {
       joinStatus: mine?.status ?? null,
       acceptedCount: ride.acceptedCount,
       maxRiders: ride.maxRiders,
+      startsAt: ride.startsAt,
     })
   ) {
     if (session.id === ride.hostId) return { error: rideError(locale, "rideHost") };
@@ -217,7 +286,7 @@ export async function answerRideRequestAction(formData: FormData): Promise<void>
   const status = String(formData.get("status") ?? "");
   if (status !== "accepted" && status !== "declined") return;
   const ride = await getRide(rideId);
-  if (!ride || ride.hostId !== session.id || ride.status !== "open") return;
+  if (!ride || !canManageHostedRide(session.id, ride)) return;
   const requests = await listRideJoinRequests(rideId);
   const target = requests.find((item) => item.id === requestId);
   if (!target || target.status !== "pending") return;
@@ -237,15 +306,64 @@ export async function sendRideMessageAction(formData: FormData) {
   const body = String(formData.get("body") ?? "");
   const ride = await getRide(rideId);
   if (!ride) return { error: rideError(locale, "ride") };
-  if (ride.status !== "open") return { error: rideError(locale, "rideClosed") };
   const mine = await getMyRideRequest(rideId, session.id);
-  if (!canSeeRideChat(session.id, ride.hostId, mine?.status ?? null)) {
-    return { error: rideError(locale, "rideChat") };
+  if (
+    !canCommentOnRide({
+      userId: session.id,
+      hostId: ride.hostId,
+      status: ride.status,
+      joinStatus: mine?.status ?? null,
+    })
+  ) {
+    return { error: rideError(locale, ride.status === "cancelled" ? "rideClosed" : "rideChat") };
   }
   try {
     await insertRideMessage(rideId, session.id, body);
   } catch (error) {
     const key = error instanceof Error ? error.message : "rideChat";
+    return { error: rideError(locale, key) };
+  }
+  revalidateRides(locale, rideId);
+  return { ok: true as const };
+}
+
+export async function addRideKeepAction(formData: FormData) {
+  const locale = localeFromForm(formData);
+  const session = await memberSession(locale);
+  const rideId = String(formData.get("rideId") ?? "");
+  const ride = await getRide(rideId);
+  if (!ride) return { error: rideError(locale, "ride") };
+  const mine = await getMyRideRequest(rideId, session.id);
+  if (
+    !canAddRideAlbum({
+      userId: session.id,
+      hostId: ride.hostId,
+      status: ride.status,
+      joinStatus: mine?.status ?? null,
+      startsAt: ride.startsAt,
+    })
+  ) {
+    return { error: rideError(locale, ride.status === "cancelled" ? "rideClosed" : "rideAlbum") };
+  }
+  const photos = formData
+    .getAll("photos")
+    .filter((item): item is File => item instanceof File && item.size > 0);
+  const trackRaw = formData.get("track");
+  const track = trackRaw instanceof File && trackRaw.size > 0 ? trackRaw : null;
+  const linkParsed = parseRideLink(String(formData.get("link") ?? ""));
+  if (!linkParsed.ok) return { error: rideError(locale, "routeUrl") };
+  if (photos.length === 0 && !track && !linkParsed.url) {
+    return { error: rideError(locale, "rideKeepEmpty") };
+  }
+  try {
+    await saveRideKeeps(rideId, session.id, {
+      photos,
+      track,
+      link: linkParsed.url,
+      caption: String(formData.get("caption") ?? ""),
+    });
+  } catch (error) {
+    const key = error instanceof Error ? error.message : "rideAlbum";
     return { error: rideError(locale, key) };
   }
   revalidateRides(locale, rideId);

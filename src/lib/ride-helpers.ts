@@ -16,6 +16,7 @@ export const MADRID_TZ = "Europe/Madrid";
 
 export const RIDE_DURATION_OPTIONS = [60, 90, 120, 150, 180, 210, 240, 300, 360, 420, 480] as const;
 export const RIDE_PHOTO_MAX = 4;
+export const TRACK_MAX_BYTES = 5 * 1024 * 1024;
 
 export type RideDraft = {
   title: string;
@@ -145,9 +146,45 @@ export function madridDateParts(iso: string) {
 
 export function canManageHostedRide(
   userId: string,
-  ride: { hostId: string; status: RideStatus },
+  ride: { hostId: string; status: RideStatus; startsAt?: string },
+  now = new Date(),
 ) {
+  if (ride.hostId !== userId || ride.status !== "open") return false;
+  if (ride.startsAt && isRidePast(ride.startsAt, now)) return false;
+  return true;
+}
+
+export function canCancelHostedRide(userId: string, ride: { hostId: string; status: RideStatus }) {
   return ride.hostId === userId && ride.status === "open";
+}
+
+export function canHardDeleteRide(userId: string, ride: { hostId: string; status: RideStatus }) {
+  return ride.hostId === userId && ride.status === "cancelled";
+}
+
+export function canReuseRide(input: {
+  userId: string;
+  hostId: string;
+  status: RideStatus;
+  joinStatus: RideJoinStatus | null;
+  startsAt: string;
+  now?: Date;
+}) {
+  if (!canSeeRideChat(input.userId, input.hostId, input.joinStatus)) return false;
+  return input.status === "cancelled" || isRidePast(input.startsAt, input.now);
+}
+
+export function canArchiveRide(input: {
+  userId: string;
+  hostId: string;
+  status: RideStatus;
+  joinStatus: RideJoinStatus | null;
+  startsAt: string;
+  now?: Date;
+}) {
+  if (input.status === "cancelled") return false;
+  if (!canSeeRideChat(input.userId, input.hostId, input.joinStatus)) return false;
+  return isRidePast(input.startsAt, input.now);
 }
 
 export function durationLabel(minutes: number) {
@@ -187,6 +224,29 @@ export function canSeeRideChat(
   return userId === hostId || joinStatus === "accepted";
 }
 
+export function canCommentOnRide(input: {
+  userId: string;
+  hostId: string;
+  status: RideStatus;
+  joinStatus: RideJoinStatus | null;
+}) {
+  if (input.status === "cancelled") return false;
+  return canSeeRideChat(input.userId, input.hostId, input.joinStatus);
+}
+
+export function canAddRideAlbum(input: {
+  userId: string;
+  hostId: string;
+  status: RideStatus;
+  joinStatus: RideJoinStatus | null;
+  startsAt: string;
+  now?: Date;
+}) {
+  if (input.status === "cancelled") return false;
+  if (!canSeeRideChat(input.userId, input.hostId, input.joinStatus)) return false;
+  return isRidePast(input.startsAt, input.now);
+}
+
 export function canRequestRideSpot(input: {
   userId: string;
   hostId: string;
@@ -194,10 +254,13 @@ export function canRequestRideSpot(input: {
   joinStatus: RideJoinStatus | null;
   acceptedCount: number;
   maxRiders: number | null;
+  startsAt: string;
+  now?: Date;
 }) {
   if (input.userId === input.hostId) return false;
   if (input.status !== "open") return false;
   if (input.joinStatus) return false;
+  if (isRidePast(input.startsAt, input.now)) return false;
   if (isRideFull(input.acceptedCount, input.maxRiders)) return false;
   return true;
 }
@@ -268,7 +331,7 @@ function parseOptionalInt(
   return { ok: true, value };
 }
 
-function parseRouteUrl(raw: string): { ok: true; url: string } | { ok: false } {
+export function parseRideLink(raw: string): { ok: true; url: string } | { ok: false } {
   const text = raw.trim();
   if (!text) return { ok: true, url: "" };
   if (text.length > 300) return { ok: false };
@@ -279,6 +342,20 @@ function parseRouteUrl(raw: string): { ok: true; url: string } | { ok: false } {
   } catch {
     return { ok: false };
   }
+}
+
+export function trackExt(mime: string, name: string) {
+  const lower = name.toLowerCase();
+  if (lower.endsWith(".gpx") || mime === "application/gpx+xml") return "gpx";
+  if (lower.endsWith(".kml") || mime === "application/vnd.google-earth.kml+xml") return "kml";
+  return "";
+}
+
+export function checkTrackFile(file: { type: string; size: number; name: string } | null | undefined) {
+  if (!file || file.size < 1) return "missing" as const;
+  if (!trackExt(file.type, file.name)) return "type" as const;
+  if (file.size > TRACK_MAX_BYTES) return "size" as const;
+  return null;
 }
 
 export function parseRideDraft(input: {
@@ -339,7 +416,7 @@ export function parseRideDraft(input: {
   if (!distance.ok) return { ok: false, error: "distance" };
   const elevation = parseOptionalInt(input.elevationM ?? "", 0, 8000);
   if (!elevation.ok) return { ok: false, error: "elevation" };
-  const route = parseRouteUrl(input.routeUrl ?? "");
+  const route = parseRideLink(input.routeUrl ?? "");
   if (!route.ok) return { ok: false, error: "routeUrl" };
   const mapsRaw = (input.meetingMaps ?? "").trim();
   let meetingPin: MeetingPin | null = parseMeetingCoords(input.meetingLat ?? "", input.meetingLng ?? "");
@@ -395,6 +472,59 @@ export function splitUpcomingPast<T extends { startsAt: string; status: RideStat
   upcoming.sort((a, b) => a.startsAt.localeCompare(b.startsAt));
   past.sort((a, b) => b.startsAt.localeCompare(a.startsAt));
   return { upcoming, past };
+}
+
+export type RideHides = {
+  dismissed: Set<string>;
+  purged: Set<string>;
+};
+
+export function partitionMyRides<T extends { id: string; startsAt: string; status: RideStatus }>(
+  hosted: T[],
+  joined: Array<{ status: RideJoinStatus; ride: T | null }>,
+  now = new Date(),
+  hides: RideHides = { dismissed: new Set(), purged: new Set() },
+) {
+  const hidden = (id: string) => hides.purged.has(id) || hides.dismissed.has(id);
+  const ridden = (ride: T) =>
+    ride.status !== "cancelled" && isRidePast(ride.startsAt, now) && !hidden(ride.id);
+  const hostedUpcoming = hosted
+    .filter((ride) => isUpcomingRide(ride, now))
+    .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+  const withRide = joined.filter((item): item is typeof item & { ride: T } => Boolean(item.ride));
+  const going = withRide
+    .filter((item) => item.status === "accepted" && isUpcomingRide(item.ride, now))
+    .map((item) => item.ride)
+    .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+  const pending = withRide
+    .filter((item) => item.status === "pending" && isUpcomingRide(item.ride, now))
+    .map((item) => item.ride)
+    .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+  const done = mergeRides(
+    hosted.filter(ridden),
+    withRide.filter((item) => item.status === "accepted" && ridden(item.ride)).map((item) => item.ride),
+  );
+  const mine = mergeRides(
+    hosted,
+    withRide.filter((item) => item.status === "accepted").map((item) => item.ride),
+  );
+  const removed = mine.filter(
+    (ride) =>
+      !hides.purged.has(ride.id) &&
+      (ride.status === "cancelled" || hides.dismissed.has(ride.id)),
+  );
+  return { hostedUpcoming, going, pending, done, removed };
+}
+
+function mergeRides<T extends { id: string; startsAt: string }>(hosted: T[], joined: T[]) {
+  const seen = new Set(hosted.map((ride) => ride.id));
+  const rides = [...hosted];
+  for (const ride of joined) {
+    if (seen.has(ride.id)) continue;
+    seen.add(ride.id);
+    rides.push(ride);
+  }
+  return rides.sort((a, b) => b.startsAt.localeCompare(a.startsAt));
 }
 
 export { isDiscipline };

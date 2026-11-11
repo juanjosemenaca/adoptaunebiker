@@ -23,17 +23,27 @@ import {
 } from "@/lib/ride-helpers";
 
 export {
+  canAddRideAlbum,
+  canArchiveRide,
+  canCancelHostedRide,
+  canCommentOnRide,
+  canHardDeleteRide,
   canManageHostedRide,
   canRequestRideSpot,
+  canReuseRide,
   canSeeRideChat,
   durationLabel,
   isRideFull,
+  isRidePast,
+  isUpcomingRide,
   madridDateParts,
   madridDayKey,
   matchesRideFilters,
   parseRideDraft,
   parseRideFilters,
+  parseRideLink,
   parseRideView,
+  partitionMyRides,
   rideStamp,
 } from "@/lib/ride-helpers";
 export type { RideDraft, RideDraftError, RideQuery } from "@/lib/ride-helpers";

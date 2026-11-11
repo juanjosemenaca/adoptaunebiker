@@ -27,18 +27,21 @@ export function ProposeRideForm({
   t,
   bikes,
   ride,
+  source,
 }: {
   locale: string;
   t: Dictionary;
   bikes: string[];
   ride?: GroupRide;
+  source?: GroupRide;
 }) {
   const editing = Boolean(ride);
+  const seed = ride ?? source;
   const start = ride ? madridDateParts(ride.startsAt) : { date: "", time: "08:00" };
   const bikeOptions = [...bikes];
-  if (ride?.hostBike && !bikeOptions.includes(ride.hostBike)) bikeOptions.unshift(ride.hostBike);
-  const durations = ride && !RIDE_DURATION_OPTIONS.includes(ride.durationMin as (typeof RIDE_DURATION_OPTIONS)[number])
-    ? [ride.durationMin, ...RIDE_DURATION_OPTIONS]
+  if (seed?.hostBike && !bikeOptions.includes(seed.hostBike)) bikeOptions.unshift(seed.hostBike);
+  const durations = seed && !RIDE_DURATION_OPTIONS.includes(seed.durationMin as (typeof RIDE_DURATION_OPTIONS)[number])
+    ? [seed.durationMin, ...RIDE_DURATION_OPTIONS]
     : [...RIDE_DURATION_OPTIONS];
   const [state, action, pending] = useActionState(
     async (_prev: State, formData: FormData): Promise<State> => {
@@ -66,7 +69,7 @@ export function ProposeRideForm({
           required
           minLength={3}
           maxLength={80}
-          defaultValue={ride?.title}
+          defaultValue={seed?.title}
           placeholder={t.intranet.groupRides.titleHint}
           className={fieldClass}
         />
@@ -97,7 +100,7 @@ export function ProposeRideForm({
           <select
             name="durationMin"
             required
-            defaultValue={String(ride?.durationMin ?? 180)}
+            defaultValue={String(seed?.durationMin ?? 180)}
             className={fieldClass}
           >
             {durations.map((item) => (
@@ -111,7 +114,7 @@ export function ProposeRideForm({
       <div className="grid gap-4 sm:grid-cols-3">
         <label className={labelClass}>
           {t.intranet.groupRides.surface}
-          <select name="surface" required defaultValue={ride?.surface ?? "mixto"} className={fieldClass}>
+          <select name="surface" required defaultValue={seed?.surface ?? "mixto"} className={fieldClass}>
             {RIDE_SURFACES.map((item) => (
               <option key={item} value={item}>
                 {t.surfaces[item]}
@@ -121,7 +124,7 @@ export function ProposeRideForm({
         </label>
         <label className={labelClass}>
           {t.intranet.groupRides.level}
-          <select name="level" required defaultValue={ride?.level ?? "dura"} className={fieldClass}>
+          <select name="level" required defaultValue={seed?.level ?? "dura"} className={fieldClass}>
             {RIDE_LEVELS.map((item) => (
               <option key={item} value={item}>
                 {t.rideLevels[item]}
@@ -135,7 +138,7 @@ export function ProposeRideForm({
             <select
               name="hostBike"
               required
-              defaultValue={ride?.hostBike || bikeOptions[0]}
+              defaultValue={seed?.hostBike || bikeOptions[0]}
               className={fieldClass}
             >
               {bikeOptions.map((bike) => (
@@ -176,7 +179,7 @@ export function ProposeRideForm({
           required
           minLength={2}
           maxLength={80}
-          defaultValue={ride?.place}
+          defaultValue={seed?.place}
           placeholder={t.intranet.groupRides.placeHint}
           className={fieldClass}
         />
@@ -184,10 +187,10 @@ export function ProposeRideForm({
       <MeetingPinField
         locale={locale}
         t={t}
-        initialName={ride?.meetingPoint ?? ""}
+        initialName={seed?.meetingPoint ?? ""}
         initialPin={
-          ride?.meetingLat != null && ride.meetingLng != null
-            ? { lat: ride.meetingLat, lng: ride.meetingLng }
+          seed?.meetingLat != null && seed.meetingLng != null
+            ? { lat: seed.meetingLat, lng: seed.meetingLng }
             : null
         }
       />
@@ -200,7 +203,7 @@ export function ProposeRideForm({
             min={5}
             max={400}
             step={1}
-            defaultValue={ride?.distanceKm ?? undefined}
+            defaultValue={seed?.distanceKm ?? undefined}
             className={fieldClass}
           />
         </label>
@@ -212,7 +215,7 @@ export function ProposeRideForm({
             min={0}
             max={8000}
             step={50}
-            defaultValue={ride?.elevationM ?? undefined}
+            defaultValue={seed?.elevationM ?? undefined}
             className={fieldClass}
           />
         </label>
@@ -223,7 +226,7 @@ export function ProposeRideForm({
           name="routeUrl"
           type="url"
           maxLength={300}
-          defaultValue={ride?.routeUrl}
+          defaultValue={seed?.routeUrl}
           placeholder={t.intranet.groupRides.routeUrlHint}
           className={fieldClass}
         />
@@ -247,7 +250,7 @@ export function ProposeRideForm({
           name="notes"
           rows={4}
           maxLength={1000}
-          defaultValue={ride?.notes}
+          defaultValue={seed?.notes}
           placeholder={t.intranet.groupRides.notesHint}
           className={fieldClass}
         />

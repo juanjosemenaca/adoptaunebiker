@@ -34,9 +34,7 @@ export default async function IntranetHomePage({
       <p className="text-[11px] uppercase tracking-[0.28em] text-volt">{t.intranet.kicker}</p>
       <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="display text-6xl sm:text-7xl">
-            {fill(t.intranet.hello, { name: session.name })}
-          </h1>
+          <h1 className="display text-6xl sm:text-7xl">{t.nav.panel}</h1>
           <p className="mt-4 max-w-xl text-mist">
             {fill(t.intranet.intro, {
               role: session.role === "mentor" ? t.roles.mentor : t.roles.beginner,

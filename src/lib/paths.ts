@@ -65,6 +65,7 @@ export function hrefs(locale: string) {
     cuenta: `${base}/intranet/cuenta`,
     rides: `${base}/intranet/salidas`,
     rideNew: `${base}/intranet/salidas/nueva`,
+    rideReuse: (id: string) => `${base}/intranet/salidas/nueva?desde=${id}`,
     ride: (id: string) => `${base}/intranet/salidas/${id}`,
     rideEdit: (id: string) => `${base}/intranet/salidas/${id}/editar`,
     joinedRides: `${base}/intranet/apuntadas`,
@@ -95,7 +96,6 @@ export function intranetNav(locale: string) {
   return [
     { href: links.intranet, key: "panel" as const },
     { href: links.rides, key: "rides" as const },
-    { href: links.joinedRides, key: "joinedRides" as const },
     { href: links.inbox, key: "inbox" as const },
     { href: links.cuenta, key: "account" as const },
   ];

@@ -3,18 +3,27 @@ import { describe, it } from "node:test";
 import { googleMapsEmbedUrl, googleMapsOpenUrl, parseMapsPin } from "./meeting-pin.ts";
 import { todayDayKey } from "./ride-calendar.ts";
 import {
+  canAddRideAlbum,
+  canArchiveRide,
+  canCancelHostedRide,
+  canCommentOnRide,
+  canHardDeleteRide,
   canManageHostedRide,
   canRequestRideSpot,
+  canReuseRide,
   canSeeRideChat,
+  checkTrackFile,
   isRideFull,
   joinedRideIds,
   madridDateParts,
   matchesRideFilters,
   parseRideDraft,
   parseRideFilters,
+  parseRideLink,
   parseRideView,
   rideMark,
   isUpcomingRide,
+  partitionMyRides,
   splitUpcomingPast,
 } from "./ride-helpers.ts";
 
@@ -224,6 +233,8 @@ describe("ride access", () => {
     assert.equal(canSeeRideChat("host", "host", null), true);
     assert.equal(canSeeRideChat("a", "host", "pending"), false);
     assert.equal(canSeeRideChat("a", "host", "accepted"), true);
+    const soon = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    const ago = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     assert.equal(
       canRequestRideSpot({
         userId: "a",
@@ -232,6 +243,7 @@ describe("ride access", () => {
         joinStatus: null,
         acceptedCount: 0,
         maxRiders: 4,
+        startsAt: soon,
       }),
       true,
     );
@@ -243,6 +255,7 @@ describe("ride access", () => {
         joinStatus: null,
         acceptedCount: 0,
         maxRiders: 4,
+        startsAt: soon,
       }),
       false,
     );
@@ -254,12 +267,119 @@ describe("ride access", () => {
         joinStatus: null,
         acceptedCount: 0,
         maxRiders: null,
+        startsAt: soon,
+      }),
+      false,
+    );
+    assert.equal(
+      canRequestRideSpot({
+        userId: "a",
+        hostId: "host",
+        status: "open",
+        joinStatus: null,
+        acceptedCount: 0,
+        maxRiders: 4,
+        startsAt: ago,
       }),
       false,
     );
     assert.equal(canManageHostedRide("host", { hostId: "host", status: "open" }), true);
     assert.equal(canManageHostedRide("a", { hostId: "host", status: "open" }), false);
     assert.equal(canManageHostedRide("host", { hostId: "host", status: "cancelled" }), false);
+    assert.equal(
+      canManageHostedRide("host", { hostId: "host", status: "open", startsAt: ago }),
+      false,
+    );
+    assert.equal(canCancelHostedRide("host", { hostId: "host", status: "open" }), true);
+    assert.equal(canCancelHostedRide("host", { hostId: "host", status: "cancelled" }), false);
+    assert.equal(canHardDeleteRide("host", { hostId: "host", status: "cancelled" }), true);
+    assert.equal(canHardDeleteRide("host", { hostId: "host", status: "open" }), false);
+    assert.equal(
+      canReuseRide({
+        userId: "a",
+        hostId: "host",
+        status: "open",
+        joinStatus: "accepted",
+        startsAt: ago,
+      }),
+      true,
+    );
+    assert.equal(
+      canReuseRide({
+        userId: "a",
+        hostId: "host",
+        status: "cancelled",
+        joinStatus: "accepted",
+        startsAt: soon,
+      }),
+      true,
+    );
+    assert.equal(
+      canArchiveRide({
+        userId: "a",
+        hostId: "host",
+        status: "open",
+        joinStatus: "accepted",
+        startsAt: ago,
+      }),
+      true,
+    );
+    assert.equal(
+      canArchiveRide({
+        userId: "a",
+        hostId: "host",
+        status: "cancelled",
+        joinStatus: "accepted",
+        startsAt: ago,
+      }),
+      false,
+    );
+    assert.equal(canCommentOnRide({ userId: "a", hostId: "host", status: "open", joinStatus: "accepted" }), true);
+    assert.equal(canCommentOnRide({ userId: "a", hostId: "host", status: "cancelled", joinStatus: "accepted" }), false);
+    assert.equal(
+      canAddRideAlbum({
+        userId: "a",
+        hostId: "host",
+        status: "open",
+        joinStatus: "accepted",
+        startsAt: ago,
+      }),
+      true,
+    );
+    assert.equal(
+      canAddRideAlbum({
+        userId: "host",
+        hostId: "host",
+        status: "open",
+        joinStatus: null,
+        startsAt: ago,
+      }),
+      true,
+    );
+    assert.equal(
+      canAddRideAlbum({
+        userId: "a",
+        hostId: "host",
+        status: "open",
+        joinStatus: "accepted",
+        startsAt: soon,
+      }),
+      false,
+    );
+    assert.equal(
+      canAddRideAlbum({
+        userId: "a",
+        hostId: "host",
+        status: "open",
+        joinStatus: "pending",
+        startsAt: ago,
+      }),
+      false,
+    );
+    assert.equal(checkTrackFile({ type: "application/gpx+xml", size: 1200, name: "ruta.gpx" }), null);
+    assert.equal(checkTrackFile({ type: "text/plain", size: 1200, name: "ruta.txt" }), "type");
+    assert.equal(parseRideLink("https://www.wikiloc.com/x").ok, true);
+    assert.equal(parseRideLink("ftp://x").ok, false);
   });
 
   it("splits Madrid date and time for the edit form", () => {
@@ -311,6 +431,66 @@ describe("upcoming vs past", () => {
     assert.deepEqual(
       split.past.map((item) => item.id),
       ["off", "past"],
+    );
+  });
+
+  it("puts hosted upcoming, accepted going and done rides together", () => {
+    const now = new Date("2026-11-11T12:00:00.000Z");
+    const hostedSoon = { id: "host-soon", startsAt: "2026-11-20T08:00:00.000Z", status: "open" as const };
+    const hostedDone = { id: "host-done", startsAt: "2026-11-01T08:00:00.000Z", status: "open" as const };
+    const hostedOff = { id: "host-off", startsAt: "2026-11-22T08:00:00.000Z", status: "cancelled" as const };
+    const going = { id: "go", startsAt: "2026-11-18T08:00:00.000Z", status: "open" as const };
+    const gone = { id: "gone", startsAt: "2026-10-20T08:00:00.000Z", status: "open" as const };
+    const joinedOff = { id: "join-off", startsAt: "2026-11-09T08:00:00.000Z", status: "cancelled" as const };
+    const waiting = { id: "wait", startsAt: "2026-11-22T08:00:00.000Z", status: "open" as const };
+    const parts = partitionMyRides(
+      [hostedSoon, hostedDone, hostedOff],
+      [
+        { status: "accepted", ride: going },
+        { status: "accepted", ride: gone },
+        { status: "accepted", ride: joinedOff },
+        { status: "pending", ride: waiting },
+        { status: "declined", ride: { id: "no", startsAt: "2026-11-19T08:00:00.000Z", status: "open" } },
+      ],
+      now,
+    );
+    assert.deepEqual(
+      parts.hostedUpcoming.map((item) => item.id),
+      ["host-soon"],
+    );
+    assert.deepEqual(
+      parts.going.map((item) => item.id),
+      ["go"],
+    );
+    assert.deepEqual(
+      parts.pending.map((item) => item.id),
+      ["wait"],
+    );
+    assert.deepEqual(
+      parts.done.map((item) => item.id),
+      ["host-done", "gone"],
+    );
+    assert.deepEqual(
+      parts.removed.map((item) => item.id),
+      ["host-off", "join-off"],
+    );
+    const hidden = partitionMyRides(
+      [hostedSoon, hostedDone, hostedOff],
+      [
+        { status: "accepted", ride: going },
+        { status: "accepted", ride: gone },
+        { status: "accepted", ride: joinedOff },
+      ],
+      now,
+      { dismissed: new Set(["gone"]), purged: new Set(["join-off"]) },
+    );
+    assert.deepEqual(
+      hidden.done.map((item) => item.id),
+      ["host-done"],
+    );
+    assert.deepEqual(
+      hidden.removed.map((item) => item.id),
+      ["host-off", "gone"],
     );
   });
 });

@@ -2,19 +2,29 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { answerRideRequestAction, cancelRideRequestAction } from "@/app/ride-actions";
 import { MeetingPinView } from "@/components/meeting-pin-view";
+import { RideAlbumForm } from "@/components/ride-album-form";
 import { RideHostActions } from "@/components/ride-host-actions";
+import { RideKeepActions } from "@/components/ride-keep-actions";
 import { RideChatForm } from "@/components/ride-chat-form";
 import { RideJoinForm } from "@/components/ride-join-form";
 import { dateLocale } from "@/i18n/config";
 import { fill, getDictionary } from "@/i18n/get-dictionary";
 import { hrefs } from "@/lib/paths";
+import { listRideHides } from "@/lib/ride-dismissals";
+import { listRideKeeps } from "@/lib/ride-keeps";
 import {
+  canAddRideAlbum,
+  canArchiveRide,
+  canCommentOnRide,
   canManageHostedRide,
   canRequestRideSpot,
+  canReuseRide,
   canSeeRideChat,
   durationLabel,
   getRide,
   isRideFull,
+  isRidePast,
+  isUpcomingRide,
   listRideJoinRequests,
   listRideMessages,
   rideStamp,
@@ -53,8 +63,48 @@ export default async function RideDetailPage({
   const pending = requests.filter((item) => item.status === "pending");
   const mine = requests.find((item) => item.riderId === session.id) ?? null;
   const isHost = ride.hostId === session.id;
+  const past = isRidePast(ride.startsAt);
+  const done = !isUpcomingRide(ride);
+  const ridden = past && ride.status !== "cancelled";
+  const canManage = canManageHostedRide(session.id, ride);
   const canChat = canSeeRideChat(session.id, ride.hostId, mine?.status ?? null);
+  const hides = await listRideHides();
+  const canReuse = canReuseRide({
+    userId: session.id,
+    hostId: ride.hostId,
+    status: ride.status,
+    joinStatus: mine?.status ?? null,
+    startsAt: ride.startsAt,
+  });
+  const canArchive = canArchiveRide({
+    userId: session.id,
+    hostId: ride.hostId,
+    status: ride.status,
+    joinStatus: mine?.status ?? null,
+    startsAt: ride.startsAt,
+  });
+  const canPurge =
+    canChat &&
+    (ride.status === "cancelled" || hides.dismissed.has(ride.id)) &&
+    !hides.purged.has(ride.id);
+  const afterActions = canReuse || canArchive || canPurge;
+  const canComment = canCommentOnRide({
+    userId: session.id,
+    hostId: ride.hostId,
+    status: ride.status,
+    joinStatus: mine?.status ?? null,
+  });
+  const canAlbum = canAddRideAlbum({
+    userId: session.id,
+    hostId: ride.hostId,
+    status: ride.status,
+    joinStatus: mine?.status ?? null,
+    startsAt: ride.startsAt,
+  });
   const messages = canChat ? await listRideMessages(ride.id) : [];
+  const keeps = canChat ? await listRideKeeps(ride.id) : [];
+  const albumPhotos = keeps.filter((item) => item.kind === "photo");
+  const albumTracks = keeps.filter((item) => item.kind !== "photo");
   const full = isRideFull(ride.acceptedCount, ride.maxRiders);
   const canAsk = canRequestRideSpot({
     userId: session.id,
@@ -63,6 +113,7 @@ export default async function RideDetailPage({
     joinStatus: mine?.status ?? null,
     acceptedCount: ride.acceptedCount,
     maxRiders: ride.maxRiders,
+    startsAt: ride.startsAt,
   });
   const statusLabel = {
     pending: t.intranet.pending,
@@ -76,12 +127,25 @@ export default async function RideDetailPage({
       <p className="text-[11px] uppercase tracking-[0.28em] text-sodium">
         {t.intranet.groupRides.title}
       </p>
-      {canManageHostedRide(session.id, ride) ? (
+      {canManage ? (
         <div className="mt-6">
           <RideHostActions
             rideId={ride.id}
             locale={locale}
             editHref={links.rideEdit(ride.id)}
+            t={t}
+          />
+        </div>
+      ) : null}
+      {afterActions ? (
+        <div className="mt-6">
+          <RideKeepActions
+            rideId={ride.id}
+            locale={locale}
+            reuseHref={links.rideReuse(ride.id)}
+            canReuse={canReuse}
+            canArchive={canArchive}
+            canPurge={canPurge}
             t={t}
           />
         </div>
@@ -133,11 +197,13 @@ export default async function RideDetailPage({
         {" · "}
         {ride.status === "cancelled"
           ? t.intranet.groupRides.cancelled
-          : full
-            ? t.intranet.groupRides.full
-            : ride.maxRiders
-              ? `${accepted.length + 1}/${ride.maxRiders}`
-              : fill(t.intranet.groupRides.spots, { n: accepted.length + 1 })}
+          : past
+            ? t.intranet.groupRides.done
+            : full
+              ? t.intranet.groupRides.full
+              : ride.maxRiders
+                ? `${accepted.length + 1}/${ride.maxRiders}`
+                : fill(t.intranet.groupRides.spots, { n: accepted.length + 1 })}
       </p>
       {ride.photoUrls.length > 0 ? (
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -151,7 +217,9 @@ export default async function RideDetailPage({
       ) : null}
 
       <section className="mt-12">
-        <h2 className="display text-4xl">{t.intranet.groupRides.whoGoes}</h2>
+        <h2 className="display text-4xl">
+          {done ? t.intranet.groupRides.whoWent : t.intranet.groupRides.whoGoes}
+        </h2>
         <ul className="mt-4 divide-y divide-line border border-line bg-rubber">
           <li className="px-4 py-3 text-sm text-bone">
             {ride.hostName || t.intranet.cyclist}
@@ -164,7 +232,7 @@ export default async function RideDetailPage({
         </ul>
       </section>
 
-      {isHost ? (
+      {isHost && !done ? (
         <section className="mt-12">
           <h2 className="display text-4xl">{t.intranet.groupRides.pendingInbox}</h2>
           {pending.length === 0 ? (
@@ -175,7 +243,7 @@ export default async function RideDetailPage({
                 <li key={item.id} className="border border-line bg-rubber p-4">
                   <p className="text-sm text-bone">{item.riderName || t.intranet.cyclist}</p>
                   {item.message ? <p className="mt-2 text-sm text-mist">{item.message}</p> : null}
-                  {ride.status === "open" ? (
+                  {canManage ? (
                     <div className="mt-4 flex gap-2">
                       <form action={answerRideRequestAction}>
                         <input type="hidden" name="requestId" value={item.id} />
@@ -210,7 +278,7 @@ export default async function RideDetailPage({
         </section>
       ) : null}
 
-      {!isHost ? (
+      {!isHost && !done ? (
         <section className="mt-12 border border-line bg-rubber p-5">
           {mine ? (
             <>
@@ -244,10 +312,60 @@ export default async function RideDetailPage({
         </section>
       ) : null}
 
+      {canChat && ridden ? (
+        <section className="mt-12">
+          <h2 className="display text-4xl">{t.intranet.groupRides.albumTitle}</h2>
+          <p className="mt-3 text-sm text-mist">{t.intranet.groupRides.albumLead}</p>
+          {albumPhotos.length > 0 ? (
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              {albumPhotos.map((item) => (
+                <figure key={item.id} className="border border-line bg-rubber">
+                  <img src={item.url} alt="" className="h-48 w-full object-cover" />
+                  <figcaption className="px-3 py-2 text-[11px] text-mist">
+                    {item.authorName || t.intranet.cyclist}
+                    {item.caption ? ` · ${item.caption}` : ""}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          ) : null}
+          {albumTracks.length > 0 ? (
+            <ul className="mt-4 divide-y divide-line border border-line bg-rubber">
+              {albumTracks.map((item) => (
+                <li key={item.id} className="px-4 py-3">
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-sodium hover:text-bone"
+                  >
+                    {item.kind === "link"
+                      ? t.intranet.groupRides.openRoute
+                      : t.intranet.groupRides.openTrack}
+                  </a>
+                  <p className="mt-1 text-[11px] text-mist">
+                    {item.authorName || t.intranet.cyclist}
+                    {item.caption ? ` · ${item.caption}` : ""}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {albumPhotos.length === 0 && albumTracks.length === 0 ? (
+            <p className="mt-4 text-sm text-mist">{t.intranet.groupRides.albumEmpty}</p>
+          ) : null}
+          {canAlbum ? <RideAlbumForm rideId={ride.id} locale={locale} t={t} /> : null}
+        </section>
+      ) : null}
+
       {canChat ? (
         <section className="mt-12">
-          <h2 className="display text-4xl">{t.intranet.groupRides.chatTitle}</h2>
-          <p className="mt-3 text-sm text-mist">{t.intranet.groupRides.chatHint}</p>
+          <h2 className="display text-4xl">
+            {ridden ? t.intranet.groupRides.commentsTitle : t.intranet.groupRides.chatTitle}
+          </h2>
+          <p className="mt-3 text-sm text-mist">
+            {ridden ? t.intranet.groupRides.commentsHint : t.intranet.groupRides.chatHint}
+          </p>
           <ul className="mt-4 space-y-3">
             {messages.map((message) => (
               <li key={message.id} className="border border-line bg-rubber p-4">
@@ -258,18 +376,39 @@ export default async function RideDetailPage({
               </li>
             ))}
           </ul>
-          {ride.status === "open" ? (
-            <RideChatForm rideId={ride.id} locale={locale} t={t} />
+          {canComment ? (
+            <RideChatForm
+              rideId={ride.id}
+              locale={locale}
+              t={t}
+              label={ridden ? t.intranet.groupRides.commentsTitle : t.intranet.groupRides.chatTitle}
+              placeholder={
+                ridden ? t.intranet.groupRides.commentsPlaceholder : t.intranet.groupRides.chatPlaceholder
+              }
+            />
           ) : null}
         </section>
       ) : null}
 
-      {canManageHostedRide(session.id, ride) ? (
+      {canManage ? (
         <div className="mt-12">
           <RideHostActions
             rideId={ride.id}
             locale={locale}
             editHref={links.rideEdit(ride.id)}
+            t={t}
+          />
+        </div>
+      ) : null}
+      {afterActions ? (
+        <div className="mt-12">
+          <RideKeepActions
+            rideId={ride.id}
+            locale={locale}
+            reuseHref={links.rideReuse(ride.id)}
+            canReuse={canReuse}
+            canArchive={canArchive}
+            canPurge={canPurge}
             t={t}
           />
         </div>

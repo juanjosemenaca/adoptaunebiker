@@ -135,6 +135,19 @@ export type RideMessage = {
   createdAt: string;
 };
 
+export type RideKeepKind = "photo" | "track" | "link";
+
+export type RideKeep = {
+  id: string;
+  rideId: string;
+  authorId: string;
+  authorName: string;
+  kind: RideKeepKind;
+  url: string;
+  caption: string;
+  createdAt: string;
+};
+
 export type RideFilters = {
   from?: string;
   to?: string;
