@@ -1,5 +1,6 @@
 import type { Rider } from "@/lib/types";
 
+/** Local development login personas only. Not the live peloton. */
 export const riders: Rider[] = [
   {
     id: "r-nuria",

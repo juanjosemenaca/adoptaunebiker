@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { riders } from "@/data/riders";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hrefs } from "@/lib/paths";
 import { countCommunityProfiles } from "@/lib/session";
@@ -28,7 +27,7 @@ export default async function AdminPanelPage({
     {
       href: links.adminMembers,
       label: t.nav.members,
-      count: riders.length + communityCount,
+      count: communityCount,
       lead: t.admin.membersLead,
     },
     {

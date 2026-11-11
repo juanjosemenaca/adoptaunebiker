@@ -6,6 +6,7 @@ import {
   DEMO_PASSWORD,
   demoAuthEnabled,
   isDemoLoginAllowed,
+  isSeedDemoMember,
 } from "./demo-auth.ts";
 
 describe("demo auth fallback", () => {
@@ -36,6 +37,14 @@ describe("demo auth fallback", () => {
       false,
     );
     assert.equal(isDemoLoginAllowed(DEMO_ADMIN_EMAIL, "otra-clave", "development"), false);
+  });
+
+  it("recognizes seed demo members without touching real riders", () => {
+    assert.equal(isSeedDemoMember({ email: "ebiker@adopta.local" }), true);
+    assert.equal(isSeedDemoMember({ slug: "lara-mendez", email: "lara@example.com" }), false);
+    assert.equal(isSeedDemoMember({ slug: "leo-andrade" }), true);
+    assert.equal(isSeedDemoMember({ email: "hola@adoptaunebiker.com", slug: "juan" }), false);
+    assert.equal(isSeedDemoMember({ email: DEMO_ADMIN_EMAIL }), false);
   });
 
   it("does not activate after a Supabase failure in production", () => {

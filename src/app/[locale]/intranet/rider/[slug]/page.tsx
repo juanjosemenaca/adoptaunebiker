@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { riders } from "@/data/riders";
 import { AdoptForm } from "@/components/adopt-form";
 import { RiderRides } from "@/components/rider-rides";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hrefs, loginHref } from "@/lib/paths";
 import { findRider, getBonds, getSession } from "@/lib/session";
 import { listMemberRides } from "@/lib/strava";
-
-export function generateStaticParams() {
-  return riders.map((rider) => ({ slug: rider.slug }));
-}
 
 export async function generateMetadata({
   params,

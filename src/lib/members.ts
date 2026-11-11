@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { isSeedDemoMember } from "@/lib/demo-auth";
 import { isDiscipline, parsePracticeList } from "@/lib/labels";
 import { parseSignupPlace } from "@/lib/places";
 import { decodeSignupMeta } from "@/lib/signup-meta";
@@ -101,7 +102,11 @@ export const listMembers = cache(async (): Promise<CommunityMember[]> => {
     )
     .eq("kind", "user")
     .order("created_at", { ascending: false });
-  if (!error && data) return data.map((row) => toMember(row as MemberRow));
+  if (!error && data) {
+    return data
+      .filter((row) => !isSeedDemoMember(row as MemberRow))
+      .map((row) => toMember(row as MemberRow));
+  }
 
   const fallback = await supabase
     .from("profiles")
@@ -111,7 +116,9 @@ export const listMembers = cache(async (): Promise<CommunityMember[]> => {
     .eq("kind", "user")
     .order("created_at", { ascending: false });
   if (fallback.error || !fallback.data) return [];
-  return fallback.data.map((row) => toMember(row as MemberRow));
+  return fallback.data
+    .filter((row) => !isSeedDemoMember(row as MemberRow))
+    .map((row) => toMember(row as MemberRow));
 });
 
 export async function getMember(id: string): Promise<CommunityMember | null> {

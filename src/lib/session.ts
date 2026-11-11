@@ -1,4 +1,4 @@
-import { riders } from "@/data/riders";
+import { isSeedDemoMember } from "@/lib/demo-auth";
 import { isDiscipline } from "@/lib/labels";
 import { profileAccountKind, resolveMemberSession } from "@/lib/session-resolve";
 import { getAuthContext } from "@/lib/supabase/auth-context";
@@ -152,7 +152,11 @@ export const listCommunityProfiles = cache(async (): Promise<Rider[]> => {
   const { data, error } = await supabase.from("profiles").select("*").eq("kind", "user");
   if (error || !data) return [];
   return data
-    .filter((row) => (row as ProfileRow).member_status !== "inactive")
+    .filter((row) => {
+      const profile = row as ProfileRow;
+      if (profile.member_status === "inactive") return false;
+      return !isSeedDemoMember(profile);
+    })
     .map((row) => profileToRider(row as ProfileRow));
 });
 
@@ -161,10 +165,14 @@ export async function countCommunityProfiles() {
   if (!supabase || !user) return 0;
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, member_status")
+    .select("id, email, slug, member_status")
     .eq("kind", "user");
   if (!error && data) {
-    return data.filter((row) => (row as ProfileRow).member_status !== "inactive").length;
+    return data.filter((row) => {
+      const profile = row as ProfileRow;
+      if (profile.member_status === "inactive") return false;
+      return !isSeedDemoMember(profile);
+    }).length;
   }
   const fallback = await supabase
     .from("profiles")
@@ -188,20 +196,26 @@ export async function emailHasProfile(email: string) {
 
 export const listRiders = cache(async (): Promise<Rider[]> => {
   const [session, community] = await Promise.all([getSession(), listCommunityProfiles()]);
-  const extras: Rider[] = [];
-  const seen = new Set(riders.map((rider) => rider.slug));
+  const seen = new Set<string>();
+  const list: Rider[] = [];
 
   for (const rider of community) {
     if (seen.has(rider.slug)) continue;
     seen.add(rider.slug);
-    extras.push(rider);
+    list.push(rider);
   }
 
-  if (session && session.kind !== "admin" && !seen.has(session.slug)) {
-    extras.unshift(sessionToRider(session));
+  if (
+    session &&
+    session.kind !== "admin" &&
+    session.memberStatus !== "inactive" &&
+    !isSeedDemoMember(session) &&
+    !seen.has(session.slug)
+  ) {
+    list.unshift(sessionToRider(session));
   }
 
-  return [...extras, ...riders];
+  return list;
 });
 
 export async function findRider(slug: string): Promise<Rider | null> {
