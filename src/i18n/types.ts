@@ -265,6 +265,17 @@ export type Dictionary = {
     inboxUnread: string;
     inboxClose: string;
     inboxReopen: string;
+    inboxNew: string;
+    inboxPickMember: string;
+    inboxMemberHint: string;
+    inboxHistory: string;
+    inboxHistoryLead: string;
+    inboxThreadsEmpty: string;
+    inboxDelete: string;
+    inboxDeleteConfirm: string;
+    inboxDeleteConfirmAgain: string;
+    inboxPeopleEmpty: string;
+    inboxFolderCount: string;
     blogTitle: string;
     blogLead: string;
     blogEmpty: string;
@@ -734,5 +745,6 @@ export type Dictionary = {
     inboxKind: string;
     inboxBody: string;
     inboxClosed: string;
+    inboxMember: string;
   };
 };

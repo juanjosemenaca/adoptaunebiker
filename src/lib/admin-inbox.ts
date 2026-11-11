@@ -4,6 +4,7 @@ import {
   canReplyToThread,
   isInboxKind,
   isInboxStatus,
+  parseAdminInboxDraft,
   parseInboxDraft,
   parseInboxReply,
   type InboxKind,
@@ -16,12 +17,24 @@ export {
   INBOX_KINDS,
   MEMBER_INBOX_KINDS,
   canReplyToThread,
+  groupInboxByMember,
   isInboxKind,
+  parseAdminInboxDraft,
   parseInboxDraft,
   parseInboxReply,
   threadIsUnread,
 } from "@/lib/admin-inbox-helpers";
-export type { InboxDraft, InboxDraftError, InboxKind, InboxMessage, InboxStatus, InboxThread } from "@/lib/admin-inbox-helpers";
+export type {
+  AdminInboxDraft,
+  AdminInboxDraftError,
+  InboxDraft,
+  InboxDraftError,
+  InboxKind,
+  InboxMemberFolder,
+  InboxMessage,
+  InboxStatus,
+  InboxThread,
+} from "@/lib/admin-inbox-helpers";
 
 type ProfileEmbed = { display_name: string | null; slug: string | null; kind?: string | null };
 
@@ -193,6 +206,54 @@ export async function notifyRideMembers(rideId: string, change: "updated" | "can
   if (!error) return;
   if (error.code === "PGRST202" || error.code === "42883") return;
   queryFailed("[notifyRideMembers]", error);
+}
+
+export async function listInboxForMember(memberId: string): Promise<InboxThread[]> {
+  const auth = await client();
+  if (!auth) return [];
+  const { data, error } = await auth.supabase
+    .from("admin_threads")
+    .select(THREAD_SELECT)
+    .eq("member_id", memberId)
+    .order("updated_at", { ascending: false });
+  if (error || !data) {
+    queryFailed("[listInboxForMember]", error);
+    return [];
+  }
+  return data.map((row) => mapThread(row as ThreadRow));
+}
+
+export async function createAdminInboxThread(memberId: string, subject: string, body: string) {
+  const auth = await client();
+  if (!auth) throw new Error("inbox");
+  const draft = parseAdminInboxDraft({ memberId, subject, body });
+  if ("error" in draft) throw new Error(draft.error);
+  const { data, error } = await auth.supabase.rpc("open_admin_thread_to_member", {
+    p_member_id: draft.memberId,
+    p_subject: draft.subject,
+    p_kind: draft.kind,
+    p_body: draft.body,
+  });
+  if (error || !data) {
+    queryFailed("[createAdminInboxThread]", error);
+    throw new Error("inbox");
+  }
+  return String(data);
+}
+
+export async function deleteAdminInboxThread(threadId: string) {
+  const auth = await client();
+  if (!auth) throw new Error("inbox");
+  const { error } = await auth.supabase.rpc("delete_admin_thread", { target: threadId });
+  if (!error) return;
+  if (error.code === "PGRST202" || error.code === "42883") {
+    const fallback = await auth.supabase.from("admin_threads").delete().eq("id", threadId);
+    if (!fallback.error) return;
+    queryFailed("[deleteAdminInboxThread]", fallback.error);
+    throw new Error("inbox");
+  }
+  queryFailed("[deleteAdminInboxThread]", error);
+  throw new Error("inbox");
 }
 
 export async function createInboxThread(subject: string, kind: InboxKind, body: string) {

@@ -86,12 +86,20 @@ export default async function AdminMemberPage({
       <MemberNotes memberId={member.id} locale={locale} notes={notes} t={t} />
       <MemberToolbar id={member.id} locale={locale} status={member.memberStatus} t={t} />
 
-      <Link
-        href={links.adminMembers}
-        className="mt-10 inline-flex min-h-11 items-center text-xs font-semibold uppercase tracking-[0.2em] text-sodium"
-      >
-        {t.admin.membersBack}
-      </Link>
+      <div className="mt-10 flex flex-wrap gap-4">
+        <Link
+          href={links.adminInboxMember(member.id)}
+          className="inline-flex min-h-11 items-center text-xs font-semibold uppercase tracking-[0.2em] text-sodium"
+        >
+          {t.admin.inboxHistory}
+        </Link>
+        <Link
+          href={links.adminMembers}
+          className="inline-flex min-h-11 items-center text-xs font-semibold uppercase tracking-[0.2em] text-sodium"
+        >
+          {t.admin.membersBack}
+        </Link>
+      </div>
     </div>
   );
 }

@@ -71,6 +71,8 @@ export function hrefs(locale: string) {
     inbox: `${base}/intranet/comunicacion`,
     inboxThread: (id: string) => `${base}/intranet/comunicacion/${id}`,
     adminInbox: `${base}/admin/mensajes`,
+    adminInboxNew: `${base}/admin/mensajes/nuevo`,
+    adminInboxMember: (id: string) => `${base}/admin/mensajes/miembro/${id}`,
     adminInboxThread: (id: string) => `${base}/admin/mensajes/${id}`,
     rider: (slug: string) => `${base}/intranet/rider/${slug}`,
   };
