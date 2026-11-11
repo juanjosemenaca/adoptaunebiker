@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hrefs } from "@/lib/paths";
+import { countAdminInboxUnread } from "@/lib/admin-inbox";
+import { countOpenRides } from "@/lib/rides";
 import { countCommunityProfiles } from "@/lib/session";
 import { countUnreadSignupRequests } from "@/lib/signup-requests";
 
@@ -12,9 +14,11 @@ export default async function AdminPanelPage({
   const { locale } = await params;
   const t = getDictionary(locale);
   const links = hrefs(locale);
-  const [unread, communityCount] = await Promise.all([
+  const [unread, inboxUnread, communityCount, rideCount] = await Promise.all([
     countUnreadSignupRequests(),
+    countAdminInboxUnread(),
     countCommunityProfiles(),
+    countOpenRides(),
   ]);
 
   const cards = [
@@ -25,6 +29,12 @@ export default async function AdminPanelPage({
       lead: t.admin.lead,
     },
     {
+      href: links.adminInbox,
+      label: t.nav.adminInbox,
+      count: inboxUnread,
+      lead: t.admin.inboxLead,
+    },
+    {
       href: links.adminMembers,
       label: t.nav.members,
       count: communityCount,
@@ -33,7 +43,7 @@ export default async function AdminPanelPage({
     {
       href: links.adminMeetups,
       label: t.nav.meetups,
-      count: 0,
+      count: rideCount,
       lead: t.admin.meetupsLead,
     },
     {
@@ -50,7 +60,7 @@ export default async function AdminPanelPage({
       <h1 className="display mt-3 text-6xl sm:text-7xl">{t.admin.panelTitle}</h1>
       <p className="mt-4 max-w-xl text-mist">{t.admin.panelLead}</p>
 
-      <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card) => (
           <li key={card.href}>
             <Link

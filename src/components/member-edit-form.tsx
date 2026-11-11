@@ -43,10 +43,14 @@ export function MemberEditForm({
   member,
   locale,
   t,
+  next,
+  showHeading = true,
 }: {
   member: MemberFields;
   locale: string;
   t: Dictionary;
+  next?: "cuenta";
+  showHeading?: boolean;
 }) {
   const [veteran, setVeteran] = useState<Practice[]>(member.veteranIn);
   const [beginner, setBeginner] = useState<Practice[]>(member.beginnerIn);
@@ -67,7 +71,10 @@ export function MemberEditForm({
     <form action={action} className="mt-10 space-y-4 border border-line bg-rubber p-5 sm:p-6">
       <input type="hidden" name="id" value={member.id} />
       <input type="hidden" name="locale" value={locale} />
-      <p className="text-[10px] uppercase tracking-[0.18em] text-mist">{t.admin.memberDataTitle}</p>
+      {next ? <input type="hidden" name="next" value={next} /> : null}
+      {showHeading ? (
+        <p className="text-[10px] uppercase tracking-[0.18em] text-mist">{t.admin.memberDataTitle}</p>
+      ) : null}
 
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
         {t.forms.name}
@@ -159,10 +166,6 @@ export function MemberEditForm({
         </div>
       </fieldset>
 
-      <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
-        {t.forms.bike}
-        <input name="bike" defaultValue={member.bike} placeholder={t.forms.bikeHint} className={fieldClass} />
-      </label>
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
         {t.forms.ride}
         <textarea

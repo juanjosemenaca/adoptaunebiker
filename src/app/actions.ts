@@ -18,14 +18,23 @@ import {
 } from "@/lib/places";
 import { hrefs, loginHref, safeIntranetPath } from "@/lib/paths";
 import { encodeSignupMeta } from "@/lib/signup-meta";
+import { AvatarError } from "@/lib/avatar";
 import {
   addMemberNote,
   approveSignupRequest,
   deleteMemberNote,
+  removeMemberAvatar,
   resetMemberPassword,
   setMemberStatus,
+  saveMemberGarage,
   updateMember,
+  uploadMemberAvatar,
 } from "@/lib/members";
+import {
+  BIKE_NAME_MAX,
+  BIKE_NAME_MIN,
+  parseGarageFields,
+} from "@/lib/bikes";
 import { sendMemberResetEmail, sendMemberWelcomeEmail } from "@/lib/mail";
 import {
   findSignupByEmail,
@@ -454,6 +463,9 @@ export async function changePasswordAction(formData: FormData) {
   }
 
   revalidateCommunity();
+  if (String(formData.get("next") ?? "") === "cuenta") {
+    redirect(`${hrefs(locale).cuenta}?clave=ok`);
+  }
   redirect(hrefs(locale).intranet);
 }
 
@@ -515,16 +527,19 @@ export async function updateMemberAction(formData: FormData) {
   const locale = localeFromForm(formData);
   const t = getDictionary(locale);
   const session = await getSession();
-  if (!session || !isAdmin(session)) {
-    redirect(loginHref(locale, hrefs(locale).admin));
+  if (!session) {
+    redirect(loginHref(locale, hrefs(locale).intranet));
   }
 
   const id = String(formData.get("id") ?? "");
+  const selfEdit = id === session.id;
+  if (!isAdmin(session) && !selfEdit) {
+    return { error: t.admin.memberSaveError };
+  }
   const name = String(formData.get("name") ?? "").trim();
   const lastName = String(formData.get("lastName") ?? "").trim();
   const country = String(formData.get("country") ?? "").trim();
   const city = String(formData.get("city") ?? "").trim();
-  const bike = String(formData.get("bike") ?? "").trim();
   const bio = String(formData.get("bio") ?? "").trim();
   const lookingFor = String(formData.get("lookingFor") ?? "").trim();
   const veteranIn = parsePracticeList(formData.getAll("veteran").map((item) => String(item)));
@@ -551,7 +566,6 @@ export async function updateMemberAction(formData: FormData) {
       veteranIn,
       beginnerIn,
       interestedIn,
-      bike,
       bio,
       lookingFor,
     });
@@ -561,7 +575,107 @@ export async function updateMemberAction(formData: FormData) {
   }
 
   revalidateMembers(locale, id);
+  if (String(formData.get("next") ?? "") === "cuenta" || (selfEdit && !isAdmin(session))) {
+    redirect(`${hrefs(locale).cuenta}?datos=ok`);
+  }
   redirect(`${hrefs(locale).adminMember(id)}?datos=ok`);
+}
+
+function avatarActionError(error: unknown, t: ReturnType<typeof getDictionary>) {
+  if (error instanceof AvatarError) {
+    if (error.code === "type") return { error: t.errors.photoType };
+    if (error.code === "size") return { error: t.errors.photoSize };
+    if (error.code === "missing") return { error: t.errors.photoType };
+  }
+  return { error: t.errors.photo };
+}
+
+export async function uploadAvatarAction(formData: FormData) {
+  const locale = localeFromForm(formData);
+  const t = getDictionary(locale);
+  const session = await getSession();
+  if (!session) {
+    redirect(loginHref(locale, hrefs(locale).cuenta));
+  }
+  const file = formData.get("photo");
+  if (!(file instanceof File)) return { error: t.errors.photoType };
+  try {
+    await uploadMemberAvatar(file);
+  } catch (error) {
+    logServerError("[uploadAvatarAction]", error);
+    return avatarActionError(error, t);
+  }
+  revalidateMembers(locale, session.id);
+  redirect(`${hrefs(locale).cuenta}?foto=ok`);
+}
+
+export async function removeAvatarAction(formData: FormData) {
+  const locale = localeFromForm(formData);
+  const t = getDictionary(locale);
+  const session = await getSession();
+  if (!session) {
+    redirect(loginHref(locale, hrefs(locale).cuenta));
+  }
+  try {
+    await removeMemberAvatar();
+  } catch (error) {
+    logServerError("[removeAvatarAction]", error);
+    return avatarActionError(error, t);
+  }
+  revalidateMembers(locale, session.id);
+  redirect(`${hrefs(locale).cuenta}?foto=off`);
+}
+
+export async function saveGarageAction(formData: FormData) {
+  const locale = localeFromForm(formData);
+  const t = getDictionary(locale);
+  const session = await getSession();
+  if (!session) {
+    redirect(loginHref(locale, hrefs(locale).cuenta));
+  }
+
+  const id = String(formData.get("id") ?? "");
+  const selfEdit = id === session.id;
+  if (!id || (!isAdmin(session) && !selfEdit)) {
+    return { error: t.errors.bikes };
+  }
+
+  const names = formData.getAll("bikeName").map((item) => String(item));
+  for (const raw of names) {
+    const name = raw.trim();
+    if (!name) continue;
+    if (name.length < BIKE_NAME_MIN || name.length > BIKE_NAME_MAX) {
+      return { error: t.errors.bikeName };
+    }
+  }
+
+  const garage = parseGarageFields({
+    ids: formData.getAll("bikeId").map((item) => String(item)),
+    names,
+    kinds: formData.getAll("bikeKind").map((item) => String(item)),
+    notes: formData.getAll("bikeNote").map((item) => String(item)),
+    photoPaths: formData.getAll("bikePhotoPath").map((item) => String(item)),
+    photoUrls: formData.getAll("bikePhotoUrl").map((item) => String(item)),
+  });
+  const files = garage.flatMap((bike) => {
+    const file = formData.get(`photo-${bike.id}`);
+    return file instanceof File && file.size > 0 ? [{ bikeId: bike.id, file }] : [];
+  });
+  const clearIds = formData.getAll("clearPhoto").map((item) => String(item));
+
+  try {
+    await saveMemberGarage(id, garage, files, clearIds);
+  } catch (error) {
+    logServerError("[saveGarageAction]", error);
+    if (error instanceof AvatarError) return avatarActionError(error, t);
+    return { error: t.errors.bikes };
+  }
+
+  revalidateMembers(locale, id);
+  if (String(formData.get("next") ?? "") === "cuenta" || (selfEdit && !isAdmin(session))) {
+    redirect(`${hrefs(locale).cuenta}?bici=ok`);
+  }
+  redirect(`${hrefs(locale).adminMember(id)}?bici=ok`);
 }
 
 export async function addMemberNoteAction(formData: FormData) {

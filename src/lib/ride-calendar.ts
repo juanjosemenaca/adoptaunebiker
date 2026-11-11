@@ -8,12 +8,38 @@ export function rideDayKey(iso: string) {
   return match ? `${match[1]}-${match[2]}-${match[3]}` : "";
 }
 
+export function currentCalendarMonth(now = new Date()) {
+  return { year: now.getFullYear(), month: now.getMonth() };
+}
+
+export function todayDayKey(now = new Date()) {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Madrid",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(now);
+}
+
+export function calendarYearBounds(rides: CalendarRide[], now = new Date()) {
+  const current = now.getFullYear();
+  let min = current - 1;
+  let max = current + 2;
+  for (const ride of rides) {
+    const year = Number(ride.startAt.slice(0, 4));
+    if (!Number.isFinite(year)) continue;
+    min = Math.min(min, year);
+    max = Math.max(max, year);
+  }
+  return { min, max };
+}
+
 export function monthFromRides(rides: CalendarRide[]) {
   for (const ride of rides) {
     const match = ride.startAt.match(/^(\d{4})-(\d{2})/);
     if (match) return { year: Number(match[1]), month: Number(match[2]) - 1 };
   }
-  return { year: 2026, month: 9 };
+  return currentCalendarMonth();
 }
 
 export function yearBounds(rides: CalendarRide[]) {

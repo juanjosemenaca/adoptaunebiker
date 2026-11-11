@@ -9,9 +9,11 @@ type State = { error?: string };
 export function ChangePasswordForm({
   locale,
   t,
+  next,
 }: {
   locale: string;
   t: Dictionary;
+  next?: "cuenta";
 }) {
   const [state, action, pending] = useActionState(
     async (_prev: State, formData: FormData): Promise<State> => {
@@ -24,6 +26,7 @@ export function ChangePasswordForm({
   return (
     <form action={action} className="space-y-5">
       <input type="hidden" name="locale" value={locale} />
+      {next ? <input type="hidden" name="next" value={next} /> : null}
       <label className="block text-[10px] uppercase tracking-[0.18em] text-mist">
         {t.forms.newPassword}
         <input

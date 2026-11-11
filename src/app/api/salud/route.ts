@@ -46,6 +46,7 @@ export async function GET() {
         RETENTION_PURGE_APPLY: process.env.RETENTION_PURGE_APPLY?.trim() === "1",
         NEXT_PUBLIC_GA_MEASUREMENT_ID: Boolean(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID),
         NEXT_PUBLIC_GTM_ID: Boolean(process.env.NEXT_PUBLIC_GTM_ID),
+        NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: Boolean(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY),
         STRAVA_CLIENT_ID: Boolean(process.env.STRAVA_CLIENT_ID),
         STRAVA_CLIENT_SECRET: Boolean(process.env.STRAVA_CLIENT_SECRET),
       },

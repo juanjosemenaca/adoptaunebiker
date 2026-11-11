@@ -21,6 +21,9 @@ export const paths = {
   adminRequest: (id: string) => `/admin/solicitudes?ver=${id}`,
   explorar: "/intranet/explorar",
   cuenta: "/intranet/cuenta",
+  rides: "/intranet/salidas",
+  joinedRides: "/intranet/apuntadas",
+  inbox: "/intranet/comunicacion",
   rider: (slug: string) => `/intranet/rider/${slug}`,
 } as const;
 
@@ -60,6 +63,15 @@ export function hrefs(locale: string) {
     adminRequest: (id: string) => `${base}/admin/solicitudes?ver=${id}`,
     explorar: `${base}/intranet/explorar`,
     cuenta: `${base}/intranet/cuenta`,
+    rides: `${base}/intranet/salidas`,
+    rideNew: `${base}/intranet/salidas/nueva`,
+    ride: (id: string) => `${base}/intranet/salidas/${id}`,
+    rideEdit: (id: string) => `${base}/intranet/salidas/${id}/editar`,
+    joinedRides: `${base}/intranet/apuntadas`,
+    inbox: `${base}/intranet/comunicacion`,
+    inboxThread: (id: string) => `${base}/intranet/comunicacion/${id}`,
+    adminInbox: `${base}/admin/mensajes`,
+    adminInboxThread: (id: string) => `${base}/admin/mensajes/${id}`,
     rider: (slug: string) => `${base}/intranet/rider/${slug}`,
   };
 }
@@ -69,6 +81,7 @@ export function adminNav(locale: string) {
   return [
     { href: links.admin, key: "controlPanel" as const },
     { href: links.adminRequests, key: "requests" as const },
+    { href: links.adminInbox, key: "adminInbox" as const },
     { href: links.adminMembers, key: "members" as const },
     { href: links.adminMeetups, key: "meetups" as const },
     { href: links.adminBlog, key: "blog" as const },
@@ -79,7 +92,9 @@ export function intranetNav(locale: string) {
   const links = hrefs(locale);
   return [
     { href: links.intranet, key: "panel" as const },
-    { href: links.explorar, key: "peloton" as const },
+    { href: links.rides, key: "rides" as const },
+    { href: links.joinedRides, key: "joinedRides" as const },
+    { href: links.inbox, key: "inbox" as const },
     { href: links.cuenta, key: "account" as const },
   ];
 }

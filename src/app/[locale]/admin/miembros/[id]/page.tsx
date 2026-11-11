@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BikeGarageForm } from "@/components/bike-garage-form";
 import { MemberEditForm } from "@/components/member-edit-form";
 import { MemberNotes } from "@/components/member-notes";
 import { MemberToolbar } from "@/components/member-toolbar";
@@ -18,6 +19,7 @@ export default async function AdminMemberPage({
     clave?: string;
     correo?: string;
     datos?: string;
+    bici?: string;
     nota?: string;
   }>;
 }) {
@@ -34,6 +36,7 @@ export default async function AdminMemberPage({
   const resetOk = query.clave === "ok";
   const statusOk = query.estado === "ok";
   const savedOk = query.datos === "ok";
+  const bikesOk = query.bici === "ok";
   const noteOk = query.nota === "ok";
   const mailNote =
     query.correo === "ok"
@@ -67,12 +70,18 @@ export default async function AdminMemberPage({
           {t.admin.memberSaveOk}
         </p>
       ) : null}
+      {bikesOk ? (
+        <p role="status" className="mt-6 max-w-xl border border-volt bg-rubber p-4 text-sm leading-7 text-bone">
+          {t.intranet.bikesOk}
+        </p>
+      ) : null}
       {noteOk ? (
         <p role="status" className="mt-6 max-w-xl border border-volt bg-rubber p-4 text-sm leading-7 text-bone">
           {t.admin.memberNoteOk}
         </p>
       ) : null}
 
+      <BikeGarageForm memberId={member.id} locale={locale} t={t} garage={member.garage} canUpload={false} />
       <MemberEditForm member={member} locale={locale} t={t} />
       <MemberNotes memberId={member.id} locale={locale} notes={notes} t={t} />
       <MemberToolbar id={member.id} locale={locale} status={member.memberStatus} t={t} />
