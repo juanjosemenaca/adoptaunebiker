@@ -6,6 +6,7 @@ import { ChangePasswordForm } from "@/components/change-password-form";
 import { defaultLocale, isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hrefs, loginHref } from "@/lib/paths";
+import { listIntranetNotices } from "@/lib/intranet-notices";
 import { getSession, isAdmin } from "@/lib/session";
 import { privateMetadata } from "@/lib/seo";
 
@@ -43,8 +44,10 @@ export default async function IntranetLayout({
     );
   }
 
+  const notices = await listIntranetNotices();
+
   return (
-    <AppShell session={session} variant="intranet" locale={lang} t={t}>
+    <AppShell session={session} variant="intranet" locale={lang} t={t} panelAlert={notices.length > 0}>
       {children}
     </AppShell>
   );

@@ -572,6 +572,12 @@ export const ca: Dictionary = {
   intranet: {
     kicker: "Intranet",
     hello: "Hola, {name}",
+    notices: {
+      title: "Avisos",
+      join: "{name} demana plaça a {title}",
+      chat: "Missatge nou a {title}",
+      inbox: "{title}",
+    },
     intro: "{role} · {discipline} · {city}. Aquest mes: les teves sortides, a les que t’has apuntat i les que proposa la resta.",
     nextTitle: "Pas següent",
     nextLead:

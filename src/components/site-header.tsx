@@ -46,10 +46,6 @@ export function SiteHeader({
           <p className="flex h-7 items-center justify-center bg-[#c1121f] px-4 text-center text-[10px] font-black uppercase tracking-[0.22em] text-black">
             {t.nav.admin}
           </p>
-        ) : session ? (
-          <p className="display flex min-h-10 items-center border-b border-line bg-asphalt px-4 py-2 text-xl text-sodium sm:px-6 sm:text-2xl">
-            {fill(t.intranet.hello, { name: greetName(session.name) || t.intranet.cyclist })}
-          </p>
         ) : null}
         <div className="flex h-20 items-center justify-between gap-4 px-4 sm:px-6">
           <BrandLogo priority href={logoHref} />
@@ -58,6 +54,11 @@ export function SiteHeader({
             <LogoutButton locale={locale} label={t.nav.logoff} />
           </div>
         </div>
+        {variant === "intranet" && session ? (
+          <p className="display flex min-h-10 items-center border-t border-line bg-asphalt px-4 py-2 text-xl text-sodium sm:px-6 sm:text-2xl">
+            {fill(t.intranet.hello, { name: greetName(session.name) || t.intranet.cyclist })}
+          </p>
+        ) : null}
       </header>
     );
   }

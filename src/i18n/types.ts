@@ -446,6 +446,12 @@ export type Dictionary = {
   intranet: {
     kicker: string;
     hello: string;
+    notices: {
+      title: string;
+      join: string;
+      chat: string;
+      inbox: string;
+    };
     intro: string;
     nextTitle: string;
     nextLead: string;

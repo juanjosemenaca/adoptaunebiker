@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { GroupRideCalendar } from "@/components/group-ride-calendar";
+import { IntranetNoticeList } from "@/components/intranet-notice-list";
 import { fill, getDictionary } from "@/i18n/get-dictionary";
+import { listIntranetNotices } from "@/lib/intranet-notices";
 import { hrefs } from "@/lib/paths";
 import { joinedRideIds, rideMark } from "@/lib/ride-helpers";
-import { countPendingForHost, listMyJoinRequests, listOpenRides } from "@/lib/rides";
+import { listMyJoinRequests, listOpenRides } from "@/lib/rides";
 import { getSession } from "@/lib/session";
 
 export default async function IntranetHomePage({
@@ -17,10 +19,10 @@ export default async function IntranetHomePage({
   const t = getDictionary(locale);
   const links = hrefs(locale);
 
-  const [rides, pendingCount, mine] = await Promise.all([
+  const [rides, mine, notices] = await Promise.all([
     listOpenRides(),
-    countPendingForHost(session.id),
     listMyJoinRequests(session.id),
+    listIntranetNotices(),
   ]);
   const joinedIds = joinedRideIds(mine);
   const marked = rides.map((ride) => ({
@@ -51,13 +53,7 @@ export default async function IntranetHomePage({
         </Link>
       </div>
 
-      {pendingCount > 0 ? (
-        <p className="mt-8 max-w-xl border border-line bg-rubber p-4 text-sm text-bone">
-          <Link href={links.rides} className="hover:text-sodium">
-            {t.intranet.groupRides.pendingInbox}: {pendingCount}
-          </Link>
-        </p>
-      ) : null}
+      <IntranetNoticeList notices={notices} locale={locale} t={t} />
 
       <div className="mt-10">
         <GroupRideCalendar rides={marked} locale={locale} t={t} />

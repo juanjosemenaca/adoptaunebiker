@@ -6,7 +6,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/i18n/types";
 import { hrefs } from "@/lib/paths";
 
-export type SideNavItem = { href: string; key: keyof Dictionary["nav"] };
+export type SideNavItem = { href: string; key: keyof Dictionary["nav"]; alert?: boolean };
 
 const collapsedWidth = 44;
 
@@ -84,16 +84,27 @@ export function SideNav({
         </button>
         {items.map((item) => {
           const label = t.nav[item.key];
+          const alert = Boolean(item.alert);
+          const current = active(item.href);
           return (
             <Link
               key={item.href}
               href={item.href}
-              title={label}
-              className={`px-3 py-2 uppercase tracking-[0.16em] whitespace-nowrap ${
-                open ? "text-left text-[11px]" : "text-center text-[10px]"
-              } ${active(item.href) ? "text-sodium" : "text-mist hover:text-bone"}`}
+              title={alert ? `${label} · ${t.intranet.notices.title}` : label}
+              className={`flex items-center gap-2 px-3 py-2 uppercase tracking-[0.16em] whitespace-nowrap ${
+                open ? "justify-start text-left text-[11px]" : "justify-center text-center text-[10px]"
+              } ${
+                alert
+                  ? "text-[#c1121f] hover:text-[#c1121f]"
+                  : current
+                    ? "text-sodium"
+                    : "text-mist hover:text-bone"
+              }`}
             >
-              {open ? label : label.slice(0, 1)}
+              <span>{open ? label : label.slice(0, 1)}</span>
+              {alert && open ? (
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#c1121f]" aria-hidden />
+              ) : null}
             </Link>
           );
         })}

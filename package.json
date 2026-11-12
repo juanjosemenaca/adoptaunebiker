@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test src/lib/auth.test.ts src/lib/log.test.ts src/lib/session-resolve.test.ts src/lib/privacy.test.ts src/lib/analytics.test.ts src/lib/last-admin.test.ts src/lib/retention.test.ts src/lib/retention-http.test.ts src/lib/altcha.test.ts src/lib/blog.test.ts src/lib/blog-markdown.test.ts src/lib/blog-slug.test.ts src/lib/rides.test.ts src/lib/bikes.test.ts src/lib/avatar.test.ts src/lib/admin-inbox.test.ts"
+    "test": "node --experimental-strip-types --test src/lib/auth.test.ts src/lib/log.test.ts src/lib/session-resolve.test.ts src/lib/privacy.test.ts src/lib/analytics.test.ts src/lib/last-admin.test.ts src/lib/retention.test.ts src/lib/retention-http.test.ts src/lib/altcha.test.ts src/lib/blog.test.ts src/lib/blog-markdown.test.ts src/lib/blog-slug.test.ts src/lib/rides.test.ts src/lib/bikes.test.ts src/lib/avatar.test.ts src/lib/admin-inbox.test.ts src/lib/intranet-notices.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

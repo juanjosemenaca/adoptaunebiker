@@ -10,6 +10,7 @@ import { RideJoinForm } from "@/components/ride-join-form";
 import { dateLocale } from "@/i18n/config";
 import { fill, getDictionary } from "@/i18n/get-dictionary";
 import { hrefs } from "@/lib/paths";
+import { markRideChatSeen } from "@/lib/intranet-notices";
 import { listRideHides } from "@/lib/ride-dismissals";
 import { listRideKeeps } from "@/lib/ride-keeps";
 import {
@@ -102,6 +103,7 @@ export default async function RideDetailPage({
     startsAt: ride.startsAt,
   });
   const messages = canChat ? await listRideMessages(ride.id) : [];
+  if (canChat) await markRideChatSeen(ride.id);
   const keeps = canChat ? await listRideKeeps(ride.id) : [];
   const albumPhotos = keeps.filter((item) => item.kind === "photo");
   const albumTracks = keeps.filter((item) => item.kind !== "photo");

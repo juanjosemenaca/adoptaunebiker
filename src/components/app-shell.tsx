@@ -15,6 +15,7 @@ export function AppShell({
   locale,
   t,
   locked = false,
+  panelAlert = false,
 }: {
   children: ReactNode;
   session: SessionUser | null;
@@ -22,9 +23,16 @@ export function AppShell({
   locale: Locale;
   t: Dictionary;
   locked?: boolean;
+  panelAlert?: boolean;
 }) {
   const links = hrefs(locale);
   const withSideNav = (variant === "admin" || variant === "intranet") && !locked;
+  const sideItems =
+    variant === "admin"
+      ? adminNav(locale)
+      : intranetNav(locale).map((item) =>
+          item.key === "panel" ? { ...item, alert: panelAlert } : item,
+        );
 
   return (
     <PrivacyGate locale={locale} t={t}>
@@ -46,7 +54,7 @@ export function AppShell({
             <SideNav
               locale={locale}
               t={t}
-              items={variant === "admin" ? adminNav(locale) : intranetNav(locale)}
+              items={sideItems}
               homeHref={variant === "admin" ? links.admin : links.intranet}
               storageKey={variant === "admin" ? "adopta.adminNav" : "adopta.intranetNav"}
             />

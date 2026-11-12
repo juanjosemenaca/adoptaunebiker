@@ -572,6 +572,12 @@ export const en: Dictionary = {
   intranet: {
     kicker: "Intranet",
     hello: "Hi, {name}",
+    notices: {
+      title: "Alerts",
+      join: "{name} asked for a spot on {title}",
+      chat: "New message on {title}",
+      inbox: "{title}",
+    },
     intro: "{role} · {discipline} · {city}. This month: rides you host, rides you joined, and new ones from the rest.",
     nextTitle: "Next step",
     nextLead:
